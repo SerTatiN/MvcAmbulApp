@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <div th:fragment = "header">
+        <ul class="nav nav-tabs justify-content-center">
+            <li class="nav-item">
+                <a class="nav-link" aria-current = "page" th:href = "@{/}"> Главная </a>
+            </li>
+         <li class="nav-item">
+                <a class="nav-link" aria-current = "page" th:href = "@{/doctor/}"> Наши специалисты </a>
+            </li>
+            <!-- <li class="nav-item">
+                <a class="nav-link" aria-current = "page" th:href = "@{/order/}"> Orders </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" aria-current = "page" th:href = "@{/item/}"> Items </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" aria-current = "page" th:href = "@{/order2/}"> OrderItems </a>
+            </li>-->
+            <li class="nav-item">
+                <form class="nav-link" aria-current = "page" th:action = "@{/logout}" th:method="post">
+                    <button >Log out</button>
+                </form>
+            </li>
+        </ul>
+    </div>
+
+    <div th:fragment = "footer" class = "container-fluid text-center fixed-bottom text-bg-info">
+        <h4>Дипломная работа "Информационная система поликлиники" Сергеевой Т.Н., гр. JAVA221, 2023 &copy;</h4>
+    </div>
+
+
+</body>
+</html>

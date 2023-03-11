@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Patient Detail</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
+</head>
+<body>
+<div class="text-center">
+    <h1> Информация о пациенте</h1>
+    <h2>[[${patient}]]</h2>
+
+    <!-- Кнопка Cancel <a th:if = "${back == 'schedule'}" th:href="@{/schedule/}" class="btn btn-secondary">Отмена</a>-->
+    <a th:if = "${back == 'patient'}" th:href="@{/patient/}" class="btn btn-secondary">Отмена</a>
+
+</div>
+</body>
+</html>

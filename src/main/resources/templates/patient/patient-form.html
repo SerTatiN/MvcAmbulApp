@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Patient Add</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
+</head>
+<body>
+<div class="container-fluid text-center">
+    <h1>Добавление пациента</h1>
+    <form method="post"  th:action="@{/patient/add/}" th:object="${patient}">
+        <div>
+            <label for ="patient-surname"> Фамилия: </label>
+            <input id="patient-surname" th:type="text" th:field="*{person.surname}" required minlength="1" maxlength="250" >
+        </div>
+        <div>
+            <label for ="patient-firstname"> Имя: </label>
+            <input id="patient-firstname" th:type="text" th:field="*{person.firstName}" required minlength="1" maxlength="250" >
+        </div>
+        <div>
+            <label for ="patient-patronymic"> Отчество: </label>
+            <input id="patient-patronymic" th:type="text" th:field="*{person.patronymic}" required minlength="1" maxlength="250" >
+        </div>
+        <div>
+            <label for ="patient-email"> Адрес эл. почты: </label>
+            <input id="patient-email" type="email" th:field="*{person.email}" required minlength="1" maxlength="250" >
+        </div>
+        <div>
+            <label for ="patient-birthdate"> Дата рождения: </label>
+            <input id="patient-birthdate" type="date" th:field="*{person.birthdate}" required  ><!--asp-format="{yyyy-MM-dd}"value="2020-10-29"-->
+        </div>
+        <button class="btn btn-success">Добавить</button>
+
+        <!-- Кнопка Cancel -->
+        <a th:href="@{/patient/}" class="btn btn-danger">Отмена</a>
+    </form>
+</div>
+</body>
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Schedule Update</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
+</head>
+<body>
+<div class="container-fluid text-center">
+    <h1>Edit schedule</h1>
+    <form method="post" th:action="@{/schedule/update/}" th:object="${schedule}">
+        <!-- надо перед id -->
+        <input th:field="*{id}" hidden>
+
+        <!-- данные врача <input th:field="*{doctor.id}" hidden>-->
+        <div>
+            <label for ="doctor"> Изменить специалиста: </label>
+            <select id="doctor" th:field="*{doctor}">
+                <th:block th:each="doctor: ${doctors}">
+                    <option th:value="${doctor.id}">[[${doctor.person.surname}+ ' ' + ${doctor.person.firstName}+' ' + ${doctor.person.patronymic}]]</option>
+                </th:block>
+            </select>
+        </div>
+
+        <div>
+            <label for ="date-priema"> Дата приема: </label>
+            <input id="date-priema" type="date" th:field="*{date}" required  >
+        </div>
+        <div>
+            <label for ="time-start"> Начало приема: </label>
+            <input id="time-start" type="datetime-local" th:field="*{startTime}" required ><!--asp-format="{yyyy-MM-dd}"value="2020-10-29-->
+
+        </div>
+        <div>
+            <label for ="time-end"> Окончание приема: </label>
+            <input id="time-end" type="datetime-local" th:field="*{endTime}" required >
+        </div>
+
+        <button class="btn btn-success">Сохранить</button>
+
+        <!-- Кнопка Cancel -->
+        <a th:href="@{/schedule/}" class="btn btn-danger">Отмена</a>
+    </form>
+</div>
+</body>
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Schedule</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
+</head>
+<body>
+<div class="container-fluid text-center">
+    <h1>Добавление расписания</h1>
+    <form method="post" id="addDoc"  th:action="@{/schedule/add/}" th:object="${schedule}">
+        <div>
+            <label for ="doctor"> Выберите специалиста: </label>
+            <select id="doctor" th:field="*{doctor}">
+                <th:block th:each="doctor: ${doctors}">
+                    <option th:value="${doctor.id}">[[${doctor.person.surname}+ ' ' + ${doctor.person.firstName}+' ' + ${doctor.person.patronymic}]]</option>
+                </th:block>
+            </select>
+        </div>
+        <div>
+            <label for ="date"> Дата приема: </label>
+            <input id="date" type="date" th:field="*{date}" required  >
+        </div>
+        <div>
+            <label for ="start-time"> Начало приема: </label>
+            <input id="start-time" th:type="datetime-local" th:field="*{startTime}" required >
+        </div>
+        <div>
+            <label for ="end-time"> Окончание приема: </label>
+            <input id="end-time" th:type="datetime-local" th:field="*{endTime}" required >
+        </div>
+
+        <button class="btn btn-success">Добавить</button>
+
+
+        <!-- Кнопка Cancel -->
+        <a th:href="@{/schedule/}" class="btn btn-danger">Отмена</a>
+    </form>
+</div>
+</body>
+</html>

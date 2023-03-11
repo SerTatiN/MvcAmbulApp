@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Doctor</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
+</head>
+<body>
+<div class="container-fluid text-center">
+    <h1>Добавление специалиста</h1>
+    <form method="post" id="addDoc"  th:action="@{/doctor/add/}" th:object="${doctor}">
+        <div>
+            <label for ="doctor-surname"> Фамилия: </label>
+            <input id="doctor-surname" th:type="text" th:field="*{person.surname}" required minlength="1" maxlength="250" >
+        </div>
+         <div>
+            <label for ="doctor-firstname"> Имя: </label>
+            <input id="doctor-firstname" th:type="text" th:field="*{person.firstName}" required minlength="1" maxlength="250" >
+        </div>
+        <div>
+            <label for ="doctor-patronymic"> Отчество: </label>
+            <input id="doctor-patronymic" th:type="text" th:field="*{person.patronymic}" required minlength="1" maxlength="250" >
+        </div>
+        <div>
+            <label for ="doctor-email"> Адрес эл. почты: </label>
+            <input id="doctor-email" type="email" th:field="*{person.email}" required minlength="1" maxlength="250" >
+        </div>
+        <div>
+            <label for ="doctor-birthdate"> Дата рождения: </label>
+          <input id="doctor-birthdate" type="date" th:field="*{person.birthdate}" required  ><!--asp-format="{yyyy-MM-dd}"value="2020-10-29"-->
+
+        </div>
+        <div>
+            <label for ="doctor-speciality"> Должность: </label>
+            <input id="doctor-speciality" th:type="text" th:field="*{speciality}" required minlength="1" maxlength="250" >
+        </div>
+
+        <!-- <label for ="doctor-info"> Информация: </label>
+       <input id="doctor-info" type="textarea" th:field="*{info}" required minlength="1" maxlength="250" >-->
+        <div>
+            <label> Информация: </label>
+            <textarea form="addDoc" cols= "50" raw="10" th:field="*{info}" required minlength="1" maxlength="250" ></textarea>
+        </div>
+        <button class="btn btn-success">Добавить</button>
+
+
+        <!-- Кнопка Cancel -->
+        <a th:href="@{/doctor/}" class="btn btn-danger">Отмена</a>
+    </form>
+</div>
+
+</body>
+</html>
