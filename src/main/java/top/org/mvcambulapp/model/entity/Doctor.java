@@ -30,6 +30,9 @@ public class Doctor{
    // private Doctor doctor;
     private Set<RecordToDoctor> recordToAccept;
 
+//    @OneToOne
+//    @JoinColumn(name="user_id",nullable = false)
+//    private User user;
     public Doctor() {
     }
 
@@ -45,6 +48,13 @@ public class Doctor{
         this.info = info;
     }
 
+    public Doctor(Person person, String speciality, String info, Set<Schedule> scheduleSet, Set<RecordToDoctor> recordToAccept) {
+        this.person = person;
+        this.speciality = speciality;
+        this.info = info;
+        this.scheduleSet = scheduleSet;
+        this.recordToAccept = recordToAccept;
+    }
 
     public Doctor(Person person, String speciality, String info) {
         this.person = person;

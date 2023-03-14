@@ -33,9 +33,8 @@
         <tr>
             <td>[[${patient.id}]]</td>
             <td>[[${patient.getPerson().getId()}]]</td>
-            <td>[[${patient.getPerson().getSurname()}+' '+${patient.getPerson().getFirstName()}+
-                ' '+ ${patient.getPerson().getPatronymic()}]]</td>
-            <td>[[${patient.getPerson().getEmail()}]]</td>
+            <td>[[${patient.getPerson().getFullName}]]</td>
+            <td>[[${patient.getPerson().getUser().getLogin}]]</td>
             <td th:text="${#dates.format(patient.getPerson().getBirthdate(), 'dd.MM.yyyy')}"></td>
 
             <td>

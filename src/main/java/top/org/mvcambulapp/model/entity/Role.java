@@ -2,13 +2,16 @@ package top.org.mvcambulapp.model.entity;
 
 import jakarta.persistence.*;
 import jdk.jfr.Timestamp;
+import org.springframework.security.core.GrantedAuthority;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
-@Table(name="role_t")
-public class Role {
+@Table(name="t_role")
+public class Role implements GrantedAuthority {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,12 +24,22 @@ public class Role {
             name="users_roles",
             joinColumns = @JoinColumn(name="role_id"),
             inverseJoinColumns = @JoinColumn(name="user_id"))
-    private List<User> users = new ArrayList<>();
+    private Set<User> users = new HashSet<>();
 
     public Role() {
     }
 
-    public Role(String name, List<User> users) {
+    public Role(Integer id, String name, Set<User> users) {
+        this.id = id;
+        this.name = name;
+        this.users = users;
+    }
+
+    public Role(String name) {
+        this.name = name;
+    }
+
+    public Role(String name, Set<User> users) {
         this.name = name;
         this.users = users;
     }
@@ -47,11 +60,11 @@ public class Role {
         this.name = name;
     }
 
-    public List<User> getUsers() {
+    public Set<User> getUsers() {
         return users;
     }
 
-    public void setUsers(List<User> users) {
+    public void setUsers(Set<User> users) {
         this.users = users;
     }
 
@@ -60,7 +73,12 @@ public class Role {
         return "Role{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", users=" + users +
+//                ", users=" + users +
                 '}';
+    }
+
+    @Override
+    public String getAuthority() {
+        return getName();
     }
 }

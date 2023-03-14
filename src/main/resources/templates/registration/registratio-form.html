@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Регистрация-2</title>
+</head>
+<body>
+<div>
+  <h2>Регистрация</h2>
+
+  <form method="post" id="addDoc"  th:action="@{/registration/}" th:object="${patient}">
+    <div>
+      <label for ="doctor-surname"> Фамилия: </label>
+      <input id="doctor-surname" th:type="text" th:field="*{person.surname}" required minlength="1" maxlength="250" >
+    </div>
+    <div>
+      <label for ="doctor-firstname"> Имя: </label>
+      <input id="doctor-firstname" th:type="text" th:field="*{person.firstName}" required minlength="1" maxlength="250" >
+    </div>
+    <div>
+      <label for ="doctor-patronymic"> Отчество: </label>
+      <input id="doctor-patronymic" th:type="text" th:field="*{person.patronymic}" required minlength="1" maxlength="250" >
+    </div>
+    <div>
+      <label for ="doctor-birthdate"> Дата рождения: </label>
+      <input id="doctor-birthdate" type="date" th:field="*{person.birthdate}" required  ><!--asp-format="{yyyy-MM-dd}"value="2020-10-29"-->
+    </div>
+    <div>
+      <label for ="doctor-email"> Адрес эл. почты: </label>
+      <input id="doctor-email" type="email" th:field="*{person.user.login}" required minlength="1" maxlength="250" >
+    </div>
+    <div>
+      <label for ="doctor-pass"> Пароль: </label>
+      <input id="doctor-pass" type="password" th:field="*{person.user.password}" required minlength="1" maxlength="250" >
+    </div>
+
+    <button class="btn btn-success">Зарегистрироваться</button>
+
+    <!-- Кнопка Cancel -->
+    <a th:href="@{/}" class="btn btn-danger">Отмена</a>
+    <a th:href="@{/}" class="btn btn-danger">На главную</a>
+  </form>
+</div>
+
+</body>
+</html>

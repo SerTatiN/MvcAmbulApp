@@ -6,7 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Entity
-@Table(name="patient_card_t")
+@Table(name="t_patient_card")
 public class ListPatientCard {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

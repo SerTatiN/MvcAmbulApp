@@ -17,6 +17,7 @@ public class DbUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = daoUser.getUserByLogin(username);
+        System.out.println(user.getLogin());
         if (user == null) {
             throw new UsernameNotFoundException(username);
         }
@@ -29,3 +30,23 @@ public class DbUserDetailsService implements UserDetailsService {
 //    }
 
 }
+//@Service
+//public class DatabaseUserDetailService implements UserDetailsService{
+//
+//	@Autowired
+//	   private UserRepository userRepository;
+//
+//	@Override
+//	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+//		 User user = userRepository.findUserByUsername(username)
+//		         .orElseThrow(() -> new UsernameNotFoundException("User not present"));
+//		 user.setPassword(passwordEncoder().encode(user.getPassword()));
+//		return user;
+//	}
+//
+//	@Bean
+//	public BCryptPasswordEncoder passwordEncoder() {
+//	    return new BCryptPasswordEncoder();
+//	}
+//
+//}

@@ -7,7 +7,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Entity
-@Table(name = "record_to_doctor_t")
+@Table(name = "t_record_to_doctor")
 public class RecordToDoctor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

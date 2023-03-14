@@ -33,7 +33,7 @@
     <tr>
         <td rowspan="2">[[${schedule.id}]]</td>
         <td rowspan="2">[[${schedule.doctor.speciality}]]</td>
-        <td rowspan="2">[[${schedule.doctor.person.surname}+ ' ' + ${schedule.doctor.person.firstName}+' ' + ${schedule.doctor.person.patronymic}]]</td>
+        <td rowspan="2">[[${schedule.doctor.person.getFullName()}]]</td>
         <td th:text="${#dates.format(schedule.date, 'dd.MM.yyyy')} + ', ' + ${#dates.dayOfWeekNameShort(schedule.date)}"></td>
 
         <td rowspan="2">
@@ -51,7 +51,7 @@
 
 </table>
 <div>
-    <a th:href="@{/schedule/add/}" class="btn btn-success">Добавить расписание</a>
+    <a th:if="isAdmin" th:href="@{/schedule/add/}" class="btn btn-success">Добавить расписание</a>
 </div>
 
 <footer th:insert="layout/page-layout.html :: footer"></footer>

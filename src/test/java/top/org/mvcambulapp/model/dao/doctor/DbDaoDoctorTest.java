@@ -50,7 +50,8 @@ class DbDaoDoctorTest {
         birthDate = calendar.getTime();
         System.out.println(birthDate);
 
-        person = new Person("Лев","Петрович","Каменев","5q@m.ru",birthDate);
+       // person = new Person("Лев","Петрович","Каменев","5q@m.ru",birthDate);
+        person = new Person("Лев","Петрович","Каменев",birthDate);
         personAdd = dbDaoPerson.save(person);
 
         String spec = "Терапевт";
@@ -98,7 +99,7 @@ class DbDaoDoctorTest {
         Person person, personAdd;
         calendar.set(1956, 3, 25);
         birthDate = calendar.getTime();
-        person = new Person("Илья","Петрович","Земсков","10q@m.ru",birthDate);
+        person = new Person("Илья","Петрович","Земсков",birthDate);
         personAdd = dbDaoPerson.save(person);
         System.out.println(personAdd);
 

@@ -1,12 +1,15 @@
 package top.org.mvcambulapp.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import top.org.mvcambulapp.model.dao.patient.IDaoPatient;
 import top.org.mvcambulapp.model.dao.person.IDaoPerson;
+import top.org.mvcambulapp.model.dao.user.DbDaoUser;
+import top.org.mvcambulapp.model.dao.user.IDaoUser;
 import top.org.mvcambulapp.model.entity.Patient;
 import top.org.mvcambulapp.model.entity.Person;
 
@@ -21,9 +24,13 @@ public class PatientController {
 
     @Autowired
     private IDaoPerson daoPerson;
+    @Autowired
+    private DbDaoUser daoUser;
 
     @GetMapping("/")
-    public String listAll(Model model){
+    public String listAll(Model model, Authentication auth){
+        System.out.println("patient/: auth= " + auth.getAuthorities());
+        System.out.println("patient/: user= " + daoUser.currentUser().getPerson().getFullName());
         List<Patient> patientList = daoPatient.listAll();
         System.out.println("list " + patientList.size());
         model.addAttribute("patients",patientList);

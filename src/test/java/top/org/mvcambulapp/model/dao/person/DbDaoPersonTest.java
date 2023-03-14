@@ -52,7 +52,7 @@ class DbDaoPersonTest {
 
         calendar.set(1989, Calendar.FEBRUARY, 25);
         birthDate = calendar.getTime();
-        person = new Person("Иван","Петрович","Петров","3q@m.ru",birthDate);
+        person = new Person("Иван","Петрович","Петров",birthDate);
         personAdd = dbDaoPerson.save(person);
         System.out.println(person);
         System.out.println(personAdd);

@@ -1,6 +1,8 @@
 package top.org.mvcambulapp.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.neo4j.Neo4jProperties;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -23,11 +25,13 @@ public class ScheduleController {
     private IDaoDoctor daoDoctor;
 
     @GetMapping("/")
-    public String listAll(Model model){
+    public String listAll(Model model, Authentication auth){
+        System.out.println("schedule/listAll " + auth.getAuthorities().toString());
         List<Schedule> list = daoSchedule.listAll();
         System.out.println("list " + list.size());
         System.out.println("1 " + list.get(0).toString());
         model.addAttribute("schedules", list);
+        model.addAttribute("isAdmin", auth);
         return "schedule/schedule-list";
     }
 

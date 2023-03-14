@@ -19,8 +19,8 @@ public class Person implements Serializable {
     private String patronymic;
     @Column(nullable = false, length = 25)
     private String surname;
-    @Column(nullable = false, length = 25,unique = true)
-    private String email;
+//    @Column(nullable = false, length = 25,unique = true)
+//    private String email;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(nullable = false)
@@ -32,17 +32,28 @@ public class Person implements Serializable {
     @OneToOne (mappedBy = "person")
     private Patient patient;
 
+    @OneToOne
+    @JoinColumn(name="user_id",nullable = false)
+    private User user;
+
     public Person() {
     }
 
-    public Person(String firstName, String patronymic, String surname, String email, Date birthdate) {
+    public Person(String firstName, String patronymic, String surname,  Date birthdate) {//String email,
         this.firstName = firstName;
         this.patronymic = patronymic;
         this.surname = surname;
-        this.email = email;
+  //  this.email = email;
         this.birthdate = birthdate;
     }
 
+    public Person(String firstName, String patronymic, String surname, Date birthdate, User user) {
+        this.firstName = firstName;
+        this.patronymic = patronymic;
+        this.surname = surname;
+        this.birthdate = birthdate;
+        this.user = user;
+    }
 
     public Integer getId() {
         return id;
@@ -95,13 +106,13 @@ public class Person implements Serializable {
          this.surname = surname;
      }
 
-     public String getEmail() {
-         return email;
-     }
-
-     public void setEmail(String email) {
-         this.email = email;
-     }
+//     public String getEmail() {
+//         return email;
+//     }
+//
+//     public void setEmail(String email) {
+//         this.email = email;
+//     }
 
     public Patient getPatient() {
         return patient;
@@ -109,6 +120,17 @@ public class Person implements Serializable {
 
     public void setPatient(Patient patient) {
         this.patient = patient;
+    }
+    public String getFullName(){
+        return surname + " " + firstName + " " + patronymic;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     @Override
@@ -118,8 +140,9 @@ public class Person implements Serializable {
                 ", firstName='" + firstName + '\'' +
                 ", patronymic='" + patronymic + '\'' +
                 ", surname='" + surname + '\'' +
-                ", email='" + email + '\'' +
+//                ", email='" + email + '\'' +
                 ", birthdate=" + getBirthdatePrint() +
+
                 '}';
     }
 }

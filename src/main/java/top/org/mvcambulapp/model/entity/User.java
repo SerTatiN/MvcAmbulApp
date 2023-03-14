@@ -2,10 +2,12 @@ package top.org.mvcambulapp.model.entity;
 
 import jakarta.persistence.*;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
-@Table(name="user_t")
+@Table(name="t_user")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,22 +19,32 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-    public List<Role> getRole() {
-        return role;
-    }
+    @ManyToMany(mappedBy = "users", cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    private Set<Role> roles = new HashSet<>();
 
-    public void setRole(List<Role> role) {
-        this.role = role;
-    }
+    @OneToOne(mappedBy = "user")
+    private Person person;
 
-    @ManyToMany(mappedBy = "user")
-    private List<Role> role;
+  //  @OneToOne(mappedBy = "user")
+//    private Doctor doctor;
+//
+//    @OneToOne(mappedBy = "user")
+//    private Patient patient;
+
+
 
     public User() {}
 
     public User(String login, String password) {
         this.login = login;
         this.password = password;
+    }
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
 
     public Integer getId() {
@@ -59,13 +71,21 @@ public class User {
         this.password = password;
     }
 
+    public Person getPerson() {
+        return person;
+    }
+
+    public void setPerson(Person person) {
+        this.person = person;
+    }
+
     @Override
     public String toString() {
         return "User{" +
                 "id=" + id +
                 ", login='" + login + '\'' +
                 ", password='" + password + '\'' +
-                ", role=" + role +
+                ", role=" + roles +
                 '}';
     }
 }

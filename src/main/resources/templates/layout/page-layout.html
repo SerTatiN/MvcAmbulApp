@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -13,16 +14,8 @@
          <li class="nav-item">
                 <a class="nav-link" aria-current = "page" th:href = "@{/doctor/}"> Наши специалисты </a>
             </li>
-            <!-- <li class="nav-item">
-                <a class="nav-link" aria-current = "page" th:href = "@{/order/}"> Orders </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" aria-current = "page" th:href = "@{/item/}"> Items </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" aria-current = "page" th:href = "@{/order2/}"> OrderItems </a>
-            </li>-->
-            <li class="nav-item">
+
+            <li class="nav-item">          <!-- Показать только зарегистрированным-->
                 <form class="nav-link" aria-current = "page" th:action = "@{/logout}" th:method="post">
                     <button >Log out</button>
                 </form>

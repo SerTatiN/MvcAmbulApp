@@ -2,6 +2,8 @@ package top.org.mvcambulapp.controllers;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.CurrentSecurityContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -9,8 +11,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import top.org.mvcambulapp.model.dao.doctor.IDaoDoctor;
 import top.org.mvcambulapp.model.dao.person.IDaoPerson;
+import top.org.mvcambulapp.model.dao.user.DbDaoUser;
 import top.org.mvcambulapp.model.entity.Doctor;
 import top.org.mvcambulapp.model.entity.Person;
+import top.org.mvcambulapp.model.entity.User;
 
 import java.util.List;
 import java.util.Optional;
@@ -24,10 +28,16 @@ public class DoctorController {
 
     @Autowired
     private IDaoPerson daoPerson;
+    @Autowired
+    private DbDaoUser daoUser;
 
     @GetMapping("/")
-    public String listAll(Model model){
+    public String listAll(Model model,Authentication auth ){
+        System.out.println("doctor1: auth= " + auth.getAuthorities().toString());
+        System.out.println("patient/: user= " + daoUser.currentUser().getPerson().getFullName());
+        System.out.println("doctor2: role= " + daoUser.currentUser().getRoles());
         System.out.println("/ listAll");
+      //  model.addAttribute("user", principal);
         List<Doctor> doctors = daoDoctor.listAll();
         System.out.println("list " + doctors.size());
         model.addAttribute("doctors", doctors);
