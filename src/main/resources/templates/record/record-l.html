@@ -37,7 +37,7 @@
       <td th:text="${#dates.format(record.schedule.date, 'dd.MM.yyyy')}"></td>
       <td th:text="${#dates.format(record.timeAccept, 'HH:mm')}"></td>
       <td >
-        <a th:href="@{'/record/update/' + ${record.id}}" class="btn btn-primary "> Редактировать </a>
+        <a th:if="${isAdmin}" th:href="@{'/record/update/' + ${record.id}}" class="btn btn-primary "> Редактировать </a>
 
       </td>
     </tr>

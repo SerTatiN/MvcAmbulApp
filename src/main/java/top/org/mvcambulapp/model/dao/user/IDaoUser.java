@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public interface IDaoUser {
    User getUserByLogin(String login);
-    User addUser(User user);
+    User save(User user);
     Optional <User> getUserById(Integer userId);
     List<User> listAll();
 

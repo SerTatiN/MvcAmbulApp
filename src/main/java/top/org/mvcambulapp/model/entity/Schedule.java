@@ -9,6 +9,7 @@ import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 
@@ -37,7 +38,7 @@ public class Schedule implements Serializable {
     @OneToMany(mappedBy = "schedule", cascade = CascadeType.PERSIST)
     // @JoinColumn(name="doctor_id", nullable = false)
     // private Doctor doctor;
-    private Set<RecordToDoctor> recordToAccept;
+    private Set<RecordToDoctor> recordToAccept = new HashSet<>();
 
     public Schedule() {
     }
@@ -129,8 +130,8 @@ public class Schedule implements Serializable {
         return "Schedule{" +
                 "id=" + id +
                 ", date=" + getDataPrint() +
-                ", startTime=" + getStartTimePrint() + " " + getStartTime() +
-                ", endTime='" + getEndTimePrint() + " " + getEndTime() +
+                ", startTime=" + getStartTimePrint() +
+                ", endTime='" + getEndTimePrint() +
                 ", doctor=" + doctor.getId() +
                 '}';
     }

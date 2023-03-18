@@ -31,7 +31,7 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests((requests) -> requests
 
                         .requestMatchers("/","/registration/patient/*", "/webjars/**","/doctor/*").permitAll()
-                        .requestMatchers("/patient/**", "/schedule/**").hasRole("ADMIN")
+                        .requestMatchers("/patient/**","/person/**", "/schedule/**").hasRole("ADMIN")
                         .requestMatchers("/schedule/*").hasRole("PATIENT") //записаться
 
                         .anyRequest().authenticated()

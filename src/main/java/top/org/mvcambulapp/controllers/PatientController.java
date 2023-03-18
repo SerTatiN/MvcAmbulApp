@@ -9,6 +9,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import top.org.mvcambulapp.model.dao.patient.IDaoPatient;
 import top.org.mvcambulapp.model.dao.person.IDaoPerson;
 import top.org.mvcambulapp.model.dao.role.DbDaoRole;
+import top.org.mvcambulapp.model.dao.role.IDaoRole;
 import top.org.mvcambulapp.model.dao.user.DbDaoUser;
 import top.org.mvcambulapp.model.dao.user.IDaoUser;
 import top.org.mvcambulapp.model.entity.Patient;
@@ -31,7 +32,7 @@ public class PatientController {
     @Autowired
     private DbDaoUser daoUser;
     @Autowired
-    private DbDaoRole daoRole;
+    private IDaoRole daoRole;
 
     @GetMapping("/")
     public String listAll(Model model, Authentication auth){
@@ -45,86 +46,55 @@ public class PatientController {
         return "patient/patient-list";
     }
 
-//    @GetMapping("/add/")
-//    public String getFormAddPatient(Model model,Authentication auth){
-//        if (auth != null) {
-//            System.out.println("getFormAddPatient" + auth.getAuthorities());
-//            if (auth.getAuthorities().toString().contains("ROLE_ADMIN")) {
-//                Patient patient = new Patient();
-//                System.out.println("форма  отправлена");
-//                model.addAttribute("patient", patient);
-//                model.addAttribute("isAdmin", auth.getAuthorities().toString().contains("ROLE_ADMIN"));
-//                return "registration/registratio-form";//"patient/patient-form";
-//            }
-//            //            System.out.println("форма  отправлена");
-////            model.addAttribute("patient", patient);
-//        }
-//        return null;
-//    }
-//
-//    @PostMapping("/add/")
-//    public String addPatient(Patient patient, Authentication auth,RedirectAttributes ra){
-//        System.out.println("форма  получена");
-//        System.out.println("person.getSurname() "+ patient.getPerson().getSurname());
-//        System.out.println("person.getBirthdate "+ patient.getPerson().getBirthdate());
-//
-//        User userEx = daoUser.getUserByLogin(patient.getPerson().getUser().getLogin());
-//
-//        if (userEx == null) {
-////            Role role = new Role("ROLE_PATIENT");
-////            Role roleAdd = daoRole.save(role);
-////            Set<Role> roles = new HashSet<>();
-////            roles.add(roleAdd);
-//
-//            User user = new User(patient.getPerson().getUser().getLogin(), patient.getPerson().getUser().getPassword());
-//            System.out.println("user.getRoles() 1 " + user.getRoles());
-//            System.out.println("daoRole.getRoleByAuthority " + daoRole.getRoleByAuthority("ROLE_PATIENT").getId());
-//            if (daoRole.getRoleByAuthority("ROLE_PATIENT") == null) {
-//                Role role = new Role("ROLE_PATIENT");
-//                Role roleAdd = daoRole.save(role);
-//                System.out.println("null");
-//            } else {
-//                System.out.println("admin: user.getRoles() 2 " + user.getRoles());
-//                //   user.getRoles().add(daoRole.getRoleByAuthority("ROLE_PATIENT"));
-//
-//                Role role = daoRole.getRoleByAuthority("ROLE_PATIENT");
-//
-//
-//                // user.setRoles(user.getRoles().add(daoRole.getRoleByAuthority("ROLE_PATIENT")));
-//
-//
-//                //            System.out.println("daoRole.getRoleByAuthority(\"ROLE_PATIENT\").getId() = " + daoRole.getRoleByAuthority("ROLE_PATIENT").getId());
-////                for (Role role : user.getRoles()) {
-////                   // if ((daoRole.getRoleByAuthority("ROLE_PATIENT")) != null) {
-////                    System.out.println("daoRole.getRoleByAuthority(\"ROLE_PATIENT\").getId() = " + daoRole.getRoleByAuthority("ROLE_PATIENT").getId());
-////                        role.setId(daoRole.getRoleByAuthority("ROLE_PATIENT").getId());
-////                   // }
-//                //               }
-//                //         }
-//                user.setRoles(Collections.singleton(role));
-//                System.out.println("user.getRoles()3 set" + user.getRoles());
-//
-//                User userAdd = daoUser.addUser(user);
-//                System.out.println(" userAdd role= "+ userAdd.getRoles());
-//
-//                Person person = new Person(patient.getPerson().getFirstName(), patient.getPerson().getPatronymic(),
-//                        patient.getPerson().getSurname(), patient.getPerson().getBirthdate(), userAdd);
-//                Person personAdd = daoPerson.save(person);
-//                Patient patientForAdd = new Patient(personAdd);
-//                Patient patientAdd = daoPatient.save(patientForAdd);
-//                ra.addFlashAttribute("goodMsg", "Пациент " + patient.getPerson().getUser().getLogin() + " " +
-//                        patient.getPerson().getUser().getRoles() + " зарегистрирован");
-//                System.out.println(" patientAdd role= "+ patientAdd.getPerson().getUser().getRoles());
-//                return "registration/ok";
-//
-//
-//        Person addPerson = daoPerson.save(patient.getPerson());
-//
-//        patient.setPerson(addPerson);
-//        Patient patientAdd = daoPatient.save(patient);
-//        ra.addFlashAttribute("goodMsg", "Пациент " + patientAdd + "добавлен");
-//        return "redirect:/patient/";
-//    }
+    @GetMapping("/add/")
+    public String getFormAddPatient(Model model,Authentication auth){
+        if (auth != null) {
+            System.out.println("getFormAddPatient " + auth.getAuthorities());
+            if (auth.getAuthorities().toString().contains("ROLE_ADMIN")) {
+                Patient patient = new Patient();
+                System.out.println("форма  отправлена");
+
+                model.addAttribute("patient", patient);
+                model.addAttribute("isAdmin", auth.getAuthorities().toString().contains("ROLE_ADMIN"));
+
+                return "patient/patient-form";  //"registration/registratio-form";
+            }
+            System.out.println("getFormAddPatient, форма не отправлена" +auth.getAuthorities() );
+//            model.addAttribute("patient", patient);
+        }
+        return "index";
+    }
+
+    @PostMapping("/add/")
+    public String addPatient(Patient patient, Authentication auth, RedirectAttributes ra){
+        System.out.println("форма  получена");
+        System.out.println("person.getSurname() "+ patient.getPerson().getSurname());
+        System.out.println("person.getBirthdate "+ patient.getPerson().getBirthdate());
+
+        User userEx = daoUser.getUserByLogin(patient.getPerson().getUser().getLogin());
+        if (userEx != null) {
+            System.out.println("Пациент с такой электронной почтой существует");
+            ra.addFlashAttribute("goodMsg", "Пациент " + patient.getPerson().getFullName() +
+                    " " + "с такой электронной почтой существует");
+        }
+        else {
+            User userAdd = daoUser.save(patient.getPerson().getUser());
+            userAdd.getRoles().add(daoRole.getRoleByAuthority("ROLE_PATIENT"));
+
+            Person person = patient.getPerson();
+            person.setUser(userAdd);
+            person = daoPerson.save(person);
+
+            patient.setPerson(person);
+            Patient patientAdd = daoPatient.save(patient);
+
+            ra.addFlashAttribute("goodMsg", "Пациент " + patient.getPerson().getFullName() +
+                    " " + "добавлен");
+            System.out.println(" patientAdd role= "+ patientAdd.getPerson().getUser().getRoles());
+           // return "redirect:/";
+        }
+        return "redirect:/patient/";
+    }
 
     @GetMapping("/update/{id}")
     public String getFormUpdatePatient(@PathVariable("id") Integer patientId, Model model){

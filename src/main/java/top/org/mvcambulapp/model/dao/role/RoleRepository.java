@@ -10,7 +10,7 @@ import java.util.Optional;
 
 public interface RoleRepository extends CrudRepository<Role,Integer> {
   //  List<Role> listAll();
-//    Role findRoleByAuthority(String authority);
+ //  Role findByAuthority(String authority);
 
 //    Optional<Role> findById(Integer id);
 //    User findByName(String name);

@@ -30,22 +30,22 @@ public class DbUserDetails implements UserDetails {
 //        return Collections.<GrantedAuthority>singletonList(new SimpleGrantedAuthority("ROLE_ADMIN"));
 //    }
     public Collection<? extends GrantedAuthority> getAuthorities() {
-//        Set<Role> roles = (Set<Role>) dbUser.getRoles();
+        Set<Role> roles = (Set<Role>) dbUser.getRoles();
 //
-//        System.out.println("getAuthorities() "+ roles.size() +" " + roles.toString());
+        System.out.println("getAuthorities() "+ roles.size() +" " + roles.toString());
 ////        for (Role text : roles)
 ////        {
 ////            System.out.println(text.getAuthority()+ " " + text.getName() );
 ////        }
-//        List<SimpleGrantedAuthority> authorities = new ArrayList<>();
+       List<SimpleGrantedAuthority> authorities = new ArrayList<>();
 //
-//        for (Role role : roles) {
-//            authorities.add(new SimpleGrantedAuthority(role.getName()));
-//            System.out.println(role.getName());
-//        }
+        for (Role role : roles) {
+            authorities.add(new SimpleGrantedAuthority(role.getName()));
+            System.out.println(role.getName());
+        }
        // System.out.println(" authorities "+ roles.size()+ " "+ authorities.toString());
-       // return authorities;
-        return dbUser.getRoles();
+       return authorities;
+      // return dbUser.getRoles();
     }
 
     @Override

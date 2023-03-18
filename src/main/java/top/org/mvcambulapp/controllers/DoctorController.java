@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import top.org.mvcambulapp.model.dao.doctor.IDaoDoctor;
 import top.org.mvcambulapp.model.dao.person.IDaoPerson;
+import top.org.mvcambulapp.model.dao.role.DbDaoRole;
 import top.org.mvcambulapp.model.dao.user.DbDaoUser;
 import top.org.mvcambulapp.model.entity.Doctor;
 import top.org.mvcambulapp.model.entity.Patient;
@@ -31,10 +32,12 @@ public class DoctorController {
     private IDaoPerson daoPerson;
     @Autowired
     private DbDaoUser daoUser;
+    @Autowired
+    private DbDaoRole daoRole;
 
     @GetMapping("/")
     public String listAll(Model model,Authentication auth ){
-        System.out.println("getFormAddPatient" + auth.getAuthorities());
+        System.out.println("listAll" + auth.getAuthorities());
         System.out.println("doctor1: auth= " + auth.getAuthorities().toString() + " " +
                 auth.getAuthorities().toString().contains("ROLE_ADMIN"));
         System.out.println("patient/: user= " + daoUser.currentUser().getPerson().getFullName());
@@ -49,22 +52,22 @@ public class DoctorController {
         return "doctor/doctor-list";
     }
     @GetMapping("/add/")
-    public String getFormAddDoc(Model model){
-        System.out.println("/ add");
-      //  Person personDoctor = new Person();
-        Doctor doctor = new Doctor();
-        //List<Doctor> doctors = daoDoctor.listAll();
-        //System.out.println("list " + doctors.size());
-       // model.addAttribute("person", personDoctor);
-        model.addAttribute("doctor", doctor);
-        System.out.println("form  заполнена");
-    //    personDoctor.toString();
-     //   doctor.getPerson().getSurname();
-        return "doctor/doctor-form";
+    public String getFormAddDoc(Model model ,Authentication auth ){
+        if (auth.getAuthorities().toString().contains("ROLE_ADMIN")) {
+            System.out.println("/ addDoctor");
+            Doctor doctor = new Doctor();
+            model.addAttribute("doctor", doctor);
+            model.addAttribute("isAdmin", auth.getAuthorities().toString().contains("ROLE_ADMIN"));
+            System.out.println("form  заполнена");
+
+            return "doctor/doctor-form";
+        }
+        return null; //????
+
     }
 
     @PostMapping("/add/")
-    public String addNewDoc(Doctor doctor,  RedirectAttributes ra) {
+    public String addDoctor(Doctor doctor,  RedirectAttributes ra) {
        // Person addPerson = daoPerson.save(person);Person person,
         System.out.println("form получена");
        // System.out.println("person "+ person.toString());
@@ -72,7 +75,11 @@ public class DoctorController {
         System.out.println("doctor "+ doctor.getPerson().getSurname());
         System.out.println(doctor.getPerson().toString());
 
-        Person addPerson = daoPerson.save(doctor.getPerson());
+        User userAdd = daoUser.save(doctor.getPerson().getUser());
+        userAdd.getRoles().add(daoRole.getRoleByAuthority("ROLE_DOCTOR"));
+
+        Person person = doctor.getPerson();
+        Person addPerson = daoPerson.save(person);
 
         doctor.setPerson(addPerson);
         Doctor addDoctor = daoDoctor.save(doctor);

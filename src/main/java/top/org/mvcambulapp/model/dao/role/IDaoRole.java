@@ -11,7 +11,7 @@ public interface IDaoRole {
 //    Role add(String role);
 //
     Role save(Role role);
-   // Role getRoleByAuthority(String authority);
+    Role getRoleByAuthority(String authority);
 
     List<Role> listAll();
 }

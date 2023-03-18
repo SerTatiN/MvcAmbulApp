@@ -23,41 +23,37 @@ import java.util.*;
 import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 class DbDaoUserTest {
-//    @Autowired
-//    private DbDaoUser daoUser;
-//    @Autowired
-//    private DbDaoRole daoRole;
-//    @Autowired
-//    private DbDaoPerson daoPerson;
-//    @Autowired
-//    private DbDaoDoctor daoDoctor;
-
     @Autowired
-    private UserRepository daoUser;
+    private DbDaoUser daoUser;
     @Autowired
     private DbDaoRole daoRole;
     @Autowired
-    private PersonRepository daoPerson;
+    private DbDaoPerson daoPerson;
+
     @Autowired
-    private DoctorRepository daoDoctor;
+    private DbDaoDoctor daoDoctor;
+
+//    @Autowired
+//    private UserRepository daoUser;
+//    @Autowired
+//    private DbDaoRole daoRole;
+//    @Autowired
+//    private PersonRepository daoPerson;
+//    @Autowired
+//    private DoctorRepository daoDoctor;
 
     @Test
-    @Transactional
+   // @Transactional
     void addUser() {
-//        User user = new User("user1", "qwerty");
-//        daoUser.addUser(user);
-//        Role role = new Role("ROLE_ADMIN");
-//        System.out.println("Role " + role.toString());
-//        Role roleAdd =daoRole.save(role);
-//        // System.out.println("Role " + role.toString());
-//        Set<Role> roles= new HashSet<>();
-//        roles.add(roleAdd);
+        addDoctor();
 
-        User user = daoUser.save(new User("doc","qwerty"));
-        user.getRoles().add(daoRole.getRoleByAuthority("ROLE_ADMIN"));
+// Добавление админа
+   /*     User user = new User("admin4","qwerty");
+        user.setRoles(Collections.singleton((daoRole.getRoleByAuthority("ROLE_ADMIN"))));
+        User userAdd = daoUser.save(user);
 
-        System.out.println("user " + user.getRoles());
-        System.out.println("user " + user.toString());
+        System.out.println("роль выбрана 1" + userAdd.getRoles());
+        System.out.println("user 2 " + userAdd.toString());
 
         Calendar calendar = Calendar.getInstance();
         Date birthDate;
@@ -66,19 +62,12 @@ class DbDaoUserTest {
         calendar.set(1999, 6, 25,0,0,0);
         birthDate = calendar.getTime();
 
-        person = new Person("Иван","Петрович","Петров",birthDate);
+        person = new Person("Иван","Петрович","Admin4",birthDate);
         person.setUser(user);
         personAdd = daoPerson.save(person);
-
-        String spec = "Терапевт";
-        String info = "Окончил мед.факультет МГУ по специальности \"Лечебное дело\"";
-
-
-        Doctor doctor = new Doctor(personAdd, spec, info);
-        System.out.println("перед добавлением в БД: " + doctor);
-        Doctor doctorAdd = daoDoctor.save(doctor);
-        System.out.println("после добавления в БД: " + doctorAdd);
-
+        System.out.println("user " + personAdd.toString());
+        System.out.println("после добавлением в БД: " + personAdd);
+*/
 // добавление пациента
        /* role = new Role("ROLE_PATIENT");
         System.out.println("Role " + role.toString());
@@ -107,6 +96,38 @@ class DbDaoUserTest {
         System.out.println("после добавления в БД: " + patientAdd);
 */
 
+
+    }
+    private  void addDoctor(){
+  // Добавление доктора
+        User user = new User("doc1","qwerty");
+        user.setRoles(Collections.singleton((daoRole.getRoleByAuthority("ROLE_DOCTOR"))));
+        User userAdd = daoUser.save(user);
+
+        System.out.println("роль выбрана 1" + userAdd.getRoles());
+        System.out.println("user 2 " + userAdd.toString());
+
+        Calendar calendar = Calendar.getInstance();
+        Date birthDate;
+        Person person, personAdd;
+
+        calendar.set(1999, 6, 25,0,0,0);
+        birthDate = calendar.getTime();
+
+        person = new Person("Кирилл","Петрович","Грач",birthDate);
+        person.setUser(user);
+        personAdd = daoPerson.save(person);
+        System.out.println("user " + personAdd.toString());
+        System.out.println("после добавлением в БД: " + personAdd);
+
+        String spec = "Терапевт";
+        String info = "Окончил мед.факультет МГУ по специальности \"Лечебное дело\"";
+
+        Doctor doctor = new Doctor(spec, info);
+        doctor.setPerson(personAdd);
+
+        Doctor doctorAdd = daoDoctor.save(doctor);
+        System.out.println("после добавления в БД: " + doctorAdd);
 
     }
 

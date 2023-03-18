@@ -28,7 +28,7 @@ public class DbDaoUser implements IDaoUser{
     }
 
     @Override
-    public User addUser(User user) {
+    public User save(User user) {
         User userExist = userRepository.findByLogin(user.getLogin());
         if (userExist == null) {
 

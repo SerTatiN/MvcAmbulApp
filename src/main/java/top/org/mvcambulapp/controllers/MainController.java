@@ -12,8 +12,9 @@ public class MainController {
     @GetMapping("/")
     public String index(Model model, Authentication auth){
         if (auth!=null) {
-            //System.out.println("*****" + auth);
+            System.out.println("***** " + auth);
             model.addAttribute("isAdmin", auth.getAuthorities().toString().contains("ROLE_ADMIN"));
+            model.addAttribute("isAuth", auth.getAuthorities());
         }
             return "index";
 

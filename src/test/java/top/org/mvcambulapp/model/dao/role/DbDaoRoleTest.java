@@ -13,9 +13,10 @@ private RoleRepository roleRepository;
 
     @Test
     void save() {
-        //Role role = new Role("ROLE_PATIENT");
+
         roleRepository.save(new Role("ROLE_PATIENT"));
         roleRepository.save(new Role("ROLE_ADMIN"));
+        roleRepository.save(new Role("ROLE_DOCTOR"));
 
 
     }

@@ -22,7 +22,12 @@ public class DbDaoRole implements IDaoRole{
         return roleRepository.save(role);
     }
 
-   // @Override
+//    @Override // нельзя так
+//    public Role getByAuthority(String authority) {
+//        return roleRepository.findByAuthority(authority);
+//    }
+
+    @Override
     public Role getRoleByAuthority(String authority) {
         List<Role> roles = (List<Role>) roleRepository.findAll();
         System.out.println("getRoleByAuthority "+roles.size()+" " +roles.toString());

@@ -48,8 +48,9 @@ public class RegistrationController {
     @Transactional
    public String addPatient(Patient patient, Model model,  Authentication auth) {
 
-        User userAdd = daoUser.addUser(patient.getPerson().getUser());
+        User userAdd = daoUser.save(patient.getPerson().getUser());
         userAdd.getRoles().add(daoRole.getRoleByAuthority("ROLE_PATIENT"));
+
         Person person = patient.getPerson();
         person.setUser(userAdd);
         person = daoPerson.save(person);
@@ -60,7 +61,6 @@ public class RegistrationController {
         System.out.println(patient.getPerson());
         System.out.println(patient.getPerson().getUser());
         System.out.println(patient);
-
         return "redirect:/";
     }
     @GetMapping("/doctor/")
@@ -74,7 +74,7 @@ public class RegistrationController {
     @Transactional
     public String addDoctor(Doctor doctor, Model model,  Authentication auth) {
 
-        User docAdd = daoUser.addUser(doctor.getPerson().getUser());
+        User docAdd = daoUser.save(doctor.getPerson().getUser());
         docAdd.getRoles().add(daoRole.getRoleByAuthority("ROLE_DOCTOR"));
         Person personAdmin = doctor.getPerson();
         personAdmin.setUser(docAdd);

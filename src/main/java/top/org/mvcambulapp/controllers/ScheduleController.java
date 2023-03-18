@@ -17,6 +17,7 @@ import top.org.mvcambulapp.model.entity.Schedule;
 
 import javax.print.Doc;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.*;
 
 @Controller
@@ -37,34 +38,32 @@ public class ScheduleController {
         System.out.println("list " + list.size());
         model.addAttribute("schedules", list);
         model.addAttribute("isAdmin", auth);
-
+        model.addAttribute("isPatient", auth); //
         return "schedule/schedule-list";
     }
 
     @GetMapping("/add/")
-    public String getFormAddSchedule(Model model) {
-        System.out.println("/ add");
-        //  Person personDoctor = new Person();
-        Schedule schedule = new Schedule();
-        List<Doctor> listDoc = daoDoctor.listAll();
-        //List<Doctor> doctors = daoDoctor.listAll();
-        //System.out.println("list " + doctors.size());
-        // model.addAttribute("person", personDoctor);
-        model.addAttribute("schedule", schedule);
-        model.addAttribute("doctors", listDoc); // для вставки в <optional>
+    public String getFormAddSchedule(Model model, Authentication auth) {
+        System.out.println("/ addSchedule");
+        if (auth != null) {
+            System.out.println("getFormAddDoctor " + auth.getAuthorities());
+            if (auth.getAuthorities().toString().contains("ROLE_ADMIN")) {
+                Schedule schedule = new Schedule();
+                List<Doctor> doctors = daoDoctor.listAll();
 
-        System.out.println("form  заполнена");
-        //    personDoctor.toString();
-        //   doctor.getPerson().getSurname();
-        return "schedule/schedule-form";
+                model.addAttribute("schedule", schedule);
+                model.addAttribute("doctors", doctors); // для вставки в <optional>
+
+                System.out.println("form  заполнена");
+                return "schedule/schedule-form";
+            }
+        }
+        return "index";
     }
     @PostMapping("/add/")
     public String addSchedule(Schedule schedule, RedirectAttributes ra){
-        System.out.println("form  получена");
-        System.out.println("расписание " + schedule.getId());
-        System.out.println("getDate() " + schedule.getDate());
-        System.out.println("getStartTime() " + schedule.getStartTime());
-        System.out.println("getEndTime() " + schedule.getEndTime());
+        System.out.println("form  получена " + schedule);
+
        // Map<Date, Boolean> mapTimeFoRecord = createSchedule(schedule.getStartTime(),schedule.getEndTime(),15);
        // List<Date> keyList = new ArrayList<>(mapTimeFoRecord.keySet());
 
@@ -73,12 +72,13 @@ public class ScheduleController {
       //  schedule.setTimeRpiemaForRecord(mapTimeFoRecord);
 
         Schedule scheduleAdd = daoSchedule.save(schedule);
-        System.out.println("scheduleAdd: " + scheduleAdd.toString());
+        System.out.println("scheduleAdd: " + scheduleAdd);
 
         createScheduleToRecord(scheduleAdd.getStartTime(),scheduleAdd.getEndTime(),15, scheduleAdd);
 
         ra.addFlashAttribute("goodMsg", "Расписание специалисту " +
                 scheduleAdd.getDoctor().getPerson().getFullName() + " added");
+
     //    ra.addFlashAttribute("times", listTime);
         return "redirect:/schedule/";
     }
@@ -119,19 +119,22 @@ public class ScheduleController {
     }
     private void createScheduleToRecord(Date start, Date end, Integer timeAccept, Schedule schedule){
 
-        RecordToDoctor recordToDoctor1 = new RecordToDoctor(schedule,start);
+
+        RecordToDoctor recordToDoctor1 = new RecordToDoctor(schedule, new Date());
         RecordToDoctor recordToDoctorAdd1 = daoRecord.save(recordToDoctor1);
-        System.out.println("recordToDoctorAdd1 = " + recordToDoctorAdd1.toString());
+        System.out.println("recordToDoctorAdd1 = " + recordToDoctorAdd1);
+
+        schedule.getRecordToAccept().add(recordToDoctorAdd1);
 
         RecordToDoctor recordToDoctor2 = new RecordToDoctor(schedule,start);
         System.out.println("recordToDoctorAdd2 = " + recordToDoctor2.getTimeAccept());
-        Date date = recordToDoctor2.getTimeAccept();
-        date.setMinutes(date.getMinutes()+15);
-        System.out.println(date);
+//        Date date = recordToDoctor2.getTimeAccept();
+//        date.setMinutes(date.getMinutes()+15);
+//        System.out.println(date);
         recordToDoctor2.getTimeAccept().setTime(recordToDoctor2.getTimeAccept().getTime()+timeAccept*60000);
         RecordToDoctor recordToDoctorAdd2 = daoRecord.save(recordToDoctor2);
-        System.out.println("recordToDoctorAdd2 = " + recordToDoctorAdd2.toString());
-
+        System.out.println("recordToDoctorAdd2 = " + recordToDoctorAdd2);
+        schedule.getRecordToAccept().add(recordToDoctorAdd2);
     }
 
 
@@ -140,6 +143,7 @@ public class ScheduleController {
     public String getFormUpdateSchedule(@PathVariable("id") Integer scheduleId, Model model){
         Optional<Schedule> schedule = daoSchedule.getById(scheduleId);
         List<Doctor> listDoc = daoDoctor.listAll();
+       // List<Doctor> doctors = daoDoctor.ge();
         if (schedule.isPresent()) {
             System.out.println("форма schedule отправлена");
             model.addAttribute("schedule", schedule);

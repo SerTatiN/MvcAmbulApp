@@ -6,28 +6,44 @@
     <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
 </head>
 <body>
-<div class="container-fluid text-center">
+<div class="container-fluid" >
     <h1>Добавление пациента</h1>
-    <form method="post" th:if="${isAdmin}" th:action="@{/patient/add/}" th:object="${patient}">
-        <div>
-            <label for ="patient-surname"> Фамилия: </label>
-            <input id="patient-surname" th:type="text" th:field="*{person.surname}" required minlength="1" maxlength="250" >
+    <form  method="post" th:if="${isAdmin}" th:action="@{/patient/add/}" th:object="${patient}">
+        <div class="row mb-6">
+            <label class="col-2 col-form-label" for ="patient-surname"> Фамилия: </label>
+            <div class="col-sm-10">
+                <input id="patient-surname" th:type="text" th:field="*{person.surname}" required minlength="1" maxlength="250" >
+            </div>
         </div>
-        <div>
-            <label for ="patient-firstname"> Имя: </label>
-            <input id="patient-firstname" th:type="text" th:field="*{person.firstName}" required minlength="1" maxlength="250" >
+        <div class="row mb-3">
+            <label class="col-2 col-form-label" for ="patient-firstname"> Имя: </label>
+            <div class="col-sm-10">
+                <input id="patient-firstname" th:type="text" th:field="*{person.firstName}" required minlength="1" maxlength="250" >
+            </div>
         </div>
-        <div>
-            <label for ="patient-patronymic"> Отчество: </label>
-            <input id="patient-patronymic" th:type="text" th:field="*{person.patronymic}" required minlength="1" maxlength="250" >
+        <div class="row mb-3">
+            <label class="col-2 col-form-label" for ="patient-patronymic"> Отчество: </label>
+            <div class="col-sm-10">
+                <input id="patient-patronymic" th:type="text" th:field="*{person.patronymic}" required minlength="1" maxlength="250" >
+            </div>
         </div>
-        <div>
-            <label for ="patient-email"> Адрес эл. почты: </label>
-            <input id="patient-email" type="email" th:field="*{person.email}" required minlength="1" maxlength="250" >
+        <div class="row mb-3">
+            <label class="col-2 col-form-label" for ="patient-birthdate"> Дата рождения: </label>
+            <div class="col-sm-10">
+                <input id="patient-birthdate" type="date" th:field="*{person.birthdate}" required  ><!--asp-format="{yyyy-MM-dd}"value="2020-10-29"-->
+            </div>
         </div>
-        <div>
-            <label for ="patient-birthdate"> Дата рождения: </label>
-            <input id="patient-birthdate" type="date" th:field="*{person.birthdate}" required  ><!--asp-format="{yyyy-MM-dd}"value="2020-10-29"-->
+        <div class="row mb-3">
+            <label class="col-2 col-form-label" for ="patient-email"> Адрес эл. почты: </label>
+            <div class="col-sm-10">
+                <input id="patient-email" type="email" th:field="*{person.user.login}" required minlength="1" maxlength="250" >
+            </div>
+        </div>
+        <div class="row mb-3">
+            <label class="col-2 col-form-label" for ="patient-pass"> Пароль: </label>
+            <div class="col-sm-10">
+                <input id="patient-pass" type="password" th:field="*{person.user.password}" required minlength="1" maxlength="250" >
+            </div>
         </div>
         <button class="btn btn-success">Добавить</button>
 
