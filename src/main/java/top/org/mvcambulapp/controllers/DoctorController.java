@@ -13,6 +13,7 @@ import top.org.mvcambulapp.model.dao.doctor.IDaoDoctor;
 import top.org.mvcambulapp.model.dao.person.IDaoPerson;
 import top.org.mvcambulapp.model.dao.user.DbDaoUser;
 import top.org.mvcambulapp.model.entity.Doctor;
+import top.org.mvcambulapp.model.entity.Patient;
 import top.org.mvcambulapp.model.entity.Person;
 import top.org.mvcambulapp.model.entity.User;
 
@@ -33,7 +34,9 @@ public class DoctorController {
 
     @GetMapping("/")
     public String listAll(Model model,Authentication auth ){
-        System.out.println("doctor1: auth= " + auth.getAuthorities().toString());
+        System.out.println("getFormAddPatient" + auth.getAuthorities());
+        System.out.println("doctor1: auth= " + auth.getAuthorities().toString() + " " +
+                auth.getAuthorities().toString().contains("ROLE_ADMIN"));
         System.out.println("patient/: user= " + daoUser.currentUser().getPerson().getFullName());
         System.out.println("doctor2: role= " + daoUser.currentUser().getRoles());
         System.out.println("/ listAll");
@@ -41,6 +44,7 @@ public class DoctorController {
         List<Doctor> doctors = daoDoctor.listAll();
         System.out.println("list " + doctors.size());
         model.addAttribute("doctors", doctors);
+        model.addAttribute("isAdmin", auth.getAuthorities().toString().contains("ROLE_ADMIN"));
         System.out.println("model ");
         return "doctor/doctor-list";
     }

@@ -12,7 +12,9 @@
  <!--вывод goodMsg если житель добавлен-->
 <div th:if="${goodMsg != null}" class="alert alert-success">
     [[${goodMsg}]]
+
 </div>
+
 
 <table class="table table-bordered">
 
@@ -23,10 +25,13 @@
       <th rowspan="2">ФИО специалиста</th>
       <th >Дата приема</th>
       <th rowspan="2"></th>
+        <th rowspan="2"> расписание</th>
+        <th></th>
     </tr>
     <tr>
       <td > Время приема</td>
     </tr>
+
   </thead>
   <tbody>
   <th:block th:each="schedule: ${schedules}">
@@ -36,10 +41,17 @@
         <td rowspan="2">[[${schedule.doctor.person.getFullName()}]]</td>
         <td th:text="${#dates.format(schedule.date, 'dd.MM.yyyy')} + ', ' + ${#dates.dayOfWeekNameShort(schedule.date)}"></td>
 
+
+       <!-- <td th:each="time: ${times}" th:text="${#dates.format(time, 'HH:mm')}"-->
+
+
+
         <td rowspan="2">
             <a th:href="@{'/schedule/update/' + ${schedule.id}}" class="btn btn-primary "> Редактировать </a>
             <a th:href="@{'/schedule/delete/' + ${schedule.id}}" class="btn btn-danger "> Удалить </a>
-            <a th:href="@{'/record/add/' + ${schedule.id}}" class="btn btn-secondary "> Записаться </a>
+            <a th:href="@{'/schedule/detail/' + ${schedule.id}+'?back=schedule'}" class="btn btn-secondary "> РАсписание/Записаться </a>
+            <a th:href="@{'/record/list/' + ${schedule.id} +'?back=schedule'}" class="btn btn-secondary "> расписание </a>
+          <!--  <a th:href="@{'/record/list/' + ${schedule.id}+'?back=schedule'}" class="btn btn-secondary "> подробное расписание врача </a>-->
         </td>
     </tr>
     <tr>
@@ -51,7 +63,7 @@
 
 </table>
 <div>
-    <a th:if="isAdmin" th:href="@{/schedule/add/}" class="btn btn-success">Добавить расписание</a>
+    <a th:if="${isAdmin}" th:href="@{/schedule/add/}" class="btn btn-success">Добавить расписание</a>
 </div>
 
 <footer th:insert="layout/page-layout.html :: footer"></footer>

@@ -19,8 +19,16 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-    @ManyToMany(mappedBy = "users", cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+//    @ManyToMany(mappedBy = "users", cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+//    private Set<Role> roles = new HashSet<>();
+
+    @ManyToMany
+    @JoinTable(
+            name="users_roles",
+            joinColumns = @JoinColumn(name="user_id"),
+            inverseJoinColumns = @JoinColumn(name="role_id"))
     private Set<Role> roles = new HashSet<>();
+
 
     @OneToOne(mappedBy = "user")
     private Person person;

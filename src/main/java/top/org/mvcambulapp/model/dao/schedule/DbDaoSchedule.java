@@ -28,7 +28,7 @@ public class DbDaoSchedule implements IDaoSchedule{
 
     @Override
     public Schedule save(Schedule schedule) {
-        System.out.println("save sch " + schedule.getDate());
+       // System.out.println("save sch " + schedule.getDate());
         return scheduleRepository.save(schedule);
     }
 

@@ -13,7 +13,11 @@
     <h3><a th:href="@{/person/}">Жители</a></h3>
     <h3><a th:href="@{/schedule/}">Расписание специалистов</a></h3>
     <h3><a th:href="@{/patient/}">Пациенты</a></h3>
-    <h3><a th:href="@{/registration/}">Зарегистрироваться</a></h3>
+    <h3><a th:href="@{/record/}">Расписание</a></h3>
+    <h3><a th:if="!${isAdmin}" th:href="@{'/registration/patient/'+'?back=index'}">Зарегистрироваться</a></h3>
+    <h3><a th:if="!${isAdmin}" th:href="@{'/registration/doctor/'+'?back=index'}">Зарегистрировать как доктора</a></h3>
+    <h3><a th:href="@{'/login'}"> Войти в систему</a></h3>
+
 
 
 <footer th:insert="layout/page-layout.html :: footer"></footer>

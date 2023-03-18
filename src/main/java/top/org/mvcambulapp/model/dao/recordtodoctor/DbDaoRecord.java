@@ -2,8 +2,11 @@ package top.org.mvcambulapp.model.dao.recordtodoctor;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import top.org.mvcambulapp.model.entity.Doctor;
 import top.org.mvcambulapp.model.entity.RecordToDoctor;
+import top.org.mvcambulapp.model.entity.Schedule;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,6 +30,13 @@ public class DbDaoRecord implements IDaoRecord{
         return recordRepository.save(recordToDoctor);
     }
 
+//    public List<RecordToDoctor> getRecordsToDoctor(Doctor doctor){
+//        return recordRepository.findByDoctor(doctor);
+//    }
+//    public List<RecordToDoctor> getRecordsToDateAccept(Date dateAccept){
+//        return recordRepository.findByDateAccept(dateAccept);
+//    }
+
     @Override
     public RecordToDoctor update(RecordToDoctor recordToDoctor) {
         if (recordRepository.findById(recordToDoctor.getId()).isPresent()) {
@@ -40,5 +50,10 @@ public class DbDaoRecord implements IDaoRecord{
         if (recordRepository.findById(id).isPresent()) {
             recordRepository.deleteById(id);
         }
+    }
+
+    @Override
+    public List<RecordToDoctor> getRecordsToSchedule(Schedule schedule) {
+        return recordRepository.findRecordToDoctorsBySchedule(schedule);
     }
 }

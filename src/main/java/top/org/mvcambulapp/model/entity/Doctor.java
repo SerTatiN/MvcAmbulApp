@@ -1,5 +1,6 @@
 package top.org.mvcambulapp.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.Date;
@@ -22,13 +23,16 @@ public class Doctor{
     @Column(nullable = false,length = 250)
     private String info;
 
+    @Column(length = 250)
+    private String photo;
+   // @JsonIgnore
     @OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL)
     private Set<Schedule> scheduleSet;
 
-    @OneToMany(mappedBy = "doctor", cascade = CascadeType.PERSIST)
-   // @JoinColumn(name="doctor_id", nullable = false)
-   // private Doctor doctor;
-    private Set<RecordToDoctor> recordToAccept;
+//    @OneToMany(mappedBy = "doctor", cascade = CascadeType.PERSIST)
+//   // @JoinColumn(name="doctor_id", nullable = false)
+//   // private Doctor doctor;
+//    private Set<RecordToDoctor> recordToAccept;
 
 //    @OneToOne
 //    @JoinColumn(name="user_id",nullable = false)
@@ -48,18 +52,34 @@ public class Doctor{
         this.info = info;
     }
 
-    public Doctor(Person person, String speciality, String info, Set<Schedule> scheduleSet, Set<RecordToDoctor> recordToAccept) {
+    public Doctor(Person person, String speciality, String info, Set<Schedule> scheduleSet) {
         this.person = person;
         this.speciality = speciality;
         this.info = info;
         this.scheduleSet = scheduleSet;
-        this.recordToAccept = recordToAccept;
+       // this.recordToAccept = recordToAccept;
+    }
+
+    public Doctor(Integer id, Person person, String speciality, String info, String photo) {
+        this.id = id;
+        this.person = person;
+        this.speciality = speciality;
+        this.info = info;
+        this.photo = photo;
     }
 
     public Doctor(Person person, String speciality, String info) {
         this.person = person;
         this.speciality = speciality;
         this.info = info;
+    }
+
+    public String getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(String photo) {
+        this.photo = photo;
     }
 
     public Integer getId() {
@@ -102,13 +122,13 @@ public class Doctor{
         this.scheduleSet = scheduleSet;
     }
 
-    public Set<RecordToDoctor> getRecordToAccept() {
-        return recordToAccept;
-    }
-
-    public void setRecordToAccept(Set<RecordToDoctor> recordToAccept) {
-        this.recordToAccept = recordToAccept;
-    }
+//    public Set<RecordToDoctor> getRecordToAccept() {
+//        return recordToAccept;
+//    }
+//
+//    public void setRecordToAccept(Set<RecordToDoctor> recordToAccept) {
+//        this.recordToAccept = recordToAccept;
+//    }
 
     @Override
     public String toString() {
@@ -117,7 +137,7 @@ public class Doctor{
                 ", person=" + person.toString() +
                 ", speciality='" + speciality + '\'' +
                 ", info='" + info + '\'' +
-              //  ", scheduleSet=" + scheduleSet +
+                ", scheduleSet=" + scheduleSet +
               //  ", recordToAccept=" + recordToAccept +
                 '}';
     }

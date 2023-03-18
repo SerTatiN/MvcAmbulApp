@@ -29,10 +29,10 @@ public class WebSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests((requests) -> requests
-                        //  .requestMatchers("/registration").fullyAuthenticated()
-                        .requestMatchers("/", "/webjars/**","/doctor/*").permitAll()
-                        .requestMatchers("/patient/**").hasRole("ADMIN")
-                     //   .requestMatchers("//*").hasRole("PATIENT") записаться
+
+                        .requestMatchers("/","/registration/patient/*", "/webjars/**","/doctor/*").permitAll()
+                        .requestMatchers("/patient/**", "/schedule/**").hasRole("ADMIN")
+                        .requestMatchers("/schedule/*").hasRole("PATIENT") //записаться
 
                         .anyRequest().authenticated()
                 )

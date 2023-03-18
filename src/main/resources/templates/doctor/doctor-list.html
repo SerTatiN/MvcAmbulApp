@@ -30,12 +30,11 @@
 
             <tr>
                 <td>[[${doctor.id}]]</td>
-                <td>[[${doctor.getPerson().getSurname()}+' '+${doctor.getPerson().getFirstName()}+
-                    ' '+ ${doctor.getPerson().getPatronymic()}]]</td>
+                <td>[[${doctor.getPerson().getFullName()}]]</td>
                 <td>[[${doctor.speciality}]]</td>
                 <td>
-                    <a th:href="@{'/doctor/update/' + ${doctor.id}}" class="btn btn-primary "> Редактировать </a>
-                    <a th:href="@{'/doctor/delete/' + ${doctor.id}}" class="btn btn-danger "> Удалить </a>
+                    <a th:if="${isAdmin}" th:href="@{'/doctor/update/' + ${doctor.id}}" class="btn btn-primary "> Редактировать </a>
+                    <a th:if="${isAdmin}" th:href="@{'/doctor/delete/' + ${doctor.id}}" class="btn btn-danger "> Удалить </a>
                     <a th:href="@{'/doctor/detail/' + ${doctor.id} +'?back=doctor'}" class ="btn btn-warning">О специалисте</a>
                 </td>
 
@@ -46,7 +45,7 @@
     </table>
 
     <div>
-        <a th:href="@{/doctor/add/}" class="btn btn-success">Добавить врача</a>
+        <a th:if="${isAdmin}" th:href="@{/doctor/add/}" class="btn btn-success">Добавить врача</a>
     </div>
 
 <footer th:insert="layout/page-layout.html :: footer"></footer>

@@ -17,7 +17,7 @@
             <label for ="doctor"> Изменить специалиста: </label>
             <select id="doctor" th:field="*{doctor}">
                 <th:block th:each="doctor: ${doctors}">
-                    <option th:value="${doctor.id}">[[${doctor.person.surname}+ ' ' + ${doctor.person.firstName}+' ' + ${doctor.person.patronymic}]]</option>
+                    <option th:value="${doctor.id}">[[${doctor.getFullName()}]]</option>
                 </th:block>
             </select>
         </div>

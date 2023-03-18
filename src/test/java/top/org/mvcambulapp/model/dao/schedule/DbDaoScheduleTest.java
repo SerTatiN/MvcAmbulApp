@@ -62,7 +62,6 @@ class DbDaoScheduleTest {
         Date datePr = calendar.getTime();
         calendar.set(2023, 2, 1, 9,0,0);
         Date timeStart = calendar.getTime();
-        calendar.set(2023, 2, 1, 15,0,0);
         Date timeEnd = calendar.getTime();
 
         Doctor doctor = dbDaoDoctor.getById(1).get();

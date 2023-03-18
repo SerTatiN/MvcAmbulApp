@@ -1,13 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Susses</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
 </head>
 <body>
 <div th:if="${goodMsg != null}" class="alert alert-success">
     [[${goodMsg}]]
 </div>
-<a th:href="@{/}">Go Home</a>
+
+<a th:if = "${back == 'patient'}" th:href="@{/patient/}" class="btn btn-secondary">Отмена</a>
+
+<a th:href="@{/}">Вернуться на главную</a>
 </body>
 </html>

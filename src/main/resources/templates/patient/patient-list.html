@@ -38,8 +38,8 @@
             <td th:text="${#dates.format(patient.getPerson().getBirthdate(), 'dd.MM.yyyy')}"></td>
 
             <td>
-                <a th:href="@{'/patient/update/' + ${patient.id}}" class="btn btn-primary "> Редактировать </a>
-                <a th:href="@{'/patient/delete/' + ${patient.id}}" class="btn btn-danger "> Удалить </a>
+                <a th:if="${isAdmin}" th:href="@{'/patient/update/' + ${patient.id}}" class="btn btn-primary "> Редактировать </a>
+                <a th:if="${isAdmin}" th:href="@{'/patient/delete/' + ${patient.id}}" class="btn btn-danger "> Удалить </a>
                 <a th:href="@{'/patient/detail/' + ${patient.id} +'?back=patient'}" class ="btn btn-warning">О пациенте</a>
             </td>
 
@@ -50,7 +50,7 @@
 </table>
 
 <div>
-    <a th:href="@{/patient/add/}" class="btn btn-success">Добавить пациента</a>
+    <a th:if="${isAdmin}" th:href="@{'/registration/patient/'+ '?back=patient'}" class="btn btn-success">Добавить пациента</a>
 </div>
 
 <footer th:insert="layout/page-layout.html :: footer"></footer>

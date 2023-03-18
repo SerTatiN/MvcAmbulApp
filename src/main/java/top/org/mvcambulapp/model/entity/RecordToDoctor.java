@@ -14,14 +14,14 @@ public class RecordToDoctor {
     private Integer id;
 
     @ManyToOne
-    @JoinColumn(name="patient_id", nullable = false)
+    @JoinColumn(name="patient_id")//nullable = false, null если не записан
     private Patient patient;
 
     @ManyToOne
-    @JoinColumn(name="doctor_id", nullable = false)
-    private Doctor doctor;
+    @JoinColumn(name="schedule_id", nullable = false)
+    private Schedule schedule;
 
-    private Date dateAccept;
+   // private Date dateAccept;
     private Date timeAccept;
 
     private boolean isRecord;
@@ -30,21 +30,30 @@ public class RecordToDoctor {
     public RecordToDoctor() {
 
     }
+    public RecordToDoctor(Schedule schedule, Date timeAccept) {//Date dateAccept,
+        this.id = id;
+        this.patient = null;
+        this.schedule = schedule;
+       // this.dateAccept = dateAccept;
+        this.timeAccept = timeAccept;
+        this.isRecord = false;
+        this.isAccept = false;
+    }
 
-    public RecordToDoctor(Integer id, Patient patient, Doctor doctor, Date dateAccept, Date timeAccept, boolean isRecord, boolean isAccept) {
+    public RecordToDoctor(Integer id, Patient patient, Schedule schedule, Date timeAccept, boolean isRecord, boolean isAccept) {//Date dateAccept,
         this.id = id;
         this.patient = patient;
-        this.doctor = doctor;
-        this.dateAccept = dateAccept;
+        this.schedule = schedule;
+     //   this.dateAccept = dateAccept;
         this.timeAccept = timeAccept;
         this.isRecord = isRecord;
         this.isAccept = isAccept;
     }
 
-    public RecordToDoctor(Patient patient, Doctor doctor, Date dateAccept, Date timeAccept) {
+    public RecordToDoctor(Patient patient, Schedule schedule,  Date timeAccept) { //Date dateAccept,
         this.patient = patient;
-        this.doctor = doctor;
-        this.dateAccept = dateAccept;
+        this.schedule = schedule;
+       // this.dateAccept = dateAccept;
         this.timeAccept = timeAccept;
         this.isRecord = false;
         this.isAccept = false;
@@ -66,25 +75,25 @@ public class RecordToDoctor {
         this.patient = patient;
     }
 
-    public Doctor getDoctor() {
-        return doctor;
-    }
+//    public Doctor getDoctor() {
+//        return doctor;
+//    }
+//
+//    public void setDoctor(Doctor doctor) {
+//        this.doctor = doctor;
+//    }
 
-    public void setDoctor(Doctor doctor) {
-        this.doctor = doctor;
-    }
-
-    public Date getDateAccept() {
-        return dateAccept;
-    }
-    public String getDateAcceptPrint() {
-        SimpleDateFormat simple = new SimpleDateFormat("dd.MM.Y");
-        return simple.format(dateAccept);
-    }
-
-    public void setDateAccept(Date dateAccept) {
-        this.dateAccept = dateAccept;
-    }
+//    public Date getDateAccept() {
+//        return dateAccept;
+//    }
+//    public String getDateAcceptPrint() {
+//        SimpleDateFormat simple = new SimpleDateFormat("dd.MM.Y");
+//        return simple.format(dateAccept);
+//    }
+//
+//    public void setDateAccept(Date dateAccept) {
+//        this.dateAccept = dateAccept;
+//    }
 
     public Date getTimeAccept() {
         return timeAccept;
@@ -114,13 +123,21 @@ public class RecordToDoctor {
         isAccept = accept;
     }
 
+    public Schedule getSchedule() {
+        return schedule;
+    }
+
+    public void setSchedule(Schedule schedule) {
+        this.schedule = schedule;
+    }
+
     @Override
     public String toString() {
         return "RecordToDoctor{" +
                 "id=" + id +
                 ", patient=" + patient+
-                ", doctor=" + doctor.getPerson().getSurname() +
-                ", dateAccept=" + getDateAcceptPrint() +
+                ", doctor=" + schedule.getDoctor().getPerson().getSurname() +
+//                ", dateAccept=" + getDateAcceptPrint() +
                 ", timeAccept=" + getTimeAcceptPrint() +
                 ", isRecord=" + isRecord +
                 ", isAccept=" + isAccept +
