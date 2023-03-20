@@ -66,7 +66,7 @@ public class PatientController {
     }
 
     @PostMapping("/add/")
-    public String addPatient(Patient patient, Authentication auth, RedirectAttributes ra){
+    public String addPatient(Patient patient, RedirectAttributes ra){
         System.out.println("форма  получена");
         System.out.println("person.getSurname() "+ patient.getPerson().getSurname());
         System.out.println("person.getBirthdate "+ patient.getPerson().getBirthdate());
@@ -97,11 +97,13 @@ public class PatientController {
     }
 
     @GetMapping("/update/{id}")
-    public String getFormUpdatePatient(@PathVariable("id") Integer patientId, Model model){
+    public String getFormUpdatePatient(@PathVariable("id") Integer patientId, Model model, Authentication auth){
         Optional<Patient> patient = daoPatient.getById(patientId);
         if (patient.isPresent()) {
             System.out.println("форма отправлена");
             model.addAttribute("patient", patient.get());
+            model.addAttribute("isAdmin", auth.getAuthorities().toString().contains("ROLE_ADMIN"));
+
         }
         return "patient/patient-update";
     }
@@ -121,17 +123,20 @@ public class PatientController {
     }
 
     @GetMapping("/detail/{id}")
-    public String getDetail(@PathVariable ("id") Integer patientId, @RequestParam String back, Model model){
+    public String getDetail(@PathVariable ("id") Integer patientId, @RequestParam String back, Model model,
+                            Authentication auth){
         Optional<Patient> patient = daoPatient.getById(patientId);
         if (patient.isPresent()) {
             model.addAttribute("patient", patient.get());
             model.addAttribute("back", back);
+            model.addAttribute("isAdmin", auth.getAuthorities().toString().contains("ROLE_ADMIN"));
         }
         return "patient/patient-detail";
     }
     @GetMapping("/delete/{id}")
     public String deleteDoctor(@PathVariable ("id") Integer patientId){
         daoPatient.delete(patientId);
+
         return "redirect:/patient/";
     }
 

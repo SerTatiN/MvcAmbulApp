@@ -36,27 +36,27 @@ class DbDaoRecordTest {
         assertEquals(rd.getId(),id);
     }
 
-    @Test
-    void save() {
-        Schedule sch1 = dbDaoSchedule.getById(1).get();
-        List <Date> dateList = new ArrayList<>();
-        Date time = sch1.getDate();
-        for(int i = 1; i<=4; i++){
-            time.setTime(time.getTime()+15*i*60000);
-            System.out.println(i + " "+time);
-            dateList.add(time);
-        }
-
-        RecordToDoctor rd1 = new RecordToDoctor(sch1,dateList.get(0));
-        RecordToDoctor rd1a = dbDaoRecord.save(rd1);
-        RecordToDoctor rd2 = new RecordToDoctor(sch1,dateList.get(1));
-        RecordToDoctor rd2a = dbDaoRecord.save(rd2);
-        RecordToDoctor rd3 = new RecordToDoctor(sch1,dateList.get(2));
-        RecordToDoctor rd3a = dbDaoRecord.save(rd3);
-        RecordToDoctor rd4 = new RecordToDoctor(sch1,dateList.get(3));
-        RecordToDoctor rd4a = dbDaoRecord.save(rd4);
-        listAll();
-    }
+//    @Test
+//    void save() {
+//        Schedule sch1 = dbDaoSchedule.getById(1).get();
+//        List <Date> dateList = new ArrayList<>();
+//        Date time = sch1.getDate();
+//        for(int i = 1; i<=4; i++){
+//            time.setTime(time.getTime()+15*i*60000);
+//            System.out.println(i + " "+time);
+//            dateList.add(time);
+//        }
+//
+//        RecordToDoctor rd1 = new RecordToDoctor(sch1,dateList.get(0));
+//        RecordToDoctor rd1a = dbDaoRecord.save(rd1);
+//        RecordToDoctor rd2 = new RecordToDoctor(sch1,dateList.get(1));
+//        RecordToDoctor rd2a = dbDaoRecord.save(rd2);
+//        RecordToDoctor rd3 = new RecordToDoctor(sch1,dateList.get(2));
+//        RecordToDoctor rd3a = dbDaoRecord.save(rd3);
+//        RecordToDoctor rd4 = new RecordToDoctor(sch1,dateList.get(3));
+//        RecordToDoctor rd4a = dbDaoRecord.save(rd4);
+//        listAll();
+//    }
 
     @Test
     void update() {

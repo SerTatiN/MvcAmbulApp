@@ -50,7 +50,8 @@
         </td>
     </tr>
     <tr>
-        <td  th:text="${#dates.format(schedule.startTime, 'HH:mm')}+' - '+${#dates.format(schedule.endTime, 'HH:mm')}"></td>
+        <td  th:text="${#temporals.format(schedule.startTime, 'HH:mm')}+' - '+${#temporals.format(schedule.endTime, 'HH:mm')}"></td>
+
     </tr>
 
   </th:block>

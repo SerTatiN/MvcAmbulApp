@@ -17,7 +17,10 @@ import top.org.mvcambulapp.model.entity.Schedule;
 
 import javax.print.Doc;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.*;
 
 @Controller
@@ -37,13 +40,13 @@ public class ScheduleController {
         List<Schedule> list = daoSchedule.listAll();
         System.out.println("list " + list.size());
         model.addAttribute("schedules", list);
-        model.addAttribute("isAdmin", auth);
-        model.addAttribute("isPatient", auth); //
+        model.addAttribute("isAdmin", auth.getAuthorities().toString().contains("ROLE_ADMIN"));
+        model.addAttribute("isPatient", auth.getAuthorities().toString().contains("ROLE_PATIENT")); //
         return "schedule/schedule-list";
     }
 
     @GetMapping("/add/")
-    public String getFormAddSchedule(Model model, Authentication auth) {
+    public String getFormAddSchedule(Model model, Authentication auth ) {
         System.out.println("/ addSchedule");
         if (auth != null) {
             System.out.println("getFormAddDoctor " + auth.getAuthorities());
@@ -53,6 +56,12 @@ public class ScheduleController {
 
                 model.addAttribute("schedule", schedule);
                 model.addAttribute("doctors", doctors); // для вставки в <optional>
+                model.addAttribute("isAdmin", auth.getAuthorities().toString().contains("ROLE_ADMIN"));
+
+//                model.addAttribute("standardDate", new Date());  //<p th:text="${#dates.formatISO(standardDate)}"></p> 2023-03-19T09:32:25.682+04:00
+//                model.addAttribute("localDateTime", LocalDateTime.now());//  <p th:text="${#temporals.formatISO(localDateTime)}"></p> 2023-03-19T09:32:25.682+0400
+//                model.addAttribute("localDate", LocalDate.now());//<p th:text="${#temporals.formatISO(localDate)}"></p> 2023-03-19T00:00:00.000+0400
+//                model.addAttribute("timestamp", Instant.now());//    <p th:text="${#temporals.formatISO(timestamp)}"></p> 2023-03-19T09:32:25.683+0400
 
                 System.out.println("form  заполнена");
                 return "schedule/schedule-form";
@@ -63,14 +72,6 @@ public class ScheduleController {
     @PostMapping("/add/")
     public String addSchedule(Schedule schedule, RedirectAttributes ra){
         System.out.println("form  получена " + schedule);
-
-       // Map<Date, Boolean> mapTimeFoRecord = createSchedule(schedule.getStartTime(),schedule.getEndTime(),15);
-       // List<Date> keyList = new ArrayList<>(mapTimeFoRecord.keySet());
-
-       //List<RecordToDoctor> listTime= createScheduleToRecord1(schedule.getStartTime(),schedule.getEndTime(),15, schedule);
-
-      //  schedule.setTimeRpiemaForRecord(mapTimeFoRecord);
-
         Schedule scheduleAdd = daoSchedule.save(schedule);
         System.out.println("scheduleAdd: " + scheduleAdd);
 
@@ -79,98 +80,60 @@ public class ScheduleController {
         ra.addFlashAttribute("goodMsg", "Расписание специалисту " +
                 scheduleAdd.getDoctor().getPerson().getFullName() + " added");
 
-    //    ra.addFlashAttribute("times", listTime);
+
         return "redirect:/schedule/";
     }
-//    private Map<Date, Boolean> createSchedule(Date start, Date end, Integer timePriema){
-//        Map<Date, Boolean> map = new HashMap<>();
-//        Date time = start;
-//        SimpleDateFormat simple = new SimpleDateFormat("HH:mm");
-//        while (time.before(end)) {
-//            map.put(time, false);
-//            time.setTime(time.getTime()+timePriema*60000);
-//            System.out.println("map.. "+ simple.format(time));
-//        }
-//        System.out.println("map"+ map);
-////        SimpleDateFormat simple = new SimpleDateFormat("HH:mm");
-////        System.out.println("map"+ simple.format(map.));
-//        return map;
-//    }
-    private List<RecordToDoctor> createScheduleToRecord1(Date start, Date end, Integer timeAccept, Schedule schedule){
 
-        RecordToDoctor recordToDoctor = null;
-        Date time = start;
-        Date timeH = new Date();
-        SimpleDateFormat simple = new SimpleDateFormat("HH:mm");
-        while (time.before(end)) {
+    private void createScheduleToRecord(LocalTime start, LocalTime end, Integer spanAccept, Schedule schedule){
+        LocalTime time = start;
+        RecordToDoctor record = null;
 
-            recordToDoctor = new RecordToDoctor(schedule,time);
-            daoRecord.save(recordToDoctor);
-
-            timeH.setTime(time.getTime()+timeAccept*60000);
-            System.out.println("*///map.. "+ simple.format(timeH));
-            time.setTime(timeH.getTime());
+        while (time.isBefore(end) || time.equals(end)) {
+            record = daoRecord.save(new RecordToDoctor(schedule,time));
+            schedule.getRecordToAccept().add(record);
+            time = time.plusMinutes(spanAccept);
         }
-        List<RecordToDoctor> list= daoRecord.getRecordsToSchedule(schedule);
-       // System.out.println("map/**/"+ list);
-//        SimpleDateFormat simple = new SimpleDateFormat("HH:mm");
-//        System.out.println("map"+ simple.format(map.));
-        return list;
+        System.out.println("проверка добавления в Set " + schedule.getRecordToAccept());
     }
-    private void createScheduleToRecord(Date start, Date end, Integer timeAccept, Schedule schedule){
-
-
-        RecordToDoctor recordToDoctor1 = new RecordToDoctor(schedule, new Date());
-        RecordToDoctor recordToDoctorAdd1 = daoRecord.save(recordToDoctor1);
-        System.out.println("recordToDoctorAdd1 = " + recordToDoctorAdd1);
-
-        schedule.getRecordToAccept().add(recordToDoctorAdd1);
-
-        RecordToDoctor recordToDoctor2 = new RecordToDoctor(schedule,start);
-        System.out.println("recordToDoctorAdd2 = " + recordToDoctor2.getTimeAccept());
-//        Date date = recordToDoctor2.getTimeAccept();
-//        date.setMinutes(date.getMinutes()+15);
-//        System.out.println(date);
-        recordToDoctor2.getTimeAccept().setTime(recordToDoctor2.getTimeAccept().getTime()+timeAccept*60000);
-        RecordToDoctor recordToDoctorAdd2 = daoRecord.save(recordToDoctor2);
-        System.out.println("recordToDoctorAdd2 = " + recordToDoctorAdd2);
-        schedule.getRecordToAccept().add(recordToDoctorAdd2);
-    }
-
-
 
     @GetMapping("/update/{id}")
-    public String getFormUpdateSchedule(@PathVariable("id") Integer scheduleId, Model model){
+    public String getFormUpdateSchedule(@PathVariable("id") Integer scheduleId, Model model,Authentication auth ){
         Optional<Schedule> schedule = daoSchedule.getById(scheduleId);
-        List<Doctor> listDoc = daoDoctor.listAll();
+     //Doctor doctor = daoDoctor.getById();
        // List<Doctor> doctors = daoDoctor.ge();
         if (schedule.isPresent()) {
             System.out.println("форма schedule отправлена");
-            model.addAttribute("schedule", schedule);
-            model.addAttribute("doctors", listDoc);
+            model.addAttribute("schedule", schedule.get());
+          //  model.addAttribute("doctor", doctor);
+            model.addAttribute("isAdmin", auth.getAuthorities().toString().contains("ROLE_ADMIN"));
+
         }
         return "schedule/schedule-update";
     }
 
     @PostMapping("/update/")
     public String updateSchedule(Schedule schedule, RedirectAttributes ra){
-        System.out.println("форма schedule получена");
-        System.out.println("расписание " + schedule.getId());
-        System.out.println("getDate() " + schedule.getDate());
-        System.out.println("getStartTime() " + schedule.getStartTime());
-        System.out.println("getEndTime() " + schedule.getEndTime());
+        System.out.println("форма schedule получена" +  schedule);
 
-        System.out.println("id  doctor" + schedule.getDoctor().getId());
+        Doctor doctor = daoDoctor.getById(schedule.getDoctor().getId()).get();
 
-        Schedule updSchedule = daoSchedule.update(schedule);
-        ra.addFlashAttribute("goodMsg", "Данные о расписании " + updSchedule + " обновлены");
+        Schedule scheduleUpd = daoSchedule.update(schedule);
+        doctor.getScheduleSet().add(scheduleUpd);
+
+        // сформировать новый список времен. Что делать со старым?
+        // Если не было записанных пациентов, то можно удалить старые записи и создать новые.
+        // Если были записаны пациенты, то обзвонить и перезаписать вручную
+        //createScheduleToRecord();
+
+        ra.addFlashAttribute("goodMsg", "Данные о расписании " +scheduleUpd + " обновлены");
         return "redirect:/schedule/";
     }
+
     @GetMapping("/detail/{id}")
     public String getDetail(@PathVariable ("id") Integer scheduleId, @RequestParam String back, Model model){
-        List<RecordToDoctor> listTime = daoRecord.getRecordsToSchedule(daoSchedule.getById(scheduleId).get());
-        if (listTime != null) {
-            model.addAttribute("times", listTime);
+        List<RecordToDoctor> records = daoRecord.getRecordsToSchedule(daoSchedule.getById(scheduleId).get());
+        if (records != null) {
+            model.addAttribute("records", records);
             model.addAttribute("back", back);
         }
         return "schedule/schedule-detail";

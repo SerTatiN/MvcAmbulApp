@@ -2,8 +2,11 @@ package top.org.mvcambulapp.model.entity;
 
 import jakarta.persistence.*;
 import org.apache.tomcat.util.modeler.ParameterInfo;
+import org.springframework.cglib.core.Local;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalTime;
 import java.util.Date;
 
 @Entity
@@ -20,17 +23,16 @@ public class RecordToDoctor {
     @ManyToOne
     @JoinColumn(name="schedule_id", nullable = false)
     private Schedule schedule;
-
-   // private Date dateAccept;
-    private Date timeAccept;
-
+    @DateTimeFormat(iso = DateTimeFormat.ISO.TIME)
+    private LocalTime timeAccept;
+    // private Date dateAccept;
     private boolean isRecord;
     private boolean isAccept;
 
     public RecordToDoctor() {
 
     }
-    public RecordToDoctor(Schedule schedule, Date timeAccept) {//Date dateAccept,
+    public RecordToDoctor(Schedule schedule, LocalTime timeAccept) {//Date dateAccept,
         this.id = id;
         this.patient = null;
         this.schedule = schedule;
@@ -40,7 +42,7 @@ public class RecordToDoctor {
         this.isAccept = false;
     }
 
-    public RecordToDoctor(Integer id, Patient patient, Schedule schedule, Date timeAccept, boolean isRecord, boolean isAccept) {//Date dateAccept,
+    public RecordToDoctor(Integer id, Patient patient, Schedule schedule, LocalTime timeAccept, boolean isRecord, boolean isAccept) {//Date dateAccept,
         this.id = id;
         this.patient = patient;
         this.schedule = schedule;
@@ -50,7 +52,7 @@ public class RecordToDoctor {
         this.isAccept = isAccept;
     }
 
-    public RecordToDoctor(Patient patient, Schedule schedule,  Date timeAccept) { //Date dateAccept,
+    public RecordToDoctor(Patient patient, Schedule schedule,  LocalTime timeAccept) { //Date dateAccept,
         this.patient = patient;
         this.schedule = schedule;
        // this.dateAccept = dateAccept;
@@ -95,7 +97,7 @@ public class RecordToDoctor {
 //        this.dateAccept = dateAccept;
 //    }
 
-    public Date getTimeAccept() {
+    public LocalTime getTimeAccept() {
         return timeAccept;
     }
     public String getTimeAcceptPrint() {
@@ -103,7 +105,7 @@ public class RecordToDoctor {
         return simple.format(timeAccept);
     }
 
-    public void setTimeAccept(Date timeAccept) {
+    public void setTimeAccept(LocalTime timeAccept) {
         this.timeAccept = timeAccept;
     }
 
@@ -138,7 +140,7 @@ public class RecordToDoctor {
                 ", patient=" + patient+
                 ", doctor=" + schedule.getDoctor().getPerson().getSurname() +
 //                ", dateAccept=" + getDateAcceptPrint() +
-                ", timeAccept=" + getTimeAcceptPrint() +
+                ", timeAccept=" + timeAccept +
                 ", isRecord=" + isRecord +
                 ", isAccept=" + isAccept +
                 '}';

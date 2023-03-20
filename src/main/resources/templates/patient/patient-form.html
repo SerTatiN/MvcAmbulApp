@@ -8,7 +8,7 @@
 <body>
 <div class="container-fluid" >
     <h1>Добавление пациента</h1>
-    <form  method="post" th:if="${isAdmin}" th:action="@{/patient/add/}" th:object="${patient}">
+    <form  th:if="${isAdmin}" method="post"  th:action="@{/patient/add/}" th:object="${patient}">
         <div class="row mb-6">
             <label class="col-2 col-form-label" for ="patient-surname"> Фамилия: </label>
             <div class="col-sm-10">

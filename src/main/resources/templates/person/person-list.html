@@ -50,7 +50,7 @@
 </table>
 
 <div>
-    <a th:href="@{/person/add/}" class="btn btn-success">Добавить жителя</a>
+    <a th:if="${isAdmin}" th:href="@{/person/add/}" class="btn btn-success">Добавить жителя</a>
 </div>
 
 <footer th:insert="layout/page-layout.html :: footer"></footer>

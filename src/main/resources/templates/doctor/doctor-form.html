@@ -8,7 +8,7 @@
 <body>
 <div class="container-fluid text-center">
     <h1>Добавление специалиста</h1>
-    <form method="post" id="addDoc"  th:action="@{/doctor/add/}" th:object="${doctor}">
+    <form th:if="${isAdmin}" method="post" id="addDoc"  th:action="@{/doctor/add/}" th:object="${doctor}">
         <div>
             <label for ="doctor-surname"> Фамилия: </label>
             <input id="doctor-surname" th:type="text" th:field="*{person.surname}" required minlength="1" maxlength="250" >

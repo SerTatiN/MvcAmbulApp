@@ -6,6 +6,9 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.util.Date;
@@ -22,14 +25,16 @@ public class Schedule implements Serializable {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(nullable = false)
     private Date date;
-   @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
+   //@DateTimeFormat(pattern = "HH:mm")
+   @DateTimeFormat(iso = DateTimeFormat.ISO.TIME)
    @Column(nullable = false)
-    private Date startTime;
+    private LocalTime startTime;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
-    //@DateTimeFormat(pattern = "hh:mm")
+    //@DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
+   // @DateTimeFormat(pattern = "HH:mm")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.TIME)
     @Column(nullable = false)
-    private Date endTime;
+    private LocalTime endTime;
 
     @ManyToOne()
     @JoinColumn(name="doctor_id",nullable = false)
@@ -43,7 +48,7 @@ public class Schedule implements Serializable {
     public Schedule() {
     }
 
-    public Schedule(Integer id, Date date, Date startTime, Date endTime, Doctor doctor) {
+    public Schedule(Integer id, Date date, LocalTime startTime, LocalTime endTime, Doctor doctor) {
         this.id = id;
         this.date = date;
         this.startTime = startTime;
@@ -51,7 +56,7 @@ public class Schedule implements Serializable {
         this.doctor = doctor;
     }
 
-    public Schedule(Date date, Date startTime, Date endTime, Doctor doctor) {
+    public Schedule(Date date, LocalTime startTime, LocalTime endTime, Doctor doctor) {
         this.date = date;
         this.startTime = startTime;
         this.endTime = endTime;
@@ -79,7 +84,7 @@ public class Schedule implements Serializable {
         this.date = date;
     }
 
-    public Date getStartTime() {
+    public LocalTime getStartTime() {
         return startTime;
     }
 
@@ -92,11 +97,11 @@ public class Schedule implements Serializable {
         this.date = date;
     }
 
-    public void setStartTime(Date startTime) {
+    public void setStartTime(LocalTime startTime) {
         this.startTime = startTime;
     }
 
-    public Date getEndTime() {
+    public LocalTime getEndTime() {
         return endTime;
     }
 
@@ -105,9 +110,7 @@ public class Schedule implements Serializable {
         return simple.format(endTime);
     }
 
-    public void setEndTime(Date endTime) {
-        this.endTime = endTime;
-    }
+    public void setEndTime(LocalTime endTime) {this.endTime = endTime;  }
 
     public Doctor getDoctor() {
         return doctor;
@@ -130,8 +133,8 @@ public class Schedule implements Serializable {
         return "Schedule{" +
                 "id=" + id +
                 ", date=" + getDataPrint() +
-                ", startTime=" + getStartTimePrint() +
-                ", endTime='" + getEndTimePrint() +
+                ", startTime=" + getStartTime() +
+                ", endTime='" + getEndTime() +
                 ", doctor=" + doctor.getId() +
                 '}';
     }

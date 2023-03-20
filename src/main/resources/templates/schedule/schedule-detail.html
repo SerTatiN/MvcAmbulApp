@@ -9,7 +9,7 @@
 <header th:insert="layout/page-layout.html :: header"></header>
 <div class="text-center">
   <h1> расписание </h1>
-  <h2>[[${times}]]</h2>
+  <h2>[[${records}]]</h2>
 
   <!-- Кнопка Cancel <a th:if = "${back == 'schedule'}" th:href="@{/schedule/}" class="btn btn-secondary">Отмена</a>-->
   <a th:if = "${back == 'schedule'}" th:href="@{/schedule/}" class="btn btn-secondary">Отмена</a>

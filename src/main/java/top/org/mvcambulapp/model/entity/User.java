@@ -40,7 +40,6 @@ public class User {
 //    private Patient patient;
 
 
-
     public User() {}
 
     public User(String login, String password) {
