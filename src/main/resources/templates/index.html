@@ -14,7 +14,7 @@
     <h3><a th:href="@{/schedule/}">Расписание специалистов</a></h3>
     <h3><a th:if="${isAdmin}" th:href="@{/patient/}">Пациенты</a></h3>
     <h3><a th:href="@{/record/}">Расписание</a></h3>
-    <h3><a th:if="!${isAuth}" th:href="@{'/registration/patient/'+'?back=index'}">Зарегистрироваться</a></h3>
+<!--    <h3><a th:if="!${isAuth}" th:href="@{'/registration/patient/'+'?back=index'}">Зарегистрироваться</a></h3>-->
 
     <h3><a th:if="!${isAuth}" th:href="@{'/login'}"> Войти в систему</a></h3>
 

@@ -61,3 +61,32 @@
 
   <footer th:insert="layout/page-layout.html :: footer"></footer>
   </html>
+
+
+
+<!--  <form th:if="${isAdmin}" method="post" id="addRecord"  th:action="@{/record/recordPatient/}" th:object="${record}">-->
+
+
+<!--    <div>-->
+<!--      <label for ="doctor"> Выберите специалиста: </label>-->
+<!--      <select id="doctor" th:field="*{schedule.doctor}">-->
+
+<!--        <th:block th:each="doctor: ${doctors}">-->
+<!--          <option th:value="${doctor.id}">[[${doctor.person.getFullName()}]]</option>-->
+<!--        </th:block>-->
+<!--      </select>-->
+<!--    </div>-->
+<!--    <div>-->
+<!--      <label for ="date"> Дата приема: </label>-->
+<!--      <input id="date" type="date" th:field="*{schedule.date}" required  >-->
+<!--    </div>-->
+<!--    <div>-->
+<!--      <label for ="time"> Время приема: </label>-->
+<!--      <input id="time" type="time" th:field="*{timeAccept}" required >-->
+<!--    </div>-->
+
+<!--    <button class="btn btn-success">Добавить</button>-->
+
+<!--    &lt;!&ndash; Кнопка Cancel &ndash;&gt;-->
+<!--    <a th:href="@{/record/}" class="btn btn-danger">Отмена</a>-->
+<!--  </form>-->

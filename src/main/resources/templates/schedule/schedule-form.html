@@ -6,6 +6,10 @@
     <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
 </head>
 <body>
+<!-- вывод goodMsg если врач добавлен -->
+<div th:if="${goodMsg != null}" class="alert alert-success">
+    [[${goodMsg}]]
+</div>
 <div class="container-fluid text-center">
     <h1>Добавление расписания</h1>
     <form method="post" id="addSchedule"  th:action="@{/schedule/add/}" th:object="${schedule}">

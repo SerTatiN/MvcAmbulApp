@@ -8,11 +8,10 @@
 <tbody>
 <header th:insert="layout/page-layout.html :: header"></header>
 
-<h1> Расписание специалистов</h1>
-<!--вывод goodMsg если житель добавлен-->
+<h1> Подробное расписание специалистов</h1>
+<!--вывод goodMsg если расписание добавлено -->
 <div th:if="${goodMsg != null}" class="alert alert-success">
   [[${goodMsg}]]
-
 </div>
 
 
@@ -39,7 +38,7 @@
       <td >
         <a th:if="${isAdmin}" th:href="@{'/record/update/' + ${record.id}}" class="btn btn-primary "> Редактировать </a>
         <a th:if="${isAdmin}" th:href="@{'/record/detail/' + ${record.id}}" class="btn btn-warning "> Информация </a>
-        <a th:if="${isAdmin}" th:href="@{'/record/recordPatient/' + ${record.id}}" class="btn btn-light "> Записать пациента </a>
+        <a th:if="${isAdmin}" th:href="@{'/record/patient/' + ${record.id}}" class="btn btn-light "> Записать пациента </a>
         <a th:if="${isAdmin}" th:href="@{'/record/delete/' + ${record.id}}" class="btn btn-danger "> Удалить </a>
 <!--        <a th:if="${isAdmin}" th:href="@{'/record/deletePatient/' + ${record.id}}" class="btn btn-danger "> Удалить запись пациента</a>-->
       </td>

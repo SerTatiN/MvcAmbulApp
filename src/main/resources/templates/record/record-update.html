@@ -1,10 +1,37 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Record Update</title>
+    <title>Update record</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
 </head>
 <body>
+<div class="container-fluid text-center">
+    <h1>Редактирование расписания</h1>
+    <!--вывод goodMsg если впеям записи к врачу обнолено -->
+    <div th:if="${goodMsg != null}" class="alert alert-success">
+        [[${goodMsg}]]
+    </div>
+    <form th:if="${isAdmin}" method="post" id="addRecord"  th:action="@{/record/update/}" th:object="${record}">
+        <input th:field="*{id}" hidden>
+        <input th:field="*{schedule.id}" hidden>
+        <input th:field="*{schedule.doctor.id}" hidden>
+        <input th:field="*{schedule.doctor.person.id}" hidden>
 
+
+        <h1 >[[${record.schedule.doctor.person.getFullName()}]]</h1>
+        <h1 th:text="${#dates.format(record.schedule.date, 'dd.MM.yyyy')}"></h1>
+
+        <div>
+            <label for ="time"> Время приема: </label>
+            <input id="time" type="time" th:field="*{timeAccept}" required >
+        </div>
+
+        <button class="btn btn-success">Обновить</button>
+
+        <!-- Кнопка Cancel -->
+        <a th:href="@{/record/}" class="btn btn-danger">Отмена</a>
+    </form>
+</div>
 </body>
 </html>

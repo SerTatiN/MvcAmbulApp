@@ -129,9 +129,11 @@ public class ScheduleController {
         return "redirect:/schedule/";
     }
 
+    //Инфо по дате приема
     @GetMapping("/detail/{id}")
     public String getDetail(@PathVariable ("id") Integer scheduleId, @RequestParam String back, Model model){
         List<RecordToDoctor> records = daoRecord.getRecordsToSchedule(daoSchedule.getById(scheduleId).get());
+        System.out.println("getDetail " + records );
         if (records != null) {
             model.addAttribute("records", records);
             model.addAttribute("back", back);
