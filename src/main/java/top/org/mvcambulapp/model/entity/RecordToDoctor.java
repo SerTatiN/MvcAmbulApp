@@ -29,8 +29,14 @@ public class RecordToDoctor {
     private boolean isRecord;
     private boolean isAccept;
 
-    public RecordToDoctor() {
+    //новое
+    @OneToOne(mappedBy = "record")
+    private ListPatientCard list;
 
+    public RecordToDoctor() {
+        this.patient = null;
+        this.isRecord = false;
+        this.isAccept = false;
     }
     public RecordToDoctor(Schedule schedule, LocalTime timeAccept) {//Date dateAccept,
         this.id = id;
@@ -137,8 +143,9 @@ public class RecordToDoctor {
     public String toString() {
         return "RecordToDoctor{" +
                 "id=" + id +
-                ", patient=" + patient+
-                ", doctor=" + schedule.getDoctor().getPerson().getSurname() +
+  //              ", patient=" + patient.getPerson().getFullName()+
+  //              ", schedule=" + schedule.getId() +
+ //               ", doctor=" + schedule.getDoctor().getPerson().getSurname() +
 //                ", dateAccept=" + getDateAcceptPrint() +
                 ", timeAccept=" + timeAccept +
                 ", isRecord=" + isRecord +

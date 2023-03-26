@@ -38,7 +38,7 @@
       <td >
         <a th:if="${isAdmin}" th:href="@{'/record/update/' + ${record.id}}" class="btn btn-primary "> Редактировать </a>
         <a th:if="${isAdmin}" th:href="@{'/record/detail/' + ${record.id}}" class="btn btn-warning "> Информация </a>
-        <a th:if="${isAdmin}" th:href="@{'/record/patient/' + ${record.id}}" class="btn btn-light "> Записать пациента </a>
+       <a th:if="${isAdmin and !record.isRecord()}" th:href="@{'/record/patient/' + ${record.id}}" class="btn btn-light "> Записать пациента </a> <!-- закрыть возможность записи у записанных-->
         <a th:if="${isAdmin}" th:href="@{'/record/delete/' + ${record.id}}" class="btn btn-danger "> Удалить </a>
 <!--        <a th:if="${isAdmin}" th:href="@{'/record/deletePatient/' + ${record.id}}" class="btn btn-danger "> Удалить запись пациента</a>-->
       </td>

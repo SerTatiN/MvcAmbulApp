@@ -1,10 +1,53 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>PatientCard List</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
 </head>
 <body>
+
+<header th:insert="layout/page-layout.html :: header"></header>
+
+<h1> Медицинские карты пациентов</h1>
+<!-- вывод goodMsg если врач добавлен -->
+<div th:if="${goodMsg != null}" class="alert alert-success">
+    [[${goodMsg}]]
+</div>
+<table class="table table-bordered">
+    <thead class="table-light">
+        <tr>
+            <th>Id</th>
+            <th>Дата приема</th>
+            <th>Пациент</th>
+            <th>Доктор-специалист</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <th:block th:each="patientCard: ${patientCards}">
+            <tr>
+                <td>[[${patientCard.id}]]</td>
+                <td th:text="${#dates.format(patientCard.record.schedule.date, 'dd.MM.yyyy')}"></td>
+                <td>[[${patientCard.record.patient.getPerson().getFullName}]]</td>
+                <td>[[${patientCard.record.schedule.doctor.speciality}]]: [[${patientCard.record.schedule.doctor.getPerson().getFullName}]]</td>
+    <!--            <td>[[${patientCard.result}]]</td> -->
+                <td>
+                    <a th:if="${isAdmin}" th:href="@{'/patient-card/detail/' + ${patientCard.id}+'?back=patient-card'}" class="btn btn-primary ">Посмотреть результат приема</a>
+                </td>
+            </tr>
+        </th:block>
+
+    </tbody>
+</table>
+<!--убрать, добавлять не будем здесь. Это прием врача, при выаоде списка записанных-->
+<!--<div>-->
+<!--    &lt;!&ndash;<a th:if="${isAdmin}" th:href="@{'/registration/patient/'+ '?back=patient'}" class="btn btn-success">Добавить пациента</a>&ndash;&gt;-->
+<!--    <a th:if="${isDoctor}" th:href="@{'/patient-card/add/'+ {}+'?back=patient-card'}" class="btn btn-success">Добавить лист записи</a>-->
+<!--</div>-->
+
+<footer th:insert="layout/page-layout.html :: footer"></footer>
+
 
 </body>
 </html>

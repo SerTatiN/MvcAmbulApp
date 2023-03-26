@@ -1,10 +1,43 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Patient Card Detail</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
 </head>
 <body>
+<header th:insert="layout/page-layout.html :: header"></header>
+<h2>Медицинская карта</h2>
+<!--<h2>Пациент:  </h2>-->
+<!--<h2 th:text="${#dates.format(patientCard.record.patient.person.birthdate, 'dd.MM.yyyy')}"></h2>-->
+<table class="table table-bordered">
+    <tr>
+        <td>Пациент</td>
+        <td>[[${patientCard.record.patient.person.getFullName()}]]</td>
+    </tr>
+    <tr>
+        <td>Дата рождения</td>
+        <td th:text="${#dates.format(patientCard.record.patient.person.birthdate, 'dd.MM.yyyy')}"></td>
+    </tr>
+    <tr>
+        <td>Дата приема</td>
+        <td th:text="${#dates.format(patientCard.record.schedule.date, 'dd.MM.yyyy')}"></td>
+    </tr>
+    <tr>
+        <td>Доктор-специалист</td>
+        <td>[[${patientCard.record.schedule.doctor.speciality}]]: [[${patientCard.record.schedule.doctor.getPerson().getFullName}]] </td>
+    </tr>
+    <tr>
+        <td>Результат приема</td>
+        <td>[[${patientCard.result}]] </td>
+    </tr>
 
+
+</table>
+<a th:href="@{/}" class="btn btn-secondary">Отмена</a>
+
+<a th:if="${back=='patient-card'}" th:href="@{/patient-card/}" class="btn btn-secondary">Отмена</a>
+<a th:if="${back=='patient-card/patient'}" th:href="@{/patient-card/patient}" class="btn btn-dark">Отмена</a>
+<footer th:insert="layout/page-layout.html :: footer"></footer>
 </body>
 </html>

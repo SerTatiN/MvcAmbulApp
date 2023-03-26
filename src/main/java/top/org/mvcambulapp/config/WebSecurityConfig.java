@@ -32,7 +32,8 @@ public class WebSecurityConfig {
 
                         .requestMatchers("/","/registration/patient/*", "/webjars/**","/doctor/*").permitAll()
                         .requestMatchers("/patient/**","/person/**", "/schedule/**").hasRole("ADMIN")
-                        .requestMatchers("/schedule/*").hasRole("PATIENT") //записаться
+                        .requestMatchers("/schedule/*", "/patient-card/patient").hasRole("PATIENT") //записаться
+                        .requestMatchers("/schedule/*").hasRole("DOCTOR") //
 
                         .anyRequest().authenticated()
                 )

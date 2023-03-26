@@ -20,11 +20,16 @@ public class PersonController {
     private IDaoPerson daoPerson;
 
     @GetMapping("/")
-    public String listAll(Model model){
-        List<Person> persons = daoPerson.listAll();
-        System.out.println("list " + persons.size());
-        model.addAttribute("persons", persons);
-        return "person/person-list";
+    public String listAll(Model model,Authentication auth ){
+        if (auth.getAuthorities().toString().contains("ROLE_ADMIN")) {
+            List<Person> persons = daoPerson.listAll();
+            System.out.println("list " + persons.size());
+            model.addAttribute("persons", persons);
+            model.addAttribute("isAdmin", auth.getAuthorities().toString().contains("ROLE_ADMIN"));
+
+            return "person/person-list";
+        }
+        return "index";
     }
 
     @GetMapping("/add/")

@@ -15,8 +15,10 @@ public class MainController {
             System.out.println("***** " + auth);
             model.addAttribute("isAdmin", auth.getAuthorities().toString().contains("ROLE_ADMIN"));
             model.addAttribute("isAuth", auth.getAuthorities());
+            model.addAttribute("isDoctor", auth.getAuthorities().toString().contains("ROLE_DOCTOR"));
+            model.addAttribute("isPatient", auth.getAuthorities().toString().contains("ROLE_PATIENT"));
         }
-            return "index";
+        return "index";
 
     }
 }

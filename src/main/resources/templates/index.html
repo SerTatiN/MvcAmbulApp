@@ -13,7 +13,16 @@
     <h3><a th:if="${isAdmin}" th:href="@{/person/}">Жители</a></h3>
     <h3><a th:href="@{/schedule/}">Расписание специалистов</a></h3>
     <h3><a th:if="${isAdmin}" th:href="@{/patient/}">Пациенты</a></h3>
+<!--Временно, убрать-->
     <h3><a th:href="@{/record/}">Расписание</a></h3>
+<!--    <h3><a th:href="@{/record/}">Расписание</a></h3>-->
+
+    <h3><a th:if="${isDoctor}" th:href="@{/record/list}">Записанные пациенты</a></h3>
+    <h3><a th:if="${isDoctor}" th:href="@{/record/list-date}">Записанные пациенты на дату</a></h3>
+
+    <h3><a th:if="${isPatient}" th:href="@{/patient-card/patient}"> Моя медицинская карта</a></h3>
+    <h3><a th:if="${isPatient}" th:href="@{/record/my-records}"> Мои записи</a></h3>
+
 <!--    <h3><a th:if="!${isAuth}" th:href="@{'/registration/patient/'+'?back=index'}">Зарегистрироваться</a></h3>-->
 
     <h3><a th:if="!${isAuth}" th:href="@{'/login'}"> Войти в систему</a></h3>

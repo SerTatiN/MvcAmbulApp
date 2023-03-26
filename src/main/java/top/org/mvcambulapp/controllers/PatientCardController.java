@@ -1,6 +1,7 @@
 package top.org.mvcambulapp.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -8,6 +9,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import top.org.mvcambulapp.model.dao.doctor.IDaoDoctor;
 import top.org.mvcambulapp.model.dao.listpatientcard.IDaoListPatientCard;
 import top.org.mvcambulapp.model.dao.patient.IDaoPatient;
+import top.org.mvcambulapp.model.dao.recordtodoctor.IDaoRecord;
+import top.org.mvcambulapp.model.dao.user.DbDaoUser;
 import top.org.mvcambulapp.model.entity.ListPatientCard;
 import top.org.mvcambulapp.model.entity.Patient;
 import top.org.mvcambulapp.model.entity.Person;
@@ -26,22 +29,51 @@ public class PatientCardController {
 
     @Autowired
     private IDaoDoctor daoDoctor;
+    @Autowired
+    private DbDaoUser daoUser;
+    @Autowired
+    private IDaoRecord daoRecord;
 
     @GetMapping("/")
-    public String listAll(Model model){
-        List<ListPatientCard> patientCards = daoListPatientCard.listAll();
-        System.out.println("list " + patientCards.size());
-        model.addAttribute("patientCards", patientCards);
-        System.out.println("patientCards отправлены");
-        return "patient-card/patient-card-list";
+    public String listAll(Model model, Authentication auth){
+        if (auth.getAuthorities().toString().contains("ROLE_ADMIN")||auth.getAuthorities().toString().contains("ROLE_DOCTOR") ) {
+            List<ListPatientCard> patientCards = daoListPatientCard.listAll();
+            model.addAttribute("patientCards", patientCards);
+            model.addAttribute("isAdmin", auth.getAuthorities().toString().contains("ROLE_ADMIN"));
+            model.addAttribute("isDoctor", auth.getAuthorities().toString().contains("ROLE_DOCTOR"));
+
+            System.out.println("patientCards отправлены");
+            return "patient-card/patient-card-list";
+        }
+        return "index";
     }
+//  Всю мед карту пациента (Doctor и Patient)
+    @GetMapping("/patient")
+    public String listAllPatientCard(Model model, Authentication auth){
+        System.out.println("patient/: user= " + daoUser.currentUser().getPerson().getFullName());
+        if (auth.getAuthorities().toString().contains("ROLE_PATIENT")) {
+            List<ListPatientCard> patientCards = daoListPatientCard.getPatientCardByPatientId(daoUser.currentUser().getPerson().getPatient().getId());
+            System.out.println("list " + patientCards.size());
+            model.addAttribute("patient", daoUser.currentUser().getPerson().getPatient());
+            model.addAttribute("patientCards", patientCards);
+           // model.addAttribute("isPatient", patientCards);
+            System.out.println("patientCards отправлены");
+            return "patient-card/patient-card";
+        }
+        return "index";
+    }
+//запись в мед карту
+    @GetMapping("/add/{id}")
+    public String getFormAddPatientCard(Model model, @PathVariable("id") Integer recordId, Authentication auth ){
+        System.out.println("getFormAddPatientCard()"+ recordId);
 
-    @GetMapping("/add/")
-    public String getFormAddPatientCard(Model model){
-        ListPatientCard listCard = new ListPatientCard();
+        if (auth.getAuthorities().toString().contains("ROLE_DOCTOR") ) {
+            ListPatientCard listCard = new ListPatientCard(daoRecord.getById(recordId).get());
 
-        System.out.println("форма  отправлена");
-        model.addAttribute("listCard", listCard);
+            System.out.println("форма  отправлена");
+            model.addAttribute("listCard", listCard);
+            model.addAttribute("isDoctor", auth.getAuthorities().toString().contains("ROLE_DOCTOR"));
+        }
         return "patient-card/patient-card-form";
     }
 
@@ -55,7 +87,7 @@ public class PatientCardController {
      //   patient.setPerson(addPerson);
         ListPatientCard patientCardAdd = daoListPatientCard.save(listCard);
         ra.addFlashAttribute("goodMsg", "Лист в карту пациента " +
-                patientCardAdd.getPatient().getPerson().getSurname() + "добавлен");
+                patientCardAdd.getRecord().getPatient().getPerson().getSurname() + "добавлен");
         return "redirect:/patient-card/";
     }
 
@@ -80,7 +112,7 @@ public class PatientCardController {
 
         ListPatientCard patientCardUpd = daoListPatientCard.update(patientCard);
         ra.addFlashAttribute("goodMsg", "Данные в карте пациента " +
-                patientCardUpd.getPatient().getPerson().getSurname() + " обновлены");
+                patientCardUpd.getRecord().getPatient().getPerson().getSurname() + " обновлены");
         return "redirect:/patient-card/";
     }
 

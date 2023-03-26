@@ -1,10 +1,38 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Records to Doctor</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
 </head>
 <body>
-<h1>Расписание врача</h1>
+    <div class="container-fluid text-center">
+        <h1> Записи к врачу</h1>
+        <h1> Специалист : [[${doctor.speciality}]] - [[${doctor.getPerson().getFullName()}]]</h1>
+        <table class="table table-bordered">
+            <thead class="table-light">
+            <tr>
+                <th>Id</th>
+                <th>Дата приема</th>
+                <th>Время приема</th>
+                <th>Пациент</th>
+            </tr>
+            </thead>
+            <tbody>
+            <th:block th:each="record: ${records}">
+                <tr>
+                    <td>[[${record.id}]]</td>
+                    <td th:text="${#dates.format(record.schedule.date, 'dd.MM.yyyy')}"></td>
+                    <td th:text="${#temporals.format(record.timeAccept, 'HH:mm')}"></td>
+                    <td th:if="${record.isRecord}">[[${record.patient.person.getFullName()}]]</td>
+                    <td th:unless="${record.isRecord}">Нет записи</td>
+                </tr>
+            </th:block>
+            </tbody>
+        </table>
+    </div>
+    <a th:href="@{/}" class="btn btn-secondary">Отмена</a>
+    <footer th:insert="layout/page-layout.html :: footer"></footer>
+    </div>
 </body>
 </html>

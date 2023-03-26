@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Records to Doctor fo Date</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
+</head>
+<body>
+    <div class="container-fluid text-center">
+        <h1> Записи к врачу на дату</h1>
+        <h1 th:text="${#dates.format(date, 'dd.MM.yyyy')}"></h1>
+        <h1> Специалист : [[${doctor.speciality}]] - [[${doctor.getPerson().getFullName()}]]</h1>
+
+        <table class="table table-bordered">
+            <thead class="table-light">
+                <tr>
+                    <th>Id</th>
+                    <th>Время приема</th>
+                    <th>Пациент</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <th:block th:each="record: ${records}">
+                    <tr>
+                        <td>[[${record.id}]]</td>
+                        <td th:text="${#temporals.format(record.timeAccept, 'HH:mm')}"></td>
+                        <td th:if="${record.isRecord}">[[${record.patient.person.getFullName()}]]</td>
+                        <td th:unless="${record.isRecord}">Нет записи</td>
+                    </tr>
+                </th:block>
+            </tbody>
+        </table>
+    </div>
+    <a th:href="@{/record/list}" class="btn btn-secondary">Отмена</a>
+    <footer th:insert="layout/page-layout.html :: footer"></footer>
+</div>
+</body>
+</html>

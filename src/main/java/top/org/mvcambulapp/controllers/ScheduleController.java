@@ -115,29 +115,34 @@ public class ScheduleController {
     public String updateSchedule(Schedule schedule, RedirectAttributes ra){
         System.out.println("форма schedule получена" +  schedule);
 
-        Doctor doctor = daoDoctor.getById(schedule.getDoctor().getId()).get();
+//        Doctor doctor = daoDoctor.getById(schedule.getDoctor().getId()).get();
+//        // Проверяем изменение часов приема и создаем новые records для записи
+//        Schedule scheduleDB = daoSchedule.getById(schedule.getId()).get();
+//        if (schedule.getStartTime().isBefore(scheduleDB.getStartTime()) )
+//
+//
+//        Schedule scheduleUpd = daoSchedule.update(schedule);
+//        doctor.getScheduleSet().add(scheduleUpd,);
 
-        Schedule scheduleUpd = daoSchedule.update(schedule);
-        doctor.getScheduleSet().add(scheduleUpd);
 
         // сформировать новый список времен. Что делать со старым?
         // Если не было записанных пациентов, то можно удалить старые записи и создать новые.
         // Если были записаны пациенты, то обзвонить и перезаписать вручную
-        //createScheduleToRecord();
+        //createScheduleToRecord();scheduleUpd
 
-        ra.addFlashAttribute("goodMsg", "Данные о расписании " +scheduleUpd + " обновлены");
+        ra.addFlashAttribute("goodMsg", "Данные о расписании " + " обновлены");
         return "redirect:/schedule/";
     }
 
     //Инфо по дате приема
     @GetMapping("/detail/{id}")
     public String getDetail(@PathVariable ("id") Integer scheduleId, @RequestParam String back, Model model){
-        List<RecordToDoctor> records = daoRecord.getRecordsToSchedule(daoSchedule.getById(scheduleId).get());
-        System.out.println("getDetail " + records );
-        if (records != null) {
-            model.addAttribute("records", records);
-            model.addAttribute("back", back);
-        }
+//        List<RecordToDoctor> records = daoRecord.getRecordsToSchedule(daoSchedule.getById(scheduleId).get());
+//        System.out.println("getDetail " + records );
+//        if (records != null) {
+//            model.addAttribute("records", records);
+//            model.addAttribute("back", back);
+//        }
         return "schedule/schedule-detail";
     }
     @GetMapping("/delete/{id}")

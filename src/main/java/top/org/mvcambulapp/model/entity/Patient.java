@@ -25,8 +25,8 @@ public class Patient {
 
     //Мед.карта пациента, где хранятся результаты приема врачей записанные в ListPatientCard.
     // Доступна к просмотру пациенту и всем врачам (админ?)
-    @OneToMany(mappedBy = "patient", cascade = CascadeType.PERSIST)
-    private Set<ListPatientCard> patientCard = new HashSet<>();
+//    @OneToMany(mappedBy = "patient", cascade = CascadeType.PERSIST)
+//    private Set<ListPatientCard> patientCard = new HashSet<>();
 
 //    @OneToOne
 //    @JoinColumn(name="user_id", nullable = false)
@@ -40,11 +40,15 @@ public class Patient {
         this.person = person;
     }
 
-    public Patient(Person person, Set<RecordToDoctor> recordToDoctors, Set<ListPatientCard> patientCard) {
+    public Patient(Person person, Set<RecordToDoctor> recordToDoctors) {
         this.person = person;
         this.recordToDoctors = recordToDoctors;
-        this.patientCard = patientCard;
     }
+    //    public Patient(Person person, Set<RecordToDoctor> recordToDoctors, Set<ListPatientCard> patientCard) {
+//        this.person = person;
+//        this.recordToDoctors = recordToDoctors;
+//        this.patientCard = patientCard;
+//    }
     //    public Patient(Person person, User user) {
 //        this.person = person;
 //        this.user = user;
@@ -57,13 +61,13 @@ public class Patient {
 //        this.user = user;
 //    }
 
-    public Set<ListPatientCard> getPatientCard() {
-        return patientCard;
-    }
-
-    public void setPatientCard(Set<ListPatientCard> patientCard) {
-        this.patientCard = patientCard;
-    }
+//    public Set<ListPatientCard> getPatientCard() {
+//        return patientCard;
+//    }
+//
+//    public void setPatientCard(Set<ListPatientCard> patientCard) {
+//        this.patientCard = patientCard;
+//    }
 
 //    public User getUser() {
 //        return user;
@@ -103,7 +107,7 @@ public class Patient {
                 "id=" + id +
                 ", person=" + person +
                 ", recordToDoctors=" + recordToDoctors +
-                ", patientCard=" + patientCard +
+ //               ", patientCard=" + patientCard +
 //                ", user=" + user +
                 '}';
     }

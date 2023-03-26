@@ -1,10 +1,31 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Patient Card Add-</title>
+    <title>Patient Card Add </title>
+    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
 </head>
 <body>
+<header th:insert="layout/page-layout.html :: header"></header>
+    <div class="container-fluid text-center">
+    <h1> Запись в мед.карту </h1>
+        <form th:if="${isDoctor}" method="post" id="addList"  th:action="@{/patient-card/add/}" th:object="${listCard}">
+            <div>
+               <h2 th:text="${#dates.format(listCard.record.schedule.date, 'dd.MM.yyyy')}"> </h2>
+                <h2>[[${record.schedule.doctor.speciality}]] - [[${record.schedule.doctor.person.getFullName()}]]</h2>
 
+            </div>
+            <div>
+                <label for ="result"> Результат приема: </label>
+                <textarea id="result" cols= "100" raw="20"  th:field="*{result}" required minlength="1" maxlength="250" >
+                </textarea>
+            </div>
+
+            <button class="btn btn-success">Добавить</button>
+
+            <!-- Кнопка Cancel -->
+            <a th:href="@{/patient-card/}" class="btn btn-danger">Отмена</a>
+        </form>
+    </div>
 </body>
 </html>

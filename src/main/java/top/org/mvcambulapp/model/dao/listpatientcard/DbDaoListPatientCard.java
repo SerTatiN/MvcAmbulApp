@@ -41,4 +41,9 @@ public class DbDaoListPatientCard implements IDaoListPatientCard{
             listPatientCardRepository.deleteById(id);
         }
     }
+
+    @Override
+    public List<ListPatientCard> getPatientCardByPatientId(Integer id) {
+        return listPatientCardRepository.findByRecord_Patient_Id(id);
+    }
 }

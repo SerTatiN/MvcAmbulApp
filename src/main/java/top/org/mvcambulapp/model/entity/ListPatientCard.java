@@ -12,33 +12,50 @@ public class ListPatientCard {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @ManyToOne
-    @JoinColumn(name = "patient_id",nullable = false)
-    private Patient patient;
-
-    @Column(nullable = false)
-    private Date dataAccept;
-
-    @Column(nullable = false, length = 155)
-    private String specialityDoctor;  //врач(Person) может поменяться, а специальность врача важнее для карты
-
-    @ManyToOne
-    @JoinColumn(name = "doctor_id",nullable = false)
-    private Doctor doctor;
+//    @ManyToOne
+//    @JoinColumn(name = "patient_id",nullable = false)
+//    private Patient patient;
+//
+//    @Column(nullable = false)
+//    private Date dataAccept;
+//
+//    @Column(nullable = false, length = 155)
+//    private String specialityDoctor;  //врач(Person) может поменяться, а специальность врача важнее для карты
+//
+//    @ManyToOne
+//    @JoinColumn(name = "doctor_id",nullable = false)
+//    private Doctor doctor;
 
     @Column(nullable = false, length = 255)
     private String result;
 
+
+    @OneToOne
+    @JoinColumn(name="record_id")//, nullable = false если приема нет, нет листа
+    private RecordToDoctor record;
+
     public ListPatientCard() {
     }
 
-    public ListPatientCard(Integer id, Patient patient, Date dataAccept, String specialityDoctor, Doctor doctor, String result) {
-        this.id = id;
-        this.patient = patient;
-        this.dataAccept = dataAccept;
-        this.specialityDoctor = specialityDoctor;
-        this.doctor = doctor;
-        this.result = result;
+    //Создание в момент приема врача
+    public ListPatientCard(RecordToDoctor record) {
+        this.record = record;
+    }
+    //    public ListPatientCard(Integer id, Patient patient, Date dataAccept, String specialityDoctor, Doctor doctor, String result) {
+//        this.id = id;
+//        this.patient = patient;
+//        this.dataAccept = dataAccept;
+//        this.specialityDoctor = specialityDoctor;
+//        this.doctor = doctor;
+//        this.result = result;
+//    }
+
+    public RecordToDoctor getRecord() {
+        return record;
+    }
+
+    public void setRecord(RecordToDoctor record) {
+        this.record = record;
     }
 
     public Integer getId() {
@@ -49,41 +66,41 @@ public class ListPatientCard {
         this.id = id;
     }
 
-    public Patient getPatient() {
-        return patient;
-    }
-
-    public void setPatient(Patient patient) {
-        this.patient = patient;
-    }
-
-    public Date getDataAccept() {
-        return dataAccept;
-    }
-    public String getDataAcceptPrint() {
-        SimpleDateFormat simple = new SimpleDateFormat("dd.MM.Y");
-        return simple.format(dataAccept);
-    }
-
-    public void setDataAccept(Date dataAccept) {
-        this.dataAccept = dataAccept;
-    }
-
-    public String getSpecialityDoctor() {
-        return specialityDoctor;
-    }
-
-    public void setSpecialityDoctor(String specialityDoctor) {
-        this.specialityDoctor = specialityDoctor;
-    }
-
-    public Doctor getDoctor() {
-        return doctor;
-    }
-
-    public void setDoctor(Doctor doctor) {
-        this.doctor = doctor;
-    }
+//    public Patient getPatient() {
+//        return patient;
+//    }
+//
+//    public void setPatient(Patient patient) {
+//        this.patient = patient;
+//    }
+//
+//    public Date getDataAccept() {
+//        return dataAccept;
+//    }
+//    public String getDataAcceptPrint() {
+//        SimpleDateFormat simple = new SimpleDateFormat("dd.MM.Y");
+//        return simple.format(dataAccept);
+//    }
+//
+//    public void setDataAccept(Date dataAccept) {
+//        this.dataAccept = dataAccept;
+//    }
+//
+//    public String getSpecialityDoctor() {
+//        return specialityDoctor;
+//    }
+//
+//    public void setSpecialityDoctor(String specialityDoctor) {
+//        this.specialityDoctor = specialityDoctor;
+//    }
+//
+//    public Doctor getDoctor() {
+//        return doctor;
+//    }
+//
+//    public void setDoctor(Doctor doctor) {
+//        this.doctor = doctor;
+//    }
 
     public String getResult() {
         return result;
@@ -97,10 +114,10 @@ public class ListPatientCard {
     public String toString() {
         return "ListPatientCard{" +
                 "id=" + id +
-                ", patient=" + patient.getPerson().getSurname() +
-                ", dataAccept=" + getDataAcceptPrint() +
-                ", specialityDoctor='" + specialityDoctor + '\'' +
-                ", doctor=" + doctor.getPerson().getSurname() +
+                ", patient=" + record.getPatient().getPerson().getSurname() +
+                ", dataAccept=" + record.getSchedule().getDataPrint()+
+                ", specialityDoctor='" + record.getSchedule().getDoctor().getSpeciality() + '\'' +
+                ", doctor=" + record.getSchedule().getDoctor().getPerson().getSurname() +
                 ", result='" + result + '\'' +
                 '}';
     }

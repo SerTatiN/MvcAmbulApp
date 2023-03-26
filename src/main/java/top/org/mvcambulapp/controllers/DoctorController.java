@@ -90,14 +90,17 @@ public class DoctorController {
     }
 
     @GetMapping("/update/{id}")
-    public String getFormUpdateForm(@PathVariable("id") Integer doctorId, Model model){
-        Optional<Doctor> doctor = daoDoctor.getById(doctorId);
-        if (doctor.isPresent()){
-           System.out.println("id person {id} " + doctor.get().getPerson().getId());
-           model.addAttribute("doctor",doctor.get());
+    public String getFormUpdateForm(@PathVariable("id") Integer doctorId, Model model, Authentication auth){
+        if (auth.getAuthorities().toString().contains("ROLE_ADMIN")) {
+            Optional<Doctor> doctor = daoDoctor.getById(doctorId);
+            if (doctor.isPresent()) {
+                System.out.println("id person {id} " + doctor.get().getPerson().getId());
+                model.addAttribute("doctor", doctor.get());
+            }
+            System.out.println("форма отправлена");
+            return "doctor/doctor-update";
         }
-        System.out.println("форма отправлена");
-        return "doctor/doctor-update";
+        return "doctor/doctor-list";
     }
 
     @PostMapping("/update/")

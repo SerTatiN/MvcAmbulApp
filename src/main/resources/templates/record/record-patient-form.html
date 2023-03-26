@@ -25,8 +25,9 @@
     <form th:if="${isAdmin}" method="post" id="addRecord"  th:action="@{/record/patient/}" th:object="${record}">
       <input th:field="*{id}" hidden>
       <input th:field="*{schedule.id}" hidden>
-      <input th:field="*{schedule.doctor.id}" hidden>
-      <input th:field="*{schedule.doctor.person.id}" hidden>
+<!--      <input th:field="*{schedule.doctor.id}" hidden>-->
+<!--      <input th:field="*{schedule.doctor.person.id}" hidden>-->
+      <input th:field="*{timeAccept}" hidden>
 
       <tr>
         <td>[[${record.id}]]</td>
