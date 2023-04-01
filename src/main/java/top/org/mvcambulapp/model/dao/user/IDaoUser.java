@@ -11,7 +11,6 @@ public interface IDaoUser {
     Optional <User> getUserById(Integer userId);
     List<User> listAll();
 
-
 //    User update(User user);
     void delete(Integer userId);
 

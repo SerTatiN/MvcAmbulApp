@@ -30,16 +30,17 @@ public class WebSecurityConfig {
         http
                 .authorizeHttpRequests((requests) -> requests
 
-                        .requestMatchers("/","/registration/patient/*", "/webjars/**","/doctor/*").permitAll()
-                        .requestMatchers("/patient/**","/person/**", "/schedule/**").hasRole("ADMIN")
-                        .requestMatchers("/schedule/*", "/patient-card/patient").hasRole("PATIENT") //записаться
-                        .requestMatchers("/schedule/*").hasRole("DOCTOR") //
+                        .requestMatchers("/","/registration/patient/*", "/webjars/**","/doctor/list", "/schedule/list").permitAll()
+                        .requestMatchers("/patient/**","/person/**").hasRole("ADMIN")//, "/schedule/**"
+                        .requestMatchers("/schedule/list2", "/record/record-to-doctor/*","/patient-card/patient").hasRole("PATIENT") //записаться
+                        .requestMatchers("/schedule/doctor-list/").hasRole("DOCTOR") //
 
                         .anyRequest().authenticated()
                 )
                 .formLogin((form) -> form
                         .loginPage("/login")
                             .defaultSuccessUrl("/")
+//                        .defaultSuccessUrl("/error?continue")
                         .permitAll()
                         .failureUrl("/login?error=true")
                 )

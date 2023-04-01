@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Doctor List at Date</title>
+  <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
+</head>
+<body>
+  <h1>Запиcанные пациенты</h1>
+  <table>
+    <tr>
+        <td><h3>[[${schedule.doctor.speciality}]]: </h3></td>
+        <td><h3>[[${schedule.doctor.person.getFullName()}]]</h3></td>
+    </tr>
+      <tr>
+          <td><h3>Дата: </h3></td>
+          <td th:text="${#dates.format(schedule.date, 'dd.MM.yyyy')} + ', ' + ${#dates.dayOfWeekNameShort(schedule.date)}"></td>
+      </tr>
+  </table>
+  <div>
+      <table class="table table-bordered">
+          <thead class="table-light">
+              <tr>
+                  <th>Время приема</th>
+                  <th>Пациент</th>
+                  <th></th>
+              </tr>
+          </thead>
+          <tbody>
+              <th:block th:each="record: ${records}">
+                  <tr>
+                      <td th:text="${#temporals.format(record.timeAccept, 'HH:mm')}"></td>
+                      <td th:if="${record.isRecord}">[[${record.patient.person.getFullName()}]]</td>
+                      <td th:unless="${record.isRecord}">Нет записи</td>
+                  </tr>
+              </th:block>
+          </tbody>
+      </table>
+  </div>
+
+  <a th:if = "${back == 'schedule'}" th:href="@{/schedule/doctor}" class="btn btn-secondary">Отмена</a>
+  <a th:unless="${back == 'schedule'}" th:href="@{/}" class="btn btn-secondary">Отмена</a>
+  <footer th:insert="layout/page-layout.html :: footer"></footer>
+
+</body>
+</html>

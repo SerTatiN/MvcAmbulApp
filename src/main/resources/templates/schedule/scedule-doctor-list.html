@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Schedule Doctor List</title>
+  <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
+</head>
+<body>
+<header th:insert="layout/page-layout.html :: header"></header>
+  <div class="container-fluid text-center">
+    <h1> Moe расписание </h1>
+    <h1> Специалист : [[${doctor.speciality}]] - [[${doctor.getPerson().getFullName()}]]</h1>
+    <table class="table table-bordered">
+      <thead class="table-light">
+        <tr>
+          <td>Дата приема</td>
+          <th>Часы приема</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+      <th:block th:each="list : ${schedules}">
+        <tr>
+          <td th:text="${#dates.format(list.date, 'dd.MM.yyyy')} + ', ' + ${#dates.dayOfWeekNameShort(list.date)}">
+          </td>
+          <td th:text="${#temporals.format(list.startTime, 'HH:mm')}+' - '+${#temporals.format(list.endTime, 'HH:mm')}">
+          </td>
+
+          </td>
+          <td>
+              <a th:if="${isDoctor}" th:href="@{'/record/doctor-list-date/' + ${list.id}+'?back=schedule'}" class="btn btn-primary ">Записанные пациенты</a>
+          </td>
+        </tr>
+
+      </th:block>
+    </table>
+  </div>
+  <a th:href="@{/}" class="btn btn-secondary">Отмена</a>
+  <footer th:insert="layout/page-layout.html :: footer"></footer>
+  </div>
+</body>
+</html>

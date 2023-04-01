@@ -26,10 +26,10 @@
             <label for ="patient-patronymic"> Отчество: </label>
             <input id="patient-patronymic" th:type="text" th:field="*{person.patronymic}" required minlength="1" maxlength="250" >
         </div>
-        <div>
-            <label for ="patient-email"> Адрес эл. почты: </label>
-            <input id="patient-email" type="email" th:field="*{person.login}" required minlength="1" maxlength="250" >
-        </div>
+<!--        <div>-->
+<!--            <label for ="patient-email"> Адрес эл. почты: </label>-->
+<!--            <input id="patient-email" type="email" th:field="*{person.login}" required minlength="1" maxlength="250" >-->
+<!--        </div>-->
         <div>
             <label for ="patient-birthdate"> Дата рождения: </label>
             <input id="patient-birthdate" type="date" th:field="*{person.birthdate}" required ><!--asp-format="{yyyy-MM-dd}"value="2020-10-29-->
@@ -37,7 +37,7 @@
         </div>
 
 
-        <button class="btn btn-success">Сохранить</button>
+        <button class="btn btn-success">Обновить</button>
 
         <!-- Кнопка Cancel -->
         <a th:href="@{/patient/}" class="btn btn-danger">Отмена</a>

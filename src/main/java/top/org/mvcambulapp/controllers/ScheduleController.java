@@ -10,6 +10,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import top.org.mvcambulapp.model.dao.doctor.IDaoDoctor;
 import top.org.mvcambulapp.model.dao.recordtodoctor.IDaoRecord;
 import top.org.mvcambulapp.model.dao.schedule.IDaoSchedule;
+import top.org.mvcambulapp.model.dao.user.DbDaoUser;
 import top.org.mvcambulapp.model.entity.Doctor;
 import top.org.mvcambulapp.model.entity.Person;
 import top.org.mvcambulapp.model.entity.RecordToDoctor;
@@ -33,8 +34,10 @@ public class ScheduleController {
 
     @Autowired
     private IDaoRecord daoRecord;
+    @Autowired
+    private DbDaoUser daoUser;
 
-    @GetMapping("/")
+    @GetMapping("/list")
     public String listAll(Model model, Authentication auth){
         System.out.println("schedule/listAll " + auth.getAuthorities().toString());
         List<Schedule> list = daoSchedule.listAll();
@@ -42,6 +45,56 @@ public class ScheduleController {
         model.addAttribute("schedules", list);
         model.addAttribute("isAdmin", auth.getAuthorities().toString().contains("ROLE_ADMIN"));
         model.addAttribute("isPatient", auth.getAuthorities().toString().contains("ROLE_PATIENT")); //
+        return "schedule/schedule-list";
+    }
+
+    @GetMapping("/list2")
+    public String listAllToRec(Model model, Authentication auth){
+        System.out.println("schedule/listAllToRec " + auth.getAuthorities().toString());
+        List<Doctor> doctors = daoDoctor.listAll();
+//        List<Schedule> schedules = daoSchedule.listAll();
+
+        System.out.println("doctors " + doctors.size());
+//        System.out.println("schedules " + schedules.size());
+
+//        model.addAttribute("schedules", schedules);
+        model.addAttribute("doctors", doctors);
+        model.addAttribute("isAdmin", auth.getAuthorities().toString().contains("ROLE_ADMIN"));
+        model.addAttribute("isPatient", auth.getAuthorities().toString().contains("ROLE_PATIENT")); //
+        return "schedule/schedule-list-by-doctors";
+    }
+
+    @GetMapping("/listDoctor/{id}")
+    public String listSchedulesDoctor(@PathVariable("id") Integer doctorId, Model model,@RequestParam String back, Authentication auth){
+        System.out.println("listSchedulesDoctor " + auth.getAuthorities().toString());
+        List<Schedule> schedules = daoSchedule.getScheduleByDoctorId(doctorId);
+
+        System.out.println("schedules " + schedules.size());
+//        System.out.println("schedules " + schedules.size());
+
+//        model.addAttribute("schedules", schedules);
+        model.addAttribute("doctor", daoDoctor.getById(doctorId).get());
+        model.addAttribute("schedules", schedules);
+        model.addAttribute("isAdmin", auth.getAuthorities().toString().contains("ROLE_ADMIN"));
+        model.addAttribute("isPatient", auth.getAuthorities().toString().contains("ROLE_PATIENT")); //
+        model.addAttribute("back", back);
+        return "schedule/schedule-list-by-doctor";
+    }
+
+    // расписание (дни, часы приема) авторизованного доктора
+    @GetMapping("/doctor")
+    public String listScheduleDoctor(Model model, Authentication auth){
+        System.out.println("listScheduleDoctor() " + auth.getAuthorities().toString());
+        if (auth.getAuthorities().toString().contains("ROLE_DOCTOR")) {
+            List<Schedule> list = daoSchedule.getScheduleByDoctorId(daoUser.currentUser().getPerson().getDoctor().getId());
+            System.out.println("list " + list.size());
+
+            model.addAttribute("doctor", daoUser.currentUser().getPerson().getDoctor());
+            model.addAttribute("schedules", list);
+            //  model.addAttribute("isAdmin", auth.getAuthorities().toString().contains("ROLE_ADMIN"));
+            model.addAttribute("isDoctor", auth.getAuthorities().toString().contains("ROLE_DOCTOR")); //
+            return "schedule/scedule-doctor-list";
+        }
         return "schedule/schedule-list";
     }
 
@@ -81,14 +134,14 @@ public class ScheduleController {
                 scheduleAdd.getDoctor().getPerson().getFullName() + " added");
 
 
-        return "redirect:/schedule/";
+        return "redirect:/schedule/list";
     }
 
     private void createScheduleToRecord(LocalTime start, LocalTime end, Integer spanAccept, Schedule schedule){
         LocalTime time = start;
         RecordToDoctor record = null;
 
-        while (time.isBefore(end) || time.equals(end)) {
+        while (time.isBefore(end) || !time.equals(end)) {
             record = daoRecord.save(new RecordToDoctor(schedule,time));
             schedule.getRecordToAccept().add(record);
             time = time.plusMinutes(spanAccept);
@@ -131,24 +184,26 @@ public class ScheduleController {
         //createScheduleToRecord();scheduleUpd
 
         ra.addFlashAttribute("goodMsg", "Данные о расписании " + " обновлены");
-        return "redirect:/schedule/";
+        return "redirect:/schedule/list";
     }
 
     //Инфо по дате приема
     @GetMapping("/detail/{id}")
     public String getDetail(@PathVariable ("id") Integer scheduleId, @RequestParam String back, Model model){
-//        List<RecordToDoctor> records = daoRecord.getRecordsToSchedule(daoSchedule.getById(scheduleId).get());
-//        System.out.println("getDetail " + records );
-//        if (records != null) {
-//            model.addAttribute("records", records);
-//            model.addAttribute("back", back);
-//        }
+        Schedule schedule = daoSchedule.getById(scheduleId).get();
+       // List<RecordToDoctor> records = daoRecord.getRecordsToSchedule(daoSchedule.getById(scheduleId).get());
+        System.out.println("getDetailschedule " + schedule );
+
+            model.addAttribute("schedule", schedule);
+            model.addAttribute("back", back);
+
         return "schedule/schedule-detail";
     }
     @GetMapping("/delete/{id}")
     public String deleteSchedule(@PathVariable ("id") Integer scheduleId){
+
         daoSchedule.delete(scheduleId);
-        return "redirect:/schedule/";
+        return "redirect:/schedule/list";
     }
 
 

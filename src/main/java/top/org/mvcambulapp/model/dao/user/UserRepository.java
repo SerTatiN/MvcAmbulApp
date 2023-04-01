@@ -12,6 +12,8 @@ public interface UserRepository extends CrudRepository<User,Integer> {
     User findByLogin(String login);
     Optional<User> findById(Integer userId);
 
+//    User update (User user);
+
 
 
 

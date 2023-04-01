@@ -35,6 +35,7 @@
                 <td>
                     <a th:if="${isAdmin}" th:href="@{'/doctor/update/' + ${doctor.id}}" class="btn btn-primary "> Редактировать </a>
                     <a th:if="${isAdmin}" th:href="@{'/doctor/delete/' + ${doctor.id}}" class="btn btn-danger "> Удалить </a>
+                    <a th:if="${isPatient}" th:href="@{'/schedule/listDoctor/' + ${doctor.id}+'?back=doctor'}" class="btn btn-primary ">Посмотреть расписание</a>
                     <a th:href="@{'/doctor/detail/' + ${doctor.id} +'?back=doctor'}" class ="btn btn-warning">О специалисте</a>
                 </td>
 
@@ -46,7 +47,9 @@
 
     <div>
         <a th:if="${isAdmin}" th:href="@{/doctor/add/}" class="btn btn-success">Добавить врача</a>
+        <a th:href="@{/}" class="btn btn-secondary">Отмена</a>
     </div>
+
 
 <footer th:insert="layout/page-layout.html :: footer"></footer>
 

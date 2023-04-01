@@ -16,6 +16,7 @@
             <tr>
                 <th>Id</th>
                 <th>Дата приема</th>
+                <th>Время приема</th>
                 <th>Доктор-специалист</th>
                 <th>Статус</th>
             </tr>
@@ -25,6 +26,7 @@
                 <tr>
                     <td>[[${list.id}]]</td>
                     <td th:text="${#dates.format(list.schedule.date, 'dd.MM.yyyy')}"></td>
+                    <td th:text="${#temporals.format(list.timeAccept, 'HH:mm')}"></td>
                     <td>[[${list.schedule.doctor.speciality}]]: [[${list.schedule.doctor.getPerson().getFullName}]]</td>
                     <td th:if="${list.isAccept}">Принят</td>
                     <td th:unless="${list.isAccept}">Ожидается прием</td>

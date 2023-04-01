@@ -10,7 +10,7 @@
 <header th:insert="layout/page-layout.html :: header"></header>
 
 <h1> Медицинские карты пациентов</h1>
-<!-- вывод goodMsg если врач добавлен -->
+<!-- вывод goodMsg если врач добавил запись в мед карту -->
 <div th:if="${goodMsg != null}" class="alert alert-success">
     [[${goodMsg}]]
 </div>

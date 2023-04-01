@@ -63,13 +63,18 @@ public class DbDaoRecord implements IDaoRecord{
     }
 
     @Override
-    public List<RecordToDoctor> getRecordsByDoctorIdSortedByDate(Integer id) {
+    public List<RecordToDoctor> getRecordsByDoctorIdSortedByTime(Integer id) {
         return recordRepository.findBySchedule_Doctor_IdOrderByTimeAccept(id);
     }
 
     @Override
     public List<RecordToDoctor> getRecordsByDoctorIdAndDate(Integer id, Date date) {
         return recordRepository.findBySchedule_Doctor_IdAndSchedule_DateOrderByTimeAccept(id,date);
+    }
+
+    @Override
+    public List<RecordToDoctor> getRecordsByScheduleIdSortedByTime(Integer id) {
+        return recordRepository.findBySchedule_IdOrderByTimeAccept(id);
     }
 
     @Override

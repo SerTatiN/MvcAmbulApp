@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" >
+<head>
+  <meta charset="UTF-8">
+  <title>Schedule List</title>
+  <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
+</head>
+<body>
+  <header th:insert="layout/page-layout.html :: header"></header>
+
+  <h1> Расписание специалиста </h1>
+  <!--вывод goodMsg если пациент записан-->
+  <div th:if="${goodMsg != null}" class="alert alert-success">
+    [[${goodMsg}]]
+  </div>
+<!--  <h3 >[[${doctor.id}]]</h3>-->
+  <h3 >[[${doctor.speciality}]] - [[${doctor.person.getFullName()}]]</h3>
+<!--  <h3 ></h3>-->
+  <table class="table table-bordered">
+    <thead class="table-light">
+      <tr>
+        <th>День приема</th>
+        <th>Выберите удобное для Вас время записи</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+<!--  <th:block th:each="doctor: ${doctors}">-->
+      <th:block th:each="schedule: ${schedules}">
+          <tr>
+            <td th:text="${#dates.format(schedule.date, 'dd.MM.yyyy')} + ', ' + ${#dates.dayOfWeekNameShort(schedule.date)}"></td>
+              <td>
+                <table>
+                  <tr>
+                    <td>
+                      <th:block th:each="record: ${schedule.recordToAccept}">
+                      <a th:if="${isPatient && !record.isRecord()}"
+                         th:text="${#temporals.format(record.timeAccept, 'HH:mm')}"
+                         th:href="@{'/record/record-to-doctor/' + ${record.id} +'?back=schedule'}" class="btn btn-primary " >  </a>
+                    </th:block>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+          </tr>
+      </th:block>
+  </tbody>
+
+</table>
+
+  <a th:if = "${back == 'doctor'}" th:href="@{/doctor/list}" class="btn btn-secondary">Отмена</a>
+</body>
+<footer th:insert="layout/page-layout.html :: footer"></footer>
+</html>

@@ -30,20 +30,11 @@ public class DbDaoRole implements IDaoRole{
     @Override
     public Role getRoleByAuthority(String authority) {
         List<Role> roles = (List<Role>) roleRepository.findAll();
-      //  System.out.println("getRoleByAuthority "+roles.size()+" " +roles.toString());
         for (Role role : roles){
-           // System.out.println("{1} "+role.getAuthority()+ " ? " +authority);
             if (role.getAuthority().contains(authority))
-               // System.out.println("{1} "+role.getAuthority()+ " ? " +authority);
                 return role;
         }
-
         return null;
     }
 
-
-//    @Override
-//    public User getUserByRole(String role) {
-//        return daoRole.getUserByRole(role);
-//    }
 }

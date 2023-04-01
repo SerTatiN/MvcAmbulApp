@@ -54,4 +54,14 @@ public class DbDaoSchedule implements IDaoSchedule{
     public Optional<Schedule> getScheduleByDoctorAndDate(Doctor doctor, Date date) {
         return scheduleRepository.findByDoctorAndDate(doctor,date);
     }
+
+    @Override
+    public List<Schedule> getScheduleByDoctorId(Integer id) {
+        return scheduleRepository.findByDoctor_Id(id);
+    }
+
+    @Override
+    public List<Schedule> getScheduleByDoctorIdSortByDate(Integer id) {
+        return scheduleRepository.findByDoctor_IdOrderByDate(id);
+    }
 }

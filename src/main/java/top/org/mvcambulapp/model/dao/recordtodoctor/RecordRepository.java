@@ -15,6 +15,8 @@ public interface RecordRepository extends CrudRepository<RecordToDoctor,Integer>
 
     List<RecordToDoctor> findBySchedule_Doctor_Id(Integer id);
     List<RecordToDoctor> findBySchedule_Doctor_IdOrderByTimeAccept(Integer id);
+    List<RecordToDoctor> findBySchedule_IdOrderByTimeAccept(Integer id);
+
     List<RecordToDoctor> findBySchedule_Doctor_IdAndSchedule_DateOrderByTimeAccept(Integer id, Date date);
 
    // List<RecordToDoctor> findBySchedule_Patient_IdOrderByTimeAccept(Integer id);

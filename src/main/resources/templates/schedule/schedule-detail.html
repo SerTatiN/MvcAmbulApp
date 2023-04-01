@@ -8,11 +8,34 @@
 <body>
 <header th:insert="layout/page-layout.html :: header"></header>
 <div class="text-center">
-  <h1> расписание </h1>
-  <h2>[[${records}]]</h2>
+
+  <h1> Расписание </h1>
+<!--  <h2>[[${schedule}]]</h2>-->
+  <table class="table table-bordered">
+    <tr>
+      <td>Доктор-специалист</td>
+      <td>[[${schedule.doctor.speciality}]]: [[${schedule.doctor.getPerson().getFullName}]] </td>
+    </tr>
+    <tr>
+      <td>Дата приема</td>
+      <td th:text="${#dates.format(schedule.date, 'dd.MM.yyyy')}"></td>
+    </tr>
+    <tr>
+      <td>Часы приема</td>
+      <td  th:text="${#temporals.format(schedule.startTime, 'HH:mm')}+' - '+${#temporals.format(schedule.endTime, 'HH:mm')}"></td>
+    </tr>
+    <tr>
+      <td>Время приема</td>
+      <td>
+        <th:block th:each="rec:${schedule.getRecordToAccept()}" >
+          <p th:text="${#temporals.format(rec.timeAccept, 'HH:mm')}"></p>
+        </th:block>
+      </td>
+    </tr>
+  </table>
 
   <!-- Кнопка Cancel <a th:if = "${back == 'schedule'}" th:href="@{/schedule/}" class="btn btn-secondary">Отмена</a>-->
-  <a th:if = "${back == 'schedule'}" th:href="@{/schedule/}" class="btn btn-secondary">Отмена</a>
+  <a th:if = "${back == 'schedule'}" th:href="@{/schedule/list}" class="btn btn-secondary">Отмена</a>
 
 </div>
 </body>

@@ -1,6 +1,7 @@
 package top.org.mvcambulapp.controllers;
 
 
+import com.fasterxml.jackson.core.JsonToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.CurrentSecurityContext;
@@ -35,7 +36,7 @@ public class DoctorController {
     @Autowired
     private DbDaoRole daoRole;
 
-    @GetMapping("/")
+    @GetMapping("/list")
     public String listAll(Model model,Authentication auth ){
         System.out.println("listAll" + auth.getAuthorities());
         System.out.println("doctor1: auth= " + auth.getAuthorities().toString() + " " +
@@ -48,6 +49,8 @@ public class DoctorController {
         System.out.println("list " + doctors.size());
         model.addAttribute("doctors", doctors);
         model.addAttribute("isAdmin", auth.getAuthorities().toString().contains("ROLE_ADMIN"));
+        model.addAttribute("isPatient", auth.getAuthorities().toString().contains("ROLE_PATIENT"));
+
         System.out.println("model ");
         return "doctor/doctor-list";
     }
@@ -62,7 +65,7 @@ public class DoctorController {
 
             return "doctor/doctor-form";
         }
-        return null; //????
+        return "doctor/doctor-list"; //????
 
     }
 
@@ -71,14 +74,20 @@ public class DoctorController {
        // Person addPerson = daoPerson.save(person);Person person,
         System.out.println("form получена");
        // System.out.println("person "+ person.toString());
-        System.out.println("doctor "+ doctor.getInfo());
-        System.out.println("doctor "+ doctor.getPerson().getSurname());
+//        System.out.println("doctor "+ doctor.getInfo());
+//        System.out.println("doctor "+ doctor.getPerson().getSurname());
         System.out.println(doctor.getPerson().toString());
+        System.out.println("doctor-user "+ doctor.getPerson().getUser());
+
+        doctor.getPerson().getUser().getRoles().add(daoRole.getRoleByAuthority("ROLE_DOCTOR"));
+
+        System.out.println("doctor-user "+ doctor.getPerson().getUser());
 
         User userAdd = daoUser.save(doctor.getPerson().getUser());
-        userAdd.getRoles().add(daoRole.getRoleByAuthority("ROLE_DOCTOR"));
+//        userAdd.getRoles().add(daoRole.getRoleByAuthority("ROLE_DOCTOR"));
 
         Person person = doctor.getPerson();
+        person.setUser(userAdd);
         Person addPerson = daoPerson.save(person);
 
         doctor.setPerson(addPerson);
@@ -86,7 +95,7 @@ public class DoctorController {
         // 2. отправим сообщение о том что врач добавлен
         ra.addFlashAttribute("goodMsg", "Специалист " + addDoctor+ "добавлен");
 
-        return "redirect:/doctor/"; // 3. перенаправить ответ на вывод всех врачей (redirect)
+        return "redirect:/doctor/list"; // 3. перенаправить ответ на вывод всех врачей (redirect)
     }
 
     @GetMapping("/update/{id}")
@@ -114,7 +123,7 @@ public class DoctorController {
 
         Doctor updDoctor = daoDoctor.update(doctor);
         ra.addFlashAttribute("goodMsg", "Данные о специалисте " + updDoctor+ " обновлены");
-    return "redirect:/doctor/";
+    return "redirect:/doctor/list";
     }
 
     @GetMapping("/detail/{id}")
@@ -127,10 +136,27 @@ public class DoctorController {
         return "doctor/doctor-detail";
     }
     @GetMapping("/delete/{id}")
-    public String deleteDoctor(@PathVariable ("id") Integer doctorId){
-        daoDoctor.delete(doctorId);
-        return "redirect:/doctor/";
+    public String deleteDoctor(@PathVariable ("id") Integer doctorId,Model model){
+        Optional<Doctor>  doctor = daoDoctor.getById(doctorId);
+        if (doctor.isPresent()) {
+            System.out.println("delete/{id}-" + doctor.get().getPerson().getUser().getRoles());
+
+            daoUser.getUserById(doctor.get().getPerson().getUser().getId()).get().getRoles().remove(daoRole.getRoleByAuthority("ROLE_DOCTOR"));
+
+            System.out.println("delete/{id}+" + doctor.get().getPerson().getUser().getRoles());
+
+            daoDoctor.delete(doctorId);
+            model.addAttribute("goodMsg", "Специалист был удален");
+
+        }
+        return "redirect:/doctor/list";
     }
+
+    @GetMapping("/accept/{id}")
+    public String getFormToAcceptPatient(@PathVariable ("id") Integer patientId,Model model){
+        return "doctor/doctor-form-accept";
+    }
+
 
 
 

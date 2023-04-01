@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <meta charset="UTF-8">
+    <title>Confirm Patient Record</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
+</head>
+<body>
+  <h1> Подтверждение записи </h1>
+  <form th:if="${isPatient}" method="post" id="recordPatient"  th:action="@{/record/record-to-doctor/}" th:object="${record}">
+    <input th:field="*{id}" hidden>
+    <input th:field="*{timeAccept}" hidden>
+    <input th:field="*{schedule}" hidden>
+<!--   <input th:field="*{patient}" hidden>-->
+
+    <table>
+      <tr>
+        <td>Пациент: </td>
+        <td> [[${patient.person.getFullName()}]] </td>
+      </tr>
+      <tr>
+        <td>Запись к врачу:  </td>
+        <td> [[${record.schedule.doctor.speciality}]] - [[${record.schedule.doctor.person.getFullName()}]] </td>
+      </tr>
+      <tr>
+        <td>Дата приема: </td>
+        <td th:text="${#dates.format(record.schedule.date, 'dd.MM.yyyy')} + ', ' + ${#dates.dayOfWeekNameShort(record.schedule.date)}">  </td>
+      </tr>
+      <tr>
+        <td>Время приема: </td>
+        <td th:text="${#temporals.format(record.timeAccept, 'HH:mm')}">  </td>
+      </tr>
+    </table>
+
+    <button class="btn btn-success">Подтвердить</button>
+
+    <!-- Кнопка Cancel -->
+   <a th:href="@{'/schedule/listDoctor/' +${record.schedule.doctor.id}}" class="btn btn-danger">Отмена</a>
+  </form>
+
+</body>
+</html>

@@ -34,7 +34,7 @@ public class PatientController {
     @Autowired
     private IDaoRole daoRole;
 
-    @GetMapping("/")
+    @GetMapping("/list")
     public String listAll(Model model, Authentication auth){
         System.out.println("patient/: auth= " + auth.getAuthorities());
         System.out.println("patient/: user= " + daoUser.currentUser().getPerson().getFullName());
@@ -62,7 +62,7 @@ public class PatientController {
             System.out.println("getFormAddPatient, форма не отправлена" +auth.getAuthorities() );
 //            model.addAttribute("patient", patient);
         }
-        return "index";
+        return "/";
     }
 
     @PostMapping("/add/")
@@ -91,9 +91,9 @@ public class PatientController {
             ra.addFlashAttribute("goodMsg", "Пациент " + patient.getPerson().getFullName() +
                     " " + "добавлен");
             System.out.println(" patientAdd role= "+ patientAdd.getPerson().getUser().getRoles());
-           // return "redirect:/";
+//            return "redirect:/list";
         }
-        return "redirect:/patient/";
+        return "redirect:/patient/list";
     }
 
     @GetMapping("/update/{id}")
@@ -111,15 +111,31 @@ public class PatientController {
     @PostMapping("/update/")
     public String updatePerson(Patient patient, RedirectAttributes ra){
         System.out.println("форма получена");
-        System.out.println("patient.toString()" + patient.toString());
+        System.out.println("patient " + patient);
+        System.out.println("patient.getPerson() " + patient.getPerson());
 
-//        без изменения персональных данных
-//        Person updPerson = daoPerson.update(patient.getPerson());
-//        patient.setPerson(updPerson);
+        Optional<Patient> patientUpd = daoPatient.getById(patient.getId());
+        if (patientUpd.isPresent()) {
+            System.out.println("1" +patientUpd.get().getPerson().getUser());
+            patient.getPerson().setUser(patientUpd.get().getPerson().getUser());
+            System.out.println("2" + patient.getPerson().getUser());
 
-        Patient patientUpd = daoPatient.update(patient);
-        ra.addFlashAttribute("goodMsg", "Данные о пациенте " + patientUpd + " обновлены");
-        return "redirect:/patient/";
+            Person personU = daoPerson.update(patient.getPerson());
+
+            patientUpd.get().setPerson(personU);
+
+            patient = daoPatient.update(patientUpd.get());
+
+
+            ra.addFlashAttribute("goodMsg", "Пациент " + patient.getPerson().getFullName() +
+                    " " + "обновлен");
+            //  System.out.println(" patientAdd role= " + patient.getPerson().getUser().getRoles());
+            return "redirect:/patient/list";
+        }
+
+//        Patient patientUpd = daoPatient.update(patient);
+//        ra.addFlashAttribute("goodMsg", "Данные о пациенте " + patientUpd + " обновлены");
+        return "/";
     }
 
     @GetMapping("/detail/{id}")
@@ -137,7 +153,7 @@ public class PatientController {
     public String deleteDoctor(@PathVariable ("id") Integer patientId){
         daoPatient.delete(patientId);
 
-        return "redirect:/patient/";
+        return "redirect:/patient/list";
     }
 
 }

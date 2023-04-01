@@ -36,8 +36,8 @@
 </table>
 <a th:href="@{/}" class="btn btn-secondary">Отмена</a>
 
-<a th:if="${back=='patient-card'}" th:href="@{/patient-card/}" class="btn btn-secondary">Отмена</a>
-<a th:if="${back=='patient-card/patient'}" th:href="@{/patient-card/patient}" class="btn btn-dark">Отмена</a>
+<a th:if="${back == 'patient-card'}" th:href="@{/patient-card/}" class="btn btn-secondary">Отмена</a>
+<a th:if="${back == 'patient-card/patient'}" th:href="@{/patient-card/patient}" class="btn btn-dark">Отмена</a>
 <footer th:insert="layout/page-layout.html :: footer"></footer>
 </body>
 </html>

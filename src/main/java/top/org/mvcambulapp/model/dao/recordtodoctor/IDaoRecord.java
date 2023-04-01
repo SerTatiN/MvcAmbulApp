@@ -13,9 +13,9 @@ public interface IDaoRecord extends IDaoBase<RecordToDoctor> {
 //    List<RecordToDoctor> getRecordsToDoctor(Doctor doctor);
     //List<RecordToDoctor> getRecordsToSchedule(Schedule schedule);
     List<RecordToDoctor> getRecordsByDoctorId(Integer id);
-    List<RecordToDoctor> getRecordsByDoctorIdSortedByDate(Integer id);
+    List<RecordToDoctor> getRecordsByDoctorIdSortedByTime(Integer id);
     List<RecordToDoctor> getRecordsByDoctorIdAndDate(Integer id,Date date);
-
+    List<RecordToDoctor> getRecordsByScheduleIdSortedByTime(Integer id);
     List<RecordToDoctor> getRecordsByPatientId(Integer id);
 
 }

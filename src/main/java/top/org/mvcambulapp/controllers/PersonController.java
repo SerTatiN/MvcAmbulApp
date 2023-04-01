@@ -33,11 +33,16 @@ public class PersonController {
     }
 
     @GetMapping("/add/")
-    public String getFormAddPerson(Model model){
-        Person person = new Person();
-        System.out.println("форма Person отправлена");
-        model.addAttribute("person", person);
-        return "person/person-form";
+    public String getFormAddPerson(Model model,Authentication auth){
+        if (auth.getAuthorities().toString().contains("ROLE_ADMIN")) {
+            Person person = new Person();
+            System.out.println("форма Person отправлена");
+            model.addAttribute("person", person);
+            model.addAttribute("isAdmin", auth.getAuthorities().toString().contains("ROLE_ADMIN"));
+
+            return "person/person-form";
+        }
+        return "index";
     }
 
     @PostMapping("/add/")
@@ -45,7 +50,9 @@ public class PersonController {
         System.out.println("форма Person получена");
         System.out.println("person.getSurname() "+ person.getSurname());
         System.out.println("person.getBirthdate "+ person.getBirthdate());
+
         Person personAdd = daoPerson.save(person);
+        System.out.println("person.getUser "+ person.getUser());
         ra.addFlashAttribute("goodMsg", "Житель " + personAdd + "добавлен");
         return "redirect:/person/";
     }
