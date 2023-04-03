@@ -16,10 +16,9 @@ import top.org.mvcambulapp.model.dao.user.DbDaoUser;
 import top.org.mvcambulapp.model.entity.*;
 
 import javax.xml.crypto.Data;
-import java.util.Date;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.*;
 
 @Controller
 @RequestMapping("/record")
@@ -81,14 +80,17 @@ public class RecordController {
 
         if (auth.getAuthorities().toString().contains("ROLE_DOCTOR")) {
             List<RecordToDoctor> records = daoRecord.getRecordsByScheduleIdSortedByTime(scheduleId);
+            System.out.println("list " + records.size());
+
                 //daoRecord.getRecordsByDoctorIdSortedByTime(daoUser.currentUser().getPerson().getDoctor().getId());
+//            if (!records.isEmpty()) {
 
+                model.addAttribute("schedule", daoSchedule.getById(scheduleId).get());
+                //        model.addAttribute("doctor", daoUser.currentUser().getPerson().getDoctor());//?
+                model.addAttribute("records", records);
+                model.addAttribute("back", back);
+                model.addAttribute("isDoctor", auth.getAuthorities().toString().contains("ROLE_DOCTOR"));
 
-            model.addAttribute("schedule", daoSchedule.getById(scheduleId).get());
-            model.addAttribute("doctor", daoUser.currentUser().getPerson().getDoctor());
-            model.addAttribute("records", records);
-            model.addAttribute("back", back);
-//            model.addAttribute("isDoctor", auth.getAuthorities().toString().contains("ROLE_DOCTOR"));
 
             return "record/doctor-list-date";
         }
@@ -102,16 +104,16 @@ public class RecordController {
 
         if (auth.getAuthorities().toString().contains("ROLE_DOCTOR")) {
             List<Schedule> schedules = daoSchedule.getScheduleByDoctorId(daoUser.currentUser().getPerson().getDoctor().getId());
-
+//            if (!schedules.isEmpty()) {
             //  List<RecordToDoctor> records = daoRecord.getRecordsByDoctorId(daoUser.currentUser().getPerson().getDoctor().getId());
           //  List<RecordToDoctor> records = daoRecord.getRecordsByDoctorIdAndDate(daoUser.currentUser().getPerson().getDoctor().getId(),date);
 
-           System.out.println("list " + schedules.size());
+            System.out.println("list " + schedules.size());
 
             model.addAttribute("schedules", schedules);
-            model.addAttribute("isDoctor", daoUser.currentUser().getPerson().getDoctor());
+         // model.addAttribute("isDoctor", daoUser.currentUser().getPerson().getDoctor());
             model.addAttribute("schedule", new Schedule());
-    //            model.addAttribute("isDoctor", auth.getAuthorities().toString().contains("ROLE_DOCTOR"));
+            model.addAttribute("isDoctor", auth.getAuthorities().toString().contains("ROLE_DOCTOR"));
 
             return "record/form-case-date";
         }
@@ -128,36 +130,50 @@ public class RecordController {
            List<RecordToDoctor> records = daoRecord.getRecordsByScheduleIdSortedByTime(schedule.getId());
            model.addAttribute("schedule", daoSchedule.getById(schedule.getId()).get());
            model.addAttribute("records", records);
-           // model.addAttribute("doctor", daoUser.currentUser().getPerson().getDoctor());
-            //            model.addAttribute("isDoctor", auth.getAuthorities().toString().contains("ROLE_DOCTOR"));
-            return "record/doctor-list-date";
+           model.addAttribute("doctor", daoUser.currentUser().getPerson().getDoctor());
+           model.addAttribute("isDoctor", auth.getAuthorities().toString().contains("ROLE_DOCTOR"));
+           return "record/doctor-list-date";
         }
         return "record/record-l";
     }
+//записанные пациенты на текущий день для приема
+    @GetMapping("/list-today")
+    public String listRecordToDoctorToday(Model model, Authentication auth){
+        System.out.println("listRecordToDoctorToday(): user= " + daoUser.currentUser().getPerson().getFullName());
+      //  Date date = new Date(2023-1900,02,27);
+        LocalDate ldate = LocalDate.now();
+        Date date = Date.from(ldate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+        System.out.println("date " + date);
+        if (auth.getAuthorities().toString().contains("ROLE_DOCTOR")) {
+            Optional<Schedule> schedule = daoSchedule.getScheduleByDoctorIdAndDate(daoUser.currentUser().getPerson().getDoctor().getId(), date);
+            //  List<RecordToDoctor> records = daoRecord.getRecordsByDoctorId(daoUser.currentUser().getPerson().getDoctor().getId());
+            //List<RecordToDoctor> records = daoRecord.getRecordsByDoctorIdAndDate(daoUser.currentUser().getPerson().getDoctor().getId(),date);
 
-//    @GetMapping("/list-date")
-//    public String listRecordToDoctorForDate(Model model, Authentication auth){
-//        System.out.println("listRecordToDoctor(): user= " + daoUser.currentUser().getPerson().getFullName());
-//        Date date = new Date(2023-1900,02,27);
-//        System.out.println("date " + date);
-//        if (auth.getAuthorities().toString().contains("ROLE_DOCTOR")) {
-//            //  List<RecordToDoctor> records = daoRecord.getRecordsByDoctorId(daoUser.currentUser().getPerson().getDoctor().getId());
-//            List<RecordToDoctor> records = daoRecord.getRecordsByDoctorIdAndDate(daoUser.currentUser().getPerson().getDoctor().getId(),date);
-//
-//            System.out.println("list " + records.size());
-//
-////            for (RecordToDoctor rd: records) {
-////                System.out.println(rd);
-////            }
+            if (schedule.isPresent()) {
+                System.out.println("schedule--" + schedule.get());
+                model.addAttribute("schedule", schedule.get());
+                model.addAttribute("doctor", daoUser.currentUser().getPerson().getDoctor());
+                //   model.addAttribute("records", records);
+             //   model.addAttribute("date", date);
+            model.addAttribute("isDoctor", auth.getAuthorities().toString().contains("ROLE_DOCTOR"));
+
+                return "record/doctor-list-date";
+            }
+           // System.out.println("list " + records.size());
+
+//            for (RecordToDoctor rd: records) {
+//                System.out.println(rd);
+//            }
 //            model.addAttribute("doctor", daoUser.currentUser().getPerson().getDoctor());
-//            model.addAttribute("records", records);
+//         //   model.addAttribute("records", records);
 //            model.addAttribute("date", date);
 ////            model.addAttribute("isDoctor", auth.getAuthorities().toString().contains("ROLE_DOCTOR"));
-//
-//            return "record/list-date";
-//        }
-//        return "record/record-l";
-//    }
+
+            System.out.println("Сегодня у вас нет приема " );
+
+        }
+        return "record/record-l";
+    }
 
 
 // Записи пациента
@@ -316,6 +332,29 @@ public class RecordController {
         }
     }
 
+    @GetMapping("/delete/{id}")
+    public String deleteRecordPatient(@PathVariable ("id") Integer recordId, RedirectAttributes ra, Authentication auth){
+        System.out.println("deleteRecordPatient " +  recordId);
+        if (auth.getAuthorities().toString().contains("ROLE_ADMIN")){
+            RecordToDoctor record = daoRecord.getById(recordId).get();
+            System.out.println("record delete " + record);
+            //List <Patient> patients = daoPatient.listAll();
+            record.setPatient(null);
+            record.setRecord(false);
+            RecordToDoctor recordUpd = daoRecord.update(record);
+            System.out.println("record deleted " + recordUpd);
+//            model.addAttribute("record", record);
+//            model.addAttribute("patients", patients);
+//            model.addAttribute("isAdmin", auth.getAuthorities().toString().contains("ROLE_ADMIN"));
+ //           return "record/record-patient-form";
+            ra.addFlashAttribute("goodMsg", "Запись пациента удалена!");
+            return "redirect:/record/";
+
+        }
+        System.out.println("patient record fail");
+        return "record/record-l";
+    }
+
     // Просмотр времени записи врача пациентом (другой лист)
 //    @GetMapping("/")
 //    public String listS(Model model,  Authentication auth){
@@ -376,38 +415,27 @@ public class RecordController {
         return "record/record-l";
     }
 
-
     @PostMapping("/record-to-doctor/")
     public String recordPatientSelf(RecordToDoctor record, RedirectAttributes ra) {
         System.out.println(" recordPatient() " + record);
         System.out.println(" record.getPatient() " + record.getPatient());
+
         record.setPatient(daoUser.currentUser().getPerson().getPatient());
+
         System.out.println(" record.getPatient() " + record.getPatient());
+
         record.setRecord(true);
+
         System.out.println(" record.getSchedule " + record.getSchedule());
 
         RecordToDoctor recordUpd = daoRecord.update(record);
         System.out.println(" recordUpd " + recordUpd);
 
+        ra.addFlashAttribute("goodMsg", "Пациент " +
+                record.getPatient().getPerson().getFullName() + " записан!");
+        return "redirect:/doctor/list";//doctorList /schedule/listDoctor"
 
-//        Schedule schedule = daoSchedule.getById(record.getSchedule().getId()).get();
-
-//        System.out.println("updRecord/schedule (1) " + schedule);
-//        if (record.getPatient() != null) {
-//            // record.setPatient(record.getPatient());
-//
-//            RecordToDoctor recordUpd = daoRecord.update(record);
-//
-//            System.out.println("updRecord/recordPatient/" + recordUpd);
-            ra.addFlashAttribute("goodMsg", "Пациент " +
-                    record.getPatient().getPerson().getFullName() + " записан!");
-            return "redirect:/schedule/listDoctor";//doctorList
-//        } else {
-//            System.out.println("Необходимо выбрать пациента!");
-//            ra.addFlashAttribute("goodMsg", "Пациент не выбран!");
-//
-//            return "redirect:/record/";
-//        }
     }
+
 
 }

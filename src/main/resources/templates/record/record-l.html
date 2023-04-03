@@ -38,8 +38,8 @@
       <td >
         <a th:if="${isAdmin}" th:href="@{'/record/update/' + ${record.id}}" class="btn btn-primary "> Редактировать </a>
         <a th:if="${isAdmin}" th:href="@{'/record/detail/' + ${record.id}}" class="btn btn-warning "> Информация </a>
-       <a th:if="${isAdmin and !record.isRecord()}" th:href="@{'/record/patient/' + ${record.id}}" class="btn btn-light "> Записать пациента </a> <!-- закрыть возможность записи у записанных-->
-<!--        <a th:if="${isAdmin}" th:href="@{'/schedule/listDoctor/' + ${record.id}}" class="btn btn-danger "> Удалить </a>-->
+        <a th:if="${isAdmin && !record.isRecord()}" th:href="@{'/record/patient/' + ${record.id}}" class="btn btn-light "> Записать пациента </a>
+        <a th:if="${isAdmin && record.isRecord && !record.isAccept} " th:href="@{'/record/delete/' + ${record.id}}" class="btn btn-danger "> Удалить запись пациента</a>
 <!--        <a th:if="${isAdmin}" th:href="@{'/record/deletePatient/' + ${record.id}}" class="btn btn-danger "> Удалить запись пациента</a>-->
       </td>
     </tr>
@@ -47,9 +47,7 @@
   </tbody>
 
 </table>
-<div>
-  <a th:if="${isAdmin}" th:href="@{/record/add/}" class="btn btn-success">Добавить расписание</a>
-</div>
+
 
 <footer th:insert="layout/page-layout.html :: footer"></footer>
 </html>

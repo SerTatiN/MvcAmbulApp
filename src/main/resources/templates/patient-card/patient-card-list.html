@@ -4,12 +4,14 @@
     <meta charset="UTF-8">
     <title>PatientCard List</title>
     <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+    <img th:src="@{/images/fon_medCard.jpg}" class="fon_page">
 </head>
 <body>
 
 <header th:insert="layout/page-layout.html :: header"></header>
 
-<h1> Медицинские карты пациентов</h1>
+<h1> Медицинские записи в карты пациентов</h1>
 <!-- вывод goodMsg если врач добавил запись в мед карту -->
 <div th:if="${goodMsg != null}" class="alert alert-success">
     [[${goodMsg}]]
@@ -24,14 +26,14 @@
             <th></th>
         </tr>
     </thead>
-    <tbody>
+    <tbody class="fon_table">
         <th:block th:each="patientCard: ${patientCards}">
             <tr>
                 <td>[[${patientCard.id}]]</td>
                 <td th:text="${#dates.format(patientCard.record.schedule.date, 'dd.MM.yyyy')}"></td>
                 <td>[[${patientCard.record.patient.getPerson().getFullName}]]</td>
                 <td>[[${patientCard.record.schedule.doctor.speciality}]]: [[${patientCard.record.schedule.doctor.getPerson().getFullName}]]</td>
-    <!--            <td>[[${patientCard.result}]]</td> -->
+<!--                <td>[[${patientCard.result}]]</td>-->
                 <td>
                     <a th:if="${isAdmin}" th:href="@{'/patient-card/detail/' + ${patientCard.id}+'?back=patient-card'}" class="btn btn-primary ">Посмотреть результат приема</a>
                 </td>
@@ -40,12 +42,8 @@
 
     </tbody>
 </table>
-<!--убрать, добавлять не будем здесь. Это прием врача, при выаоде списка записанных-->
-<!--<div>-->
-<!--    &lt;!&ndash;<a th:if="${isAdmin}" th:href="@{'/registration/patient/'+ '?back=patient'}" class="btn btn-success">Добавить пациента</a>&ndash;&gt;-->
-<!--    <a th:if="${isDoctor}" th:href="@{'/patient-card/add/'+ {}+'?back=patient-card'}" class="btn btn-success">Добавить лист записи</a>-->
-<!--</div>-->
 
+<a th:href="@{/}" class="btn btn-danger">Отмена</a>
 <footer th:insert="layout/page-layout.html :: footer"></footer>
 
 

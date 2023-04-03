@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <meta charset="UTF-8">
+    <title>RecordToDoctorPatientSelf</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
+</head>
+<body>
+<header th:insert="layout/page-layout.html :: header"></header>
+
+<h1> Выбор времени записи пациентом</h1>
+<table class="table table-bordered">
+    <thead class="table-light">
+    <tr>
+        <th >Время приема</th>
+        <th ></th>
+        <th ></th>
+        <th ></th>
+        <th> </th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <form method="post" id="record"  th:action="@{/record/record-to-doctor}" th:object="${record}">
+        <input th:field="*{id}" hidden>
+        <input th:field="*{patient}" hidden>
+
+    <th:block th:each="rec:${records}">
+          <tr>
+              <td th:text="${#temporals.format(rec.timeAccept, 'HH:mm')}"></td>
+              <td>
+                  <a th:if="${!record.isRecord}" th:text="${#temporals.format(rec.timeAccept, 'HH:mm')}" class="btn btn-success"} ></a>
+              </td>
+
+              <td><button th:field="*{timeAccept}">Записаться</button> </td>
+          </tr>
+
+
+        </th:block>
+    </form>
+    </tbody>
+</table>
+
+
+
+</body>
+<footer th:insert="layout/page-layout.html :: footer"></footer>
+</html>

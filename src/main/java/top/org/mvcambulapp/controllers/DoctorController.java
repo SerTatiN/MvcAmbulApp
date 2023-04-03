@@ -44,7 +44,7 @@ public class DoctorController {
         System.out.println("patient/: user= " + daoUser.currentUser().getPerson().getFullName());
         System.out.println("doctor2: role= " + daoUser.currentUser().getRoles());
         System.out.println("/ listAll");
-      //  model.addAttribute("user", principal);
+
         List<Doctor> doctors = daoDoctor.listAll();
         System.out.println("list " + doctors.size());
         model.addAttribute("doctors", doctors);
@@ -105,6 +105,7 @@ public class DoctorController {
             if (doctor.isPresent()) {
                 System.out.println("id person {id} " + doctor.get().getPerson().getId());
                 model.addAttribute("doctor", doctor.get());
+                model.addAttribute("isAdmin", auth.getAuthorities().toString().contains("ROLE_ADMIN"));
             }
             System.out.println("форма отправлена");
             return "doctor/doctor-update";
@@ -127,10 +128,11 @@ public class DoctorController {
     }
 
     @GetMapping("/detail/{id}")
-    public String getDetail(@PathVariable ("id") Integer doctorId, @RequestParam String back, Model model){
+    public String getDetail(@PathVariable ("id") Integer doctorId, @RequestParam String back, Model model,Authentication auth){
         Optional<Doctor>  doctor = daoDoctor.getById(doctorId);
         if (doctor.isPresent()) {
             model.addAttribute("doctor", doctor.get());
+            model.addAttribute("auth",auth.getAuthorities().toString());
             model.addAttribute("back", back);
         }
         return "doctor/doctor-detail";
@@ -152,10 +154,12 @@ public class DoctorController {
         return "redirect:/doctor/list";
     }
 
-    @GetMapping("/accept/{id}")
-    public String getFormToAcceptPatient(@PathVariable ("id") Integer patientId,Model model){
-        return "doctor/doctor-form-accept";
-    }
+//    @GetMapping("/accept/{id}")
+//    public String getFormToAcceptPatient(@PathVariable ("id") Integer patientId,Model model){
+//        System.out.println("getFormToAcceptPatient" + patientId);
+//        PA
+//        return "doctor/doctor-form-accept";
+//    }
 
 
 

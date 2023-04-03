@@ -39,7 +39,6 @@ public class DbDaoUser implements IDaoUser{
             user.setPassword(encodedPassword);
             return userRepository.save(user);
         }
-
         return null;
     }
     public User currentUser(){

@@ -47,7 +47,7 @@ public class PatientCardController {
         }
         return "index";
     }
-//  Всю мед карту пациента (Doctor и Patient)
+//  Всю мед карту авторизованного пациента (?надо для Doctor и Patient)
     @GetMapping("/patient")
     public String listAllPatientCard(Model model, Authentication auth){
         System.out.println("patient/: user= " + daoUser.currentUser().getPerson().getFullName());
@@ -62,32 +62,32 @@ public class PatientCardController {
         }
         return "index";
     }
-//запись в мед карту
-    @GetMapping("/add/{id}")
-    public String getFormAddPatientCard(Model model, @PathVariable("id") Integer recordId, Authentication auth ){
-        System.out.println("getFormAddPatientCard()"+ recordId);
+//запись в мед карту делает доктор
+    @GetMapping("/doctor-accept/{id}")
+    public String getFormToAcceptPatient(Model model, @PathVariable("id") Integer recordId, Authentication auth ){
+        System.out.println("getFormToAcceptPatient()"+ recordId);
 
         if (auth.getAuthorities().toString().contains("ROLE_DOCTOR") ) {
             ListPatientCard listCard = new ListPatientCard(daoRecord.getById(recordId).get());
 
-            System.out.println("форма  отправлена");
+           // System.out.println("форма  отправлена doctor-accept " + listCard.getId());
+            model.addAttribute("record", daoRecord.getById(recordId).get());
             model.addAttribute("listCard", listCard);
             model.addAttribute("isDoctor", auth.getAuthorities().toString().contains("ROLE_DOCTOR"));
         }
         return "patient-card/patient-card-form";
     }
 
-    @PostMapping("/add/")
+    @PostMapping("/doctor-accept/")
     public String addPatientCard(ListPatientCard listCard, RedirectAttributes ra){
-        System.out.println("форма на запись получена");
-        System.out.println(listCard.toString());
-     //  System.out.println(" "+ patient.getPerson().getBirthdate());
-     //   Person addPerson = daoPerson.save(patient.getPerson());
+        System.out.println("форма на запись получена " +listCard);
+        System.out.println("listCard.getRecord() ?"+ listCard.getRecord());
+        listCard.getRecord().setAccept(true);
+        System.out.println("listCard.getRecord().setAccept(true) ?" + daoRecord.getById(listCard.getRecord().getId()));
 
-     //   patient.setPerson(addPerson);
         ListPatientCard patientCardAdd = daoListPatientCard.save(listCard);
         ra.addFlashAttribute("goodMsg", "Лист в карту пациента " +
-                patientCardAdd.getRecord().getPatient().getPerson().getSurname() + "добавлен");
+                patientCardAdd.getRecord().getPatient().getPerson().getSurname() + " добавлен");
         return "redirect:/patient-card/";
     }
 

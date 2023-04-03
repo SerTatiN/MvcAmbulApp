@@ -22,7 +22,7 @@
     <th rowspan="2">ФИО специалиста</th>
     <th >Дата приема</th>
     <th rowspan="2"></th>
-    <!-- <th rowspan="2"> расписание</th>-->
+
     <th></th>
   </tr>
   <tr>
@@ -45,7 +45,7 @@
           <a th:if="${isAdmin}" th:href="@{'/schedule/delete/' + ${schedule.id}}" class="btn btn-danger "> Удалить </a>
           <!-- <a th:href="@{'/schedule/detail/' + ${schedule.id}+'?back=schedule'}" class="btn btn-secondary "> РАсписание/Записаться </a>-->
           <!--            <a th:if="${isAdmin}" th:href="@{'/record/record-to-doctor/' + ${schedule.id}}" class="btn btn-secondary "> Записать пациента </a>-->
-          <a th:if="${isPatient}" th:href="@{'/record/record-to-doctor/' + ${schedule.id} +'?back=schedule'}" class="btn btn-secondary "> Записаться </a>
+          <a th:if="${isPatient}" th:href="@{'/record/record-to-doctor/' + ${schedule.id} +'?back=schedule'}" class="btn btn-secondary "> Подробнее </a>
           <!--  <a th:href="@{'/record/list/' + ${schedule.id}+'?back=schedule'}" class="btn btn-secondary "> подробное расписание врача </a>-->
         </td>
       </tr>

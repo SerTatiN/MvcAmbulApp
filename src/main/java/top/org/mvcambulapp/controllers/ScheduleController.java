@@ -52,6 +52,7 @@ public class ScheduleController {
     public String listAllToRec(Model model, Authentication auth){
         System.out.println("schedule/listAllToRec " + auth.getAuthorities().toString());
         List<Doctor> doctors = daoDoctor.listAll();
+
 //        List<Schedule> schedules = daoSchedule.listAll();
 
         System.out.println("doctors " + doctors.size());
@@ -125,13 +126,22 @@ public class ScheduleController {
     @PostMapping("/add/")
     public String addSchedule(Schedule schedule, RedirectAttributes ra){
         System.out.println("form  получена " + schedule);
-        Schedule scheduleAdd = daoSchedule.save(schedule);
-        System.out.println("scheduleAdd: " + scheduleAdd);
+        if (!daoSchedule.getScheduleByDoctorIdAndDate(schedule.getDoctor().getId(),schedule.getDate()).isPresent()) {
+            Schedule scheduleAdd = daoSchedule.save(schedule);
+            System.out.println("scheduleAdd: " + scheduleAdd);
 
-        createScheduleToRecord(scheduleAdd.getStartTime(),scheduleAdd.getEndTime(),15, scheduleAdd);
+            createScheduleToRecord(scheduleAdd.getStartTime(),scheduleAdd.getEndTime(),15, scheduleAdd);
+
+            ra.addFlashAttribute("goodMsg", "Расписание специалисту " +
+                    scheduleAdd.getDoctor().getPerson().getFullName() + " added");
+        }
+//        Schedule scheduleAdd = daoSchedule.save(schedule);
+//        System.out.println("scheduleAdd: " + scheduleAdd);
+//
+//        createScheduleToRecord(scheduleAdd.getStartTime(),scheduleAdd.getEndTime(),15, scheduleAdd);
 
         ra.addFlashAttribute("goodMsg", "Расписание специалисту " +
-                scheduleAdd.getDoctor().getPerson().getFullName() + " added");
+                schedule.getDoctor().getPerson().getFullName() + " не добавлено, так как на этот день уже есть прием!");
 
 
         return "redirect:/schedule/list";

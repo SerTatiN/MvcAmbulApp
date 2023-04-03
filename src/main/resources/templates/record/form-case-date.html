@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Form Case Date</title>
+  <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
+</head>
+<body>
+<div class="container-fluid text-center">
+  <h1>Выберите день приема</h1>
+  <form th:if="isDoctor" method="post" id="caseDate"  th:action="@{/record/list-form-date}" th:object="${schedule}">
+    <div>
+<!--      <th:block th:each="schdl: ${schedules}">-->
+<!--&lt;!&ndash;        <h2 th:text="${#dates.format(schdl.date, 'dd.MM.yyyy')}"></h2>&ndash;&gt;-->
+<!--         <th:block th:text="${#dates.format(schdl.date, 'dd.MM.yyyy')}"></th:block>-->
+
+<!--      </th:block>-->
+      </div>
+      <div>
+          <label for ="dateAccept"> Выберите дату приема: </label>
+          <select id="dateAccept" th:field="*{id}">
+              <th:block th:each="schdl: ${schedules}">
+                  <option th:value="${schdl.id}">
+                       <th:block th:text="${#dates.format(schdl.date, 'dd.MM.yyyy')}"></th:block>
+                  </option>
+              </th:block>
+          </select>
+      </div>
+    <button class="btn btn-success">Выбрать</button>
+
+    <!-- Кнопка Cancel -->
+    <a th:href="@{/}" class="btn btn-danger">Отмена</a>
+  </form>
+</div>
+</body>
+</html>

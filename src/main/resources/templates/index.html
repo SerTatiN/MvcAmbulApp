@@ -4,20 +4,25 @@
     <meta charset="UTF-8">
     <title>Index</title>
     <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
+
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+    <img th:src="@{/images/fon_index.jpg}" class="fon_page">
+
+
 </head>
-<body>
+
 <header th:insert="layout/page-layout.html :: header"></header>
 
-<h1 >Добро пожаловать в наш Медицинский центр "ВолгаМед"</h1>
+    <h1 >Добро пожаловать в информационную систему "ВолгаМед"</h1>
 
     <h3><a th:href="@{/doctor/list}">Наши специалисты</a></h3>
     <h3><a th:if="${isAdmin}" th:href="@{/person/}">Жители</a></h3>
-    <h3><a th:if="${!isAdmin}" th:href="@{/schedule/list2}">Расписание специалистов</a></h3>
+<!--    <h3><a th:if="!${isAdmin}" th:href="@{/schedule/list2}">Расписание специалистов</a></h3>-->
 
-    <h3><a th:if="${isAdmin}" th:href="@{/schedule/list}">Расписание специалиста</a></h3>
+    <h3><a th:if="${isAdmin or isDoctor}" th:href="@{/schedule/list}">Расписание специалистов</a></h3>
     <h3><a th:if="${isAdmin}" th:href="@{/patient/list}">Пациенты</a></h3>
     <h3><a th:if="${isAdmin}" th:href="@{/record/}">Записать к специалисту</a></h3>
-    <h3><a th:if="${isAdmin}" th:href="@{/patient-card/}">Медицинские карты пациенты</a></h3>
+    <h3><a th:if="${isAdmin}" th:href="@{/patient-card/}">Медицинские карты пациентов</a></h3>
 
 
 <!--    <h3><a th:href="@{/record/}">Расписание</a></h3>-->
@@ -26,7 +31,7 @@
     <h3><a th:if="${isDoctor}" th:href="@{/record/list-form-date}">Записанные пациенты</a></h3>
     <h3><a th:if="${isDoctor}" th:href="@{/record/list-today}">Принять пациентов</a></h3>
 
-    <h3><a th:if="${isPatient}" th:href="@{/record/record-to-doctor}"> Записаться к специалистам</a></h3>
+    <h3><a th:if="${isPatient}" th:href="@{/doctor/list}"> Записаться к специалистам</a></h3>
     <h3><a th:if="${isPatient}" th:href="@{/patient-card/patient}"> Моя медицинская карта</a></h3>
     <h3><a th:if="${isPatient}" th:href="@{/record/patient-records}"> Мои записи</a></h3>
 

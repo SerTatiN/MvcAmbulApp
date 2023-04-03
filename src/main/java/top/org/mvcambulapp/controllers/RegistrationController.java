@@ -49,46 +49,51 @@ public class RegistrationController {
    public String addPatient(Patient patient, Model model,  Authentication auth) {
 
         User userAdd = daoUser.save(patient.getPerson().getUser());
-        userAdd.getRoles().add(daoRole.getRoleByAuthority("ROLE_PATIENT"));
+        if (userAdd != null) {
+            userAdd.getRoles().add(daoRole.getRoleByAuthority("ROLE_PATIENT"));
 
-        Person person = patient.getPerson();
-        person.setUser(userAdd);
-        person = daoPerson.save(person);
+            Person person = patient.getPerson();
+            person.setUser(userAdd);
+            person = daoPerson.save(person);
 
-        patient.setPerson(person);
-        daoPatient.save(patient);
+            patient.setPerson(person);
+            daoPatient.save(patient);
 
-        System.out.println(patient.getPerson());
-        System.out.println(patient.getPerson().getUser());
-        System.out.println(patient);
-        return "redirect:/";
-    }
-    @GetMapping("/doctor/")
-    public String registrationDoctor(Model model) {
-        model.addAttribute("doctor", new Doctor());
-        System.out.println("форма регистрации отправлена");
-      //  return "registration/registration-doctor-form";
-        return "doctor/doctor-form";
-    }
-    @PostMapping("/doctor/")
-    @Transactional
-    public String addDoctor(Doctor doctor, Model model,  Authentication auth) {
+            System.out.println(patient.getPerson());
+            System.out.println(patient.getPerson().getUser());
+            System.out.println(patient);
 
-        User docAdd = daoUser.save(doctor.getPerson().getUser());
-        docAdd.getRoles().add(daoRole.getRoleByAuthority("ROLE_DOCTOR"));
-        Person personAdmin = doctor.getPerson();
-        personAdmin.setUser(docAdd);
-        personAdmin = daoPerson.save(personAdmin);
-
-        doctor.setPerson(personAdmin);
-        daoDoctor.save(doctor);
-
-        System.out.println(doctor.getPerson());
-        System.out.println(doctor.getPerson().getUser());
-        System.out.println(doctor);
+//            return "redirect:/";
+        }
 
         return "redirect:/";
     }
+//    @GetMapping("/doctor/")
+//    public String registrationDoctor(Model model) {
+//        model.addAttribute("doctor", new Doctor());
+//        System.out.println("форма регистрации отправлена");
+//      //  return "registration/registration-doctor-form";
+//        return "doctor/doctor-form";
+//    }
+//    @PostMapping("/doctor/")
+//    @Transactional
+//    public String addDoctor(Doctor doctor, Model model,  Authentication auth) {
+//
+//        User docAdd = daoUser.save(doctor.getPerson().getUser());
+//        docAdd.getRoles().add(daoRole.getRoleByAuthority("ROLE_DOCTOR"));
+//        Person personAdmin = doctor.getPerson();
+//        personAdmin.setUser(docAdd);
+//        personAdmin = daoPerson.save(personAdmin);
+//
+//        doctor.setPerson(personAdmin);
+//        daoDoctor.save(doctor);
+//
+//        System.out.println(doctor.getPerson());
+//        System.out.println(doctor.getPerson().getUser());
+//        System.out.println(doctor);
+//
+//        return "redirect:/";
+//    }
 
 //   @PostMapping("/patient/")
 //    public String addPatient(Patient patient, Model model,  Authentication auth) {//@RequestParam String back,

@@ -2,11 +2,11 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Doctor List at Date</title>
+    <title>ListPatientForDoctorAtDate</title>
   <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
 </head>
 <body>
-  <h1>Запиcанные пациенты</h1>
+  <h1>Запиcанные пациенты к доктору:</h1>
   <table>
     <tr>
         <td><h3>[[${schedule.doctor.speciality}]]: </h3></td>
@@ -23,15 +23,21 @@
               <tr>
                   <th>Время приема</th>
                   <th>Пациент</th>
+                  <th>Статус</th>
                   <th></th>
               </tr>
           </thead>
           <tbody>
-              <th:block th:each="record: ${records}">
+              <th:block th:each="record: ${schedule.getRecordToAccept()}">
                   <tr>
                       <td th:text="${#temporals.format(record.timeAccept, 'HH:mm')}"></td>
                       <td th:if="${record.isRecord}">[[${record.patient.person.getFullName()}]]</td>
                       <td th:unless="${record.isRecord}">Нет записи</td>
+                      <td th:if="${record.isRecord && record.isAccept}">Принят</td>
+                      <td th:if="${record.isRecord && !record.isAccept}">Ожидает прием</td>
+                      <td>
+                          <a th:if="${isDoctor &&record.isRecord && !record.isAccept}" th:href="@{'/patient-card/doctor-accept/'+${record.id}}" class="btn btn-primary" >Принять пациента</a>
+                      </td>
                   </tr>
               </th:block>
           </tbody>

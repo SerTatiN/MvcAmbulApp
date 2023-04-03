@@ -4,13 +4,14 @@
     <meta charset="UTF-8" >
     <title> Специалисты-врачи </title>
     <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
-
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+    <img th:src="@{/images/fon_doctors.jpg}" class="fon_page">
 </head>
 <body>
 <header th:insert="layout/page-layout.html :: header"></header>
-
+<!--<div class = "ttt">-->
 <h1> Наши специалисты</h1>
-    <!-- вывод goodMsg если врач добавлен -->
+    <!-- вывод goodMsg  -->
     <div th:if="${goodMsg != null}" class="alert alert-success">
         [[${goodMsg}]]
     </div>
@@ -25,7 +26,7 @@
                 <th></th>
             </tr>
         </thead>
-        <tbody>
+        <tbody class="fon_table">
         <th:block th:each="doctor: ${doctors}">
 
             <tr>
@@ -52,6 +53,6 @@
 
 
 <footer th:insert="layout/page-layout.html :: footer"></footer>
-
+<!--</div>-->
 </body>
 </html>

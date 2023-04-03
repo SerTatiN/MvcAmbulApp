@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Doctor List at Date1</title>
+  <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
+</head>
+<body>
+<h1>Запиcанные пациенты</h1>
+<table>
+  <tr>
+    <td><h3>[[${schedule.doctor.speciality}]]: </h3></td>
+    <td><h3>[[${schedule.doctor.person.getFullName()}]]</h3></td>
+  </tr>
+  <tr>
+    <td><h3>Дата: </h3></td>
+    <td ></td>
+  </tr>
+</table>
+
+<a th:href="@{/}" class="btn btn-secondary">Отмена</a>
+<footer th:insert="layout/page-layout.html :: footer"></footer>
+
+</body>
+</html>

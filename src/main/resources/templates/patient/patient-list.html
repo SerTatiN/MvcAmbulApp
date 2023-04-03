@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <title>Patient List</title>
     <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+    <img th:src="@{/images/patients.jpg}" class="fon_page">
 </head>
 <body>
 
@@ -27,7 +29,7 @@
         <th></th>
     </tr>
     </thead>
-    <tbody>
+    <tbody class="fon_table">
     <th:block th:each="patient: ${patients}">
 
         <tr>

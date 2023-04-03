@@ -11,7 +11,7 @@
     <form method="post" th:action="@{/person/update/}" th:object="${person}">
         <!--  id уже заполнено -->
         <input th:field="*{id}" hidden>
-        <div>person
+        <div>
             <label for ="doctor-surname"> Фамилия: </label>
             <input id="doctor-surname" th:type="text" th:field="*{surname}" required minlength="1" maxlength="250" >
         </div>
@@ -27,20 +27,20 @@
             <label for ="doctor-birthdate"> Дата рождения: </label>
             <input id="doctor-birthdate" type="date" th:field="*{birthdate}" required  ><!--asp-format="{yyyy-MM-dd}"value="2020-10-29"-->
         </div>
-        <div>
-            <label for ="doctor-email"> Адрес эл. почты: </label>
-            <input id="doctor-email" type="email" th:field="*{user.login}" required minlength="1" maxlength="250" >
-        </div>
-        <div class="row mb-3">
-            <label class="col-2 col-form-label" for ="patient-pass"> Пароль: </label>
-            <div class="col-sm-10">
-                <input id="patient-pass" type="password" th:field="*{user.password}" required minlength="1" maxlength="250" >
-            </div>
-        </div>
+<!--        <div>-->
+<!--            <label for ="doctor-email"> Адрес эл. почты: </label>-->
+<!--            <input id="doctor-email" type="email" th:field="*{user.login}" required minlength="1" maxlength="250" >-->
+<!--        </div>-->
+<!--        <div class="row mb-3">-->
+<!--            <label class="col-2 col-form-label" for ="patient-pass"> Пароль: </label>-->
+<!--            <div class="col-sm-10">-->
+<!--                <input id="patient-pass" type="password" th:field="*{user.password}" required minlength="1" maxlength="250" >-->
+<!--            </div>-->
+<!--        </div>-->
         <button class="btn btn-success">Сохранить</button>
 
         <!-- Кнопка Cancel -->
-        <a th:href="@{/person/}" class="btn btn-danger">Отмена</a>
+        <a th:href="@{/person/list}" class="btn btn-danger">Отмена</a>
     </form>
 </div>
 </body>

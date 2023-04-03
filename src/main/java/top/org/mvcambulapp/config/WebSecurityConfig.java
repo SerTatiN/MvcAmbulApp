@@ -10,6 +10,7 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -39,7 +40,7 @@ public class WebSecurityConfig {
                 )
                 .formLogin((form) -> form
                         .loginPage("/login")
-                            .defaultSuccessUrl("/")
+                            .defaultSuccessUrl("/",true)
 //                        .defaultSuccessUrl("/error?continue")
                         .permitAll()
                         .failureUrl("/login?error=true")
@@ -47,23 +48,7 @@ public class WebSecurityConfig {
                 //.logout((logout) -> logout.permitAll());
                 .logout().logoutSuccessUrl("/login");
         return http.build();
-    }
-//    Давайте создадим эту иерархию в Spring Security, просто представив компонент типа RoleHierarchy
-//    @Bean
-//    public RoleHierarchy roleHierarchy() {
-//        RoleHierarchyImpl roleHierarchy = new RoleHierarchyImpl();
-//        String hierarchy = "ROLE_ADMIN > ROLE_DOCTOR \n ROLE_DOCTOR > ROLE_USER";
-//        roleHierarchy.setHierarchy(hierarchy);
-//        return roleHierarchy;
-//    }
-//    Чтобы включить эту иерархию ролей в веб-выражения Spring, мы добавляем экземпляр roleHierarchy в обработчик WebSecurityExpressionHandler:
-//    @Bean
-//    public DefaultWebSecurityExpressionHandler webSecurityExpressionHandler() {
-//        DefaultWebSecurityExpressionHandler expressionHandler = new DefaultWebSecurityExpressionHandler();
-//        expressionHandler.setRoleHierarchy(roleHierarchy());
-//        return expressionHandler;
-//    }
-
+    }//
     // Зависимость кодировщика паролей
     @Bean
     public PasswordEncoder encoder() {
@@ -99,22 +84,8 @@ public class WebSecurityConfig {
         jdbcUserDetailsManager.setAuthenticationManager(authenticationManager);
         return jdbcUserDetailsManager;
     }
+    @Bean
+    public WebSecurityCustomizer ignoringCustomizer(){
+        return(web -> web.ignoring().requestMatchers("/css/**"));
+    }
 }
-//@Configuration
-//public class SecurityConf extends WebSecurityConfigurerAdapter {
-//
-//	@Autowired
-//	private DatabaseUserDetailService userDetailService;
-//	@Override
-//	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-//		auth.userDetailsService(userDetailService);
-//	}
-// @Override
-//	protected void configure(HttpSecurity http) throws Exception {
-//		http.authorizeRequests().antMatchers("/public/**").permitAll()
-//		.anyRequest().authenticated()
-//		.and()
-//		.httpBasic();
-//	}
-//
-//}

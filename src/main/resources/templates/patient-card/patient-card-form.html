@@ -2,26 +2,28 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Patient Card Add </title>
+    <title>PatientCardAdd</title>
     <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
 </head>
 <body>
 <header th:insert="layout/page-layout.html :: header"></header>
     <div class="container-fluid text-center">
-    <h1> Запись в мед.карту </h1>
-        <form th:if="${isDoctor}" method="post" id="addList"  th:action="@{/patient-card/add/}" th:object="${listCard}">
+    <h1> Запись приема в медкарту пациента</h1>
+        <form th:if="${isDoctor}" method="post" id="accept"  th:action="@{/patient-card/doctor-accept/}" th:object="${listCard}">
+            <input th:field="*{id}" hidden>
+            <input th:field="*{record}" hidden>
             <div>
-               <h2 th:text="${#dates.format(listCard.record.schedule.date, 'dd.MM.yyyy')}"> </h2>
+                <h2>Пациент -[[${record.patient.person.getFullName()}]] </h2>
+                <h2 th:text="${#dates.format(listCard.record.schedule.date, 'dd.MM.yyyy')}"> </h2>
                 <h2>[[${record.schedule.doctor.speciality}]] - [[${record.schedule.doctor.person.getFullName()}]]</h2>
-
             </div>
             <div>
                 <label for ="result"> Результат приема: </label>
                 <textarea id="result" cols= "100" raw="20"  th:field="*{result}" required minlength="1" maxlength="250" >
-                </textarea>
+                        </textarea>
             </div>
 
-            <button class="btn btn-success">Добавить</button>
+            <button class="btn btn-success">Сохранить</button>
 
             <!-- Кнопка Cancel -->
             <a th:href="@{/patient-card/}" class="btn btn-danger">Отмена</a>
