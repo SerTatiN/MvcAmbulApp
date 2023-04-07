@@ -62,7 +62,7 @@ public class PatientController {
             System.out.println("getFormAddPatient, форма не отправлена" +auth.getAuthorities() );
 //            model.addAttribute("patient", patient);
         }
-        return "/";
+        return "index";
     }
 
     @PostMapping("/add/")
@@ -149,7 +149,7 @@ public class PatientController {
         }
         return "patient/patient-detail";
     }
-    @GetMapping("/delete/{id}")
+    @GetMapping("/delete/{id}") // нельзя удалять пациентов
     public String deleteDoctor(@PathVariable ("id") Integer patientId){
         daoPatient.delete(patientId);
 

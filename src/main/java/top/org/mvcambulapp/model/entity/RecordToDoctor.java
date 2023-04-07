@@ -38,11 +38,10 @@ public class RecordToDoctor {
         this.isRecord = false;
         this.isAccept = false;
     }
-    public RecordToDoctor(Schedule schedule, LocalTime timeAccept) {//Date dateAccept,
+    public RecordToDoctor(Schedule schedule, LocalTime timeAccept) {
         this.id = id;
         this.patient = null;
         this.schedule = schedule;
-       // this.dateAccept = dateAccept;
         this.timeAccept = timeAccept;
         this.isRecord = false;
         this.isAccept = false;
@@ -52,7 +51,6 @@ public class RecordToDoctor {
         this.id = id;
         this.patient = patient;
         this.schedule = schedule;
-     //   this.dateAccept = dateAccept;
         this.timeAccept = timeAccept;
         this.isRecord = isRecord;
         this.isAccept = isAccept;
@@ -61,7 +59,6 @@ public class RecordToDoctor {
     public RecordToDoctor(Patient patient, Schedule schedule,  LocalTime timeAccept) { //Date dateAccept,
         this.patient = patient;
         this.schedule = schedule;
-       // this.dateAccept = dateAccept;
         this.timeAccept = timeAccept;
         this.isRecord = false;
         this.isAccept = false;
@@ -83,25 +80,7 @@ public class RecordToDoctor {
         this.patient = patient;
     }
 
-//    public Doctor getDoctor() {
-//        return doctor;
-//    }
-//
-//    public void setDoctor(Doctor doctor) {
-//        this.doctor = doctor;
-//    }
 
-//    public Date getDateAccept() {
-//        return dateAccept;
-//    }
-//    public String getDateAcceptPrint() {
-//        SimpleDateFormat simple = new SimpleDateFormat("dd.MM.Y");
-//        return simple.format(dateAccept);
-//    }
-//
-//    public void setDateAccept(Date dateAccept) {
-//        this.dateAccept = dateAccept;
-//    }
 
     public LocalTime getTimeAccept() {
         return timeAccept;
@@ -143,10 +122,6 @@ public class RecordToDoctor {
     public String toString() {
         return "RecordToDoctor{" +
                 "id=" + id +
-  //              ", patient=" + patient.getPerson().getFullName()+
-  //              ", schedule=" + schedule.getId() +
- //               ", doctor=" + schedule.getDoctor().getPerson().getSurname() +
-//                ", dateAccept=" + getDateAcceptPrint() +
                 ", timeAccept=" + timeAccept +
                 ", isRecord=" + isRecord +
                 ", isAccept=" + isAccept +

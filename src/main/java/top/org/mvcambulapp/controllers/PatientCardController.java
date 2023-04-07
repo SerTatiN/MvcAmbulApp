@@ -64,7 +64,7 @@ public class PatientCardController {
     }
 //запись в мед карту делает доктор
     @GetMapping("/doctor-accept/{id}")
-    public String getFormToAcceptPatient(Model model, @PathVariable("id") Integer recordId, Authentication auth ){
+    public String getFormToAcceptPatient(Model model, @PathVariable("id") Integer recordId, Authentication auth){
         System.out.println("getFormToAcceptPatient()"+ recordId);
 
         if (auth.getAuthorities().toString().contains("ROLE_DOCTOR") ) {
@@ -74,6 +74,7 @@ public class PatientCardController {
             model.addAttribute("record", daoRecord.getById(recordId).get());
             model.addAttribute("listCard", listCard);
             model.addAttribute("isDoctor", auth.getAuthorities().toString().contains("ROLE_DOCTOR"));
+
         }
         return "patient-card/patient-card-form";
     }
@@ -88,7 +89,7 @@ public class PatientCardController {
         ListPatientCard patientCardAdd = daoListPatientCard.save(listCard);
         ra.addFlashAttribute("goodMsg", "Лист в карту пациента " +
                 patientCardAdd.getRecord().getPatient().getPerson().getSurname() + " добавлен");
-        return "redirect:/patient-card/";
+        return "redirect:/record/list-today";
     }
 
     @GetMapping("/update/{id}")
@@ -125,11 +126,11 @@ public class PatientCardController {
         }
         return "patient-card/patient-card-detail";
     }
-    @GetMapping("/delete/{id}")
-    public String deleteDoctor(@PathVariable ("id") Integer patientCardId){
-        daoListPatientCard.delete(patientCardId);
-        return "redirect:/patient-card/";
-    }
+//    @GetMapping("/delete/{id}")
+//    public String deleteDoctor(@PathVariable ("id") Integer patientCardId){
+//        daoListPatientCard.delete(patientCardId);
+//        return "redirect:/patient-card/";
+//    }
 
 
 }

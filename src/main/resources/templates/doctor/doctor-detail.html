@@ -4,37 +4,20 @@
     <meta charset="UTF-8">
     <title>Doctor Detail</title>
     <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+    <img th:src="@{/images/fon_n.jpg}" class="fon_page">
 </head>
 <body>
     <header th:insert="layout/page-layout.html :: header"></header>
     <div class="container-fluid ">
-        <h1> Информация о специалисте</h1>
-        <h2>[[${doctor}]]</h2>
-        <table>
-            <tr>
-                <td>ФИО: </td>
-                <td>[[${doctor.person.getFullName()}]]</td>
-            </tr>
-            <tr>
-                <td> Дата рождения: </td>
-                <td th:text="${#dates.format(doctor.person.birthdate, 'dd.MM.yyyy')}"></td>
-            </tr>
-            <tr>
-                <td> Специальность: </td>
-                <td>[[${doctor.speciality}]]</td>
-            </tr>
-            <tr>
-                <td>Информация</td>
-                <td>[[${doctor.info}]]</td>
-            </tr>
-            <tr th:if = "${auth == 'ROLE_ADMIN'}">
-                <td>login: </td>
-                <td> [[${doctor.getPerson().getUser().getLogin()}]]</td>
-            </tr>
+        <h1> Информация о враче-специалисте</h1>
+<!--        <h2>[[${doctor}]]</h2>-->
 
-        </table>
+        <img th:src="@{'/images/doctors/'+${doctor.photo}}" class="photo">
+        <h2>[[${doctor.person.getFullName()}]]</h2>
+        <h2>[[${doctor.speciality}]]</h2>
+        <h2>[[${doctor.info}]]</h2>
 
-        <a th:if = "${auth == 'ROLE_ADMIN'}" th:href="@{/doctor/list}" class="btn btn-secondary">Посмотреть расписание</a>
         <!-- Кнопка Cancel -->
         <a th:if = "${back == 'doctor'}" th:href="@{/doctor/list}" class="btn btn-secondary">Отмена</a>
         <a th:if = "${back == 'schedule'}" th:href="@{/schedule/}" class="btn btn-secondary">Отмена</a>

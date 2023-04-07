@@ -38,19 +38,20 @@ public class DoctorController {
 
     @GetMapping("/list")
     public String listAll(Model model,Authentication auth ){
-        System.out.println("listAll" + auth.getAuthorities());
-        System.out.println("doctor1: auth= " + auth.getAuthorities().toString() + " " +
-                auth.getAuthorities().toString().contains("ROLE_ADMIN"));
-        System.out.println("patient/: user= " + daoUser.currentUser().getPerson().getFullName());
-        System.out.println("doctor2: role= " + daoUser.currentUser().getRoles());
+//        System.out.println("listAll" + auth.getAuthorities());
+//        System.out.println("doctor1: auth= " + auth.getAuthorities().toString() + " " +
+//                auth.getAuthorities().toString().contains("ROLE_ADMIN"));
+//        System.out.println("patient/: user= " + daoUser.currentUser().getPerson().getFullName());
+//        System.out.println("doctor2: role= " + daoUser.currentUser().getRoles());
         System.out.println("/ listAll");
 
         List<Doctor> doctors = daoDoctor.listAll();
         System.out.println("list " + doctors.size());
         model.addAttribute("doctors", doctors);
-        model.addAttribute("isAdmin", auth.getAuthorities().toString().contains("ROLE_ADMIN"));
-        model.addAttribute("isPatient", auth.getAuthorities().toString().contains("ROLE_PATIENT"));
-
+        if (auth !=null) {
+            model.addAttribute("isAdmin", auth.getAuthorities().toString().contains("ROLE_ADMIN"));
+            model.addAttribute("isPatient", auth.getAuthorities().toString().contains("ROLE_PATIENT"));
+        }
         System.out.println("model ");
         return "doctor/doctor-list";
     }
@@ -132,9 +133,10 @@ public class DoctorController {
         Optional<Doctor>  doctor = daoDoctor.getById(doctorId);
         if (doctor.isPresent()) {
             model.addAttribute("doctor", doctor.get());
-            model.addAttribute("auth",auth.getAuthorities().toString());
-            model.addAttribute("back", back);
+//            model.addAttribute("auth",auth.getAuthorities().toString());
+
         }
+        model.addAttribute("back", back);
         return "doctor/doctor-detail";
     }
     @GetMapping("/delete/{id}")

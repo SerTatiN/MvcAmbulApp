@@ -5,14 +5,14 @@
     <title>PatientCard List</title>
     <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
     <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
-    <img th:src="@{/images/fon_medCard.jpg}" class="fon_page">
+    <img th:src="@{/images/fon_n.jpg}" class="fon_page">
 </head>
 <body>
 
 <header th:insert="layout/page-layout.html :: header"></header>
 
 <h1> Медицинские записи в карты пациентов</h1>
-<!-- вывод goodMsg если врач добавил запись в мед карту -->
+<!-- вывод goodMsg если врач изменил запись в мед карту -->
 <div th:if="${goodMsg != null}" class="alert alert-success">
     [[${goodMsg}]]
 </div>
@@ -35,7 +35,8 @@
                 <td>[[${patientCard.record.schedule.doctor.speciality}]]: [[${patientCard.record.schedule.doctor.getPerson().getFullName}]]</td>
 <!--                <td>[[${patientCard.result}]]</td>-->
                 <td>
-                    <a th:if="${isAdmin}" th:href="@{'/patient-card/detail/' + ${patientCard.id}+'?back=patient-card'}" class="btn btn-primary ">Посмотреть результат приема</a>
+                    <a th:if="${isAdmin}" th:href="@{'/patient-card/detail/' + ${patientCard.id}+'?back=patient-card'}" class="btn btn-warning ">Посмотреть</a>
+                    <a th:if="${isDoctor}" th:href="@{'/patient-card/update/' + ${patientCard.id}+'?back=patient-card'}" class="btn btn-primary ">Редактировать</a>
                 </td>
             </tr>
         </th:block>
@@ -43,7 +44,7 @@
     </tbody>
 </table>
 
-<a th:href="@{/}" class="btn btn-danger">Отмена</a>
+<a th:href="@{/}" class="btn btn-sec">Отмена</a>
 <footer th:insert="layout/page-layout.html :: footer"></footer>
 
 

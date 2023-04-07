@@ -25,18 +25,10 @@ public class Doctor{
 
     @Column(length = 250)
     private String photo;
-   // @JsonIgnore
+
     @OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL)
     private Set<Schedule> scheduleSet;
 
-//    @OneToMany(mappedBy = "doctor", cascade = CascadeType.PERSIST)
-//   // @JoinColumn(name="doctor_id", nullable = false)
-//   // private Doctor doctor;
-//    private Set<RecordToDoctor> recordToAccept;
-
-//    @OneToOne
-//    @JoinColumn(name="user_id",nullable = false)
-//    private User user;
     public Doctor() {
     }
 
@@ -57,7 +49,6 @@ public class Doctor{
         this.speciality = speciality;
         this.info = info;
         this.scheduleSet = scheduleSet;
-       // this.recordToAccept = recordToAccept;
     }
 
     public Doctor(Integer id, Person person, String speciality, String info, String photo) {
@@ -121,14 +112,6 @@ public class Doctor{
     public void setScheduleSet(Set<Schedule> scheduleSet) {
         this.scheduleSet = scheduleSet;
     }
-
-//    public Set<RecordToDoctor> getRecordToAccept() {
-//        return recordToAccept;
-//    }
-//
-//    public void setRecordToAccept(Set<RecordToDoctor> recordToAccept) {
-//        this.recordToAccept = recordToAccept;
-//    }
 
     @Override
     public String toString() {

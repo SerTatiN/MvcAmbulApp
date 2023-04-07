@@ -10,24 +10,26 @@
 
 
 </head>
+<body>
 
-<header th:insert="layout/page-layout.html :: header"></header>
+    <header th:insert="layout/page-layout.html :: header"></header>
 
     <h1 >Добро пожаловать в информационную систему "ВолгаМед"</h1>
 
-    <h3><a th:href="@{/doctor/list}">Наши специалисты</a></h3>
-    <h3><a th:if="${isAdmin}" th:href="@{/person/}">Жители</a></h3>
-<!--    <h3><a th:if="!${isAdmin}" th:href="@{/schedule/list2}">Расписание специалистов</a></h3>-->
+    <h3><a th:href="@{/doctor/list}">Врачи-специалисты</a></h3>
 
-    <h3><a th:if="${isAdmin or isDoctor}" th:href="@{/schedule/list}">Расписание специалистов</a></h3>
+    <h3><a th:if="${isAdmin}" th:href="@{/person/}"></a></h3>
+<!--\    <h3><a th:if="!${isAdmin}" th:href="@{/schedule/list2}">Расписание специалистов</a></h3>-->
+
+    <h3><a th:if="${isAdmin} or ${isDoctor}" th:href="@{/schedule/list}">Расписание специалистов</a></h3>
     <h3><a th:if="${isAdmin}" th:href="@{/patient/list}">Пациенты</a></h3>
     <h3><a th:if="${isAdmin}" th:href="@{/record/}">Записать к специалисту</a></h3>
     <h3><a th:if="${isAdmin}" th:href="@{/patient-card/}">Медицинские карты пациентов</a></h3>
 
 
-<!--    <h3><a th:href="@{/record/}">Расписание</a></h3>-->
+<!--&lt;!&ndash; \   <h3><a th:href="@{/record/}">Расписание</a></h3>&ndash;&gt;-->
     <h3><a th:if="${isDoctor}" th:href="@{/schedule/doctor}">Мое расписание</a></h3>
-<!--    <h3><a th:if="${isDoctor}" th:href="@{/record/list}">Записанные пациенты</a></h3>-->
+<!--&lt;!&ndash;\    <h3><a th:if="${isDoctor}" th:href="@{/record/list}">Записанные пациенты</a></h3>&ndash;&gt;-->
     <h3><a th:if="${isDoctor}" th:href="@{/record/list-form-date}">Записанные пациенты</a></h3>
     <h3><a th:if="${isDoctor}" th:href="@{/record/list-today}">Принять пациентов</a></h3>
 
@@ -35,7 +37,7 @@
     <h3><a th:if="${isPatient}" th:href="@{/patient-card/patient}"> Моя медицинская карта</a></h3>
     <h3><a th:if="${isPatient}" th:href="@{/record/patient-records}"> Мои записи</a></h3>
 
-<!--    <h3><a th:if="!${isAuth}" th:href="@{'/registration/patient/'+'?back=index'}">Зарегистрироваться</a></h3>-->
+    <h3><a th:if="!${isAuth}" th:href="@{/registration/patient/}">Регистрирация</a></h3>
 
     <h3><a th:if="!${isAuth}" th:href="@{'/login'}"> Войти в систему</a></h3>
 

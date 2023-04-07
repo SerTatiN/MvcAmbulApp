@@ -8,8 +8,8 @@
 <body>
 <header th:insert="layout/page-layout.html :: header"></header>
 
-<h1> Жители</h1>
-<!-- вывод goodMsg если житель добавлен -->
+<h1> Пользователи</h1>
+<!-- вывод goodMsg если пользователь добавлен -->
 <div th:if="${goodMsg != null}" class="alert alert-success">
     [[${goodMsg}]]
 </div>
@@ -24,6 +24,7 @@
         <th>Фамилия</th>
         <th>Дата рождения</th>
         <th>Адрес эл. почты</th>
+        <th>Уровень доступа</th>
         <th></th>
     </tr>
     </thead>
@@ -37,22 +38,27 @@
             <td>[[${person.surname}]]</td>
             <td th:text="${#dates.format(person.birthdate, 'dd.MM.yyyy')}"></td>
             <td>[[${person.user.login}]]</td>
+            <td>
+                <th:block th:each="role: ${person.user.roles}">
+                    [[${role.name}]]
+                </th:block>
+            </td>
 
             <td>
                 <a th:href="@{'/person/update/' + ${person.id}}" class="btn btn-primary "> Редактировать </a>
                 <a th:href="@{'/person/delete/' + ${person.id}}" class="btn btn-danger "> Удалить </a>
                <!-- <a th:href="@{'/person/detail/' + ${person.id} +'?back=person'}" class ="btn btn-warning">О специалисте</a>-->
             </td>
-
         </tr>
     </th:block>
-
     </tbody>
 </table>
 
 <div>
-    <a th:if="${isAdmin}" th:href="@{/person/add/}" class="btn btn-success">Добавить жителя</a>
+    <a th:if="${isAdmin}" th:href="@{/person/add/}" class="btn btn-success">Добавить пользователя</a>
+    <a th:href="@{/}" class="btn btn-secondary">Отмена</a>
 </div>
+
 
 <footer th:insert="layout/page-layout.html :: footer"></footer>
 

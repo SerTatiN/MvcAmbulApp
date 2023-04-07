@@ -4,9 +4,17 @@
     <meta charset="UTF-8">
     <title>Records Patient</title>
     <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+    <img th:src="@{/images/fon_n.jpg}" class="fon_page">
 </head>
 <body>
     <header th:insert="layout/page-layout.html :: header"></header>
+
+    <!-- вывод goodMsg  -->
+    <div th:if="${goodMsg != null}" class="alert alert-success">
+        [[${goodMsg}]]
+    </div>
+
     <h2>Мои записи</h2>
     <h2>Пациент: [[${patient.person.getFullName()}]] </h2>
     <h2 th:text="${#dates.format(patient.person.birthdate, 'dd.MM.yyyy')}"></h2>
@@ -19,9 +27,10 @@
                 <th>Время приема</th>
                 <th>Доктор-специалист</th>
                 <th>Статус</th>
+                <th></th>
             </tr>
         </thead>
-        <tbody>
+        <tbody class="fon_table">
             <th:block th:each="list: ${records}">
                 <tr>
                     <td>[[${list.id}]]</td>
@@ -30,7 +39,9 @@
                     <td>[[${list.schedule.doctor.speciality}]]: [[${list.schedule.doctor.getPerson().getFullName}]]</td>
                     <td th:if="${list.isAccept}">Принят</td>
                     <td th:unless="${list.isAccept}">Ожидается прием</td>
-
+                    <td>
+                        <a th:if="!${list.isAccept}" th:href="@{'/record/patient-delete/'+${list.id}}" >Удалить запись</a><!--+'?back=record-patient'-->
+                    </td>
                 </tr>
             </th:block>
         </tbody>

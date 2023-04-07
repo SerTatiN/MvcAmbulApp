@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Error</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+    <img th:src="@{/images/error.jpg}" class="fon_page">
+</head>
+<body>
+<header th:insert="layout/page-layout.html :: header"></header>
+
+<h2>Message: [[${msg}]]</h2>
+<h2>ErrorCode: [[${errorCode}]]</h2>
+
+<a th:href="@{/}" class="btn btn-secondary">Главная</a>
+
+<footer th:insert="layout/page-layout.html :: footer"></footer>
+
+</body>
+</html>

@@ -3,49 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <title>ListPatientForDoctorAtDate</title>
-  <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+    <img th:src="@{/images/fon_n.jpg}" class="fon_page">
 </head>
 <body>
-  <h1>Запиcанные пациенты к доктору:</h1>
-  <table>
-    <tr>
-        <td><h3>[[${schedule.doctor.speciality}]]: </h3></td>
-        <td><h3>[[${schedule.doctor.person.getFullName()}]]</h3></td>
-    </tr>
-      <tr>
-          <td><h3>Дата: </h3></td>
-          <td th:text="${#dates.format(schedule.date, 'dd.MM.yyyy')} + ', ' + ${#dates.dayOfWeekNameShort(schedule.date)}"></td>
-      </tr>
-  </table>
-  <div>
+<header th:insert="layout/page-layout.html :: header"></header>
+    <!-- вывод goodMsg  -->
+    <div th:if="${goodMsg != null}" class="alert alert-success">
+        [[${goodMsg}]]
+    </div>
+    <div th:if="${goodMsg == null}">
+      <h1>Запиcанные пациенты:</h1>
+      <table >
+        <tr>
+            <td><h3>[[${schedule.doctor.speciality}]]: </h3></td>
+            <td><h3>[[${schedule.doctor.person.getFullName()}]]</h3></td>
+        </tr>
+          <tr>
+              <td><h3>Дата: </h3></td>
+              <td th:text="${#dates.format(schedule.date, 'dd.MM.yyyy')} + ', ' + ${#dates.dayOfWeekNameShort(schedule.date)}"></td>
+          </tr>
+      </table>
       <table class="table table-bordered">
           <thead class="table-light">
-              <tr>
-                  <th>Время приема</th>
-                  <th>Пациент</th>
-                  <th>Статус</th>
-                  <th></th>
-              </tr>
+          <tr>
+              <th>Время приема</th>
+              <th>Пациент</th>
+              <th>Статус</th>
+              <th></th>
+          </tr>
           </thead>
           <tbody>
-              <th:block th:each="record: ${schedule.getRecordToAccept()}">
-                  <tr>
-                      <td th:text="${#temporals.format(record.timeAccept, 'HH:mm')}"></td>
-                      <td th:if="${record.isRecord}">[[${record.patient.person.getFullName()}]]</td>
-                      <td th:unless="${record.isRecord}">Нет записи</td>
-                      <td th:if="${record.isRecord && record.isAccept}">Принят</td>
-                      <td th:if="${record.isRecord && !record.isAccept}">Ожидает прием</td>
-                      <td>
-                          <a th:if="${isDoctor &&record.isRecord && !record.isAccept}" th:href="@{'/patient-card/doctor-accept/'+${record.id}}" class="btn btn-primary" >Принять пациента</a>
-                      </td>
-                  </tr>
-              </th:block>
+          <th:block th:each="record: ${schedule.getRecordToAccept()}">
+              <tr>
+                  <td th:text="${#temporals.format(record.timeAccept, 'HH:mm')}"></td>
+                  <td th:if="${record.isRecord}">[[${record.patient.person.getFullName()}]]</td>
+                  <td th:unless="${record.isRecord}">Нет записи</td>
+                  <td th:if="${record.isRecord && record.isAccept}">Принят</td>
+                  <td th:if="${record.isRecord && !record.isAccept}">Ожидает прием</td>
+                  <td>
+                      <a th:if="${isDoctor &&record.isRecord && !record.isAccept}" th:href="@{'/patient-card/doctor-accept/'+${record.id}}" class="btn btn-primary" >Принять пациента</a>
+                  </td>
+              </tr>
+          </th:block>
           </tbody>
       </table>
-  </div>
-
+    </div>
+<!--th:unless="${back == 'schedule'}"-->
   <a th:if = "${back == 'schedule'}" th:href="@{/schedule/doctor}" class="btn btn-secondary">Отмена</a>
-  <a th:unless="${back == 'schedule'}" th:href="@{/}" class="btn btn-secondary">Отмена</a>
+<!--  <a  th:href="@{/}" class="btn btn-secondary">Отмена</a>-->
+   <a  th:if = "${back == 'list-form'}" th:href="@{/record/list-form-date}" class="btn btn-secondary">Отмена</a>
+   <a  th:if = "${back == 'today'}" th:href="@{/}" class="btn btn-secondary">Отмена</a>
   <footer th:insert="layout/page-layout.html :: footer"></footer>
 
 </body>

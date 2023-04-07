@@ -48,27 +48,27 @@ public class RecordController {
         return "record/record-l";
     }
     //Показать записанных пациентов к доктору @RequestParam String back,  model.addAttribute("back", back);
-    @GetMapping("/list")//исключить
-    public String listRecordToDoctor(Model model, Authentication auth){
-        System.out.println("listRecordToDoctor(): user= " + daoUser.currentUser().getPerson().getFullName());
-
-        if (auth.getAuthorities().toString().contains("ROLE_DOCTOR")) {
-          //  List<RecordToDoctor> records = daoRecord.getRecordsByDoctorId(daoUser.currentUser().getPerson().getDoctor().getId());
-            List<RecordToDoctor> records = daoRecord.getRecordsByDoctorIdSortedByTime(daoUser.currentUser().getPerson().getDoctor().getId());
-
-            System.out.println("list " + records.size());
-
-//            for (RecordToDoctor rd: records) {
-//                System.out.println(rd);
-//            }
-            model.addAttribute("doctor", daoUser.currentUser().getPerson().getDoctor());
-            model.addAttribute("records", records);
-//            model.addAttribute("isDoctor", auth.getAuthorities().toString().contains("ROLE_DOCTOR"));
-
-            return "record/record-doctor";
-        }
-        return "record/record-l";
-    }
+//    @GetMapping("/list")//исключить
+//    public String listRecordToDoctor(Model model, Authentication auth){
+//        System.out.println("listRecordToDoctor(): user= " + daoUser.currentUser().getPerson().getFullName());
+//
+//        if (auth.getAuthorities().toString().contains("ROLE_DOCTOR")) {
+//          //  List<RecordToDoctor> records = daoRecord.getRecordsByDoctorId(daoUser.currentUser().getPerson().getDoctor().getId());
+//            List<RecordToDoctor> records = daoRecord.getRecordsByDoctorIdSortedByTime(daoUser.currentUser().getPerson().getDoctor().getId());
+//
+//            System.out.println("list " + records.size());
+//
+////            for (RecordToDoctor rd: records) {
+////                System.out.println(rd);
+////            }
+//            model.addAttribute("doctor", daoUser.currentUser().getPerson().getDoctor());
+//            model.addAttribute("records", records);
+////            model.addAttribute("isDoctor", auth.getAuthorities().toString().contains("ROLE_DOCTOR"));
+//
+//            return "record/record-doctor";
+//        }
+//        return "record/record-l";
+//    }
 
     //Показать записанных пациентов к доктору на дату из Schedule;
     @GetMapping("/doctor-list-date/{id}")
@@ -81,17 +81,13 @@ public class RecordController {
         if (auth.getAuthorities().toString().contains("ROLE_DOCTOR")) {
             List<RecordToDoctor> records = daoRecord.getRecordsByScheduleIdSortedByTime(scheduleId);
             System.out.println("list " + records.size());
-
                 //daoRecord.getRecordsByDoctorIdSortedByTime(daoUser.currentUser().getPerson().getDoctor().getId());
 //            if (!records.isEmpty()) {
-
                 model.addAttribute("schedule", daoSchedule.getById(scheduleId).get());
                 //        model.addAttribute("doctor", daoUser.currentUser().getPerson().getDoctor());//?
                 model.addAttribute("records", records);
                 model.addAttribute("back", back);
                 model.addAttribute("isDoctor", auth.getAuthorities().toString().contains("ROLE_DOCTOR"));
-
-
             return "record/doctor-list-date";
         }
         return "record/record-l";
@@ -128,10 +124,15 @@ public class RecordController {
          System.out.println("schedule " + schedule.getId());
         if (auth.getAuthorities().toString().contains("ROLE_DOCTOR")) {
            List<RecordToDoctor> records = daoRecord.getRecordsByScheduleIdSortedByTime(schedule.getId());
-           model.addAttribute("schedule", daoSchedule.getById(schedule.getId()).get());
-           model.addAttribute("records", records);
-           model.addAttribute("doctor", daoUser.currentUser().getPerson().getDoctor());
-           model.addAttribute("isDoctor", auth.getAuthorities().toString().contains("ROLE_DOCTOR"));
+           if (!records.isEmpty()) {
+               model.addAttribute("schedule", daoSchedule.getById(schedule.getId()).get());
+               model.addAttribute("records", records);
+               model.addAttribute("doctor", daoUser.currentUser().getPerson().getDoctor());
+               model.addAttribute("isDoctor", auth.getAuthorities().toString().contains("ROLE_DOCTOR"));
+               model.addAttribute("back", "list-form");
+           } else {
+               model.addAttribute("goodMsg", "У Вас нет записанных пациентов");
+           }
            return "record/doctor-list-date";
         }
         return "record/record-l";
@@ -155,24 +156,17 @@ public class RecordController {
                 model.addAttribute("doctor", daoUser.currentUser().getPerson().getDoctor());
                 //   model.addAttribute("records", records);
              //   model.addAttribute("date", date);
-            model.addAttribute("isDoctor", auth.getAuthorities().toString().contains("ROLE_DOCTOR"));
-
-                return "record/doctor-list-date";
+                model.addAttribute("isDoctor", auth.getAuthorities().toString().contains("ROLE_DOCTOR"));
+               //
+               // return "record/doctor-list-date";
+            } else {
+                model.addAttribute("goodMsg", "У Вас сегодня нет приема");
+                System.out.println("Сегодня у вас нет приема " );
             }
-           // System.out.println("list " + records.size());
-
-//            for (RecordToDoctor rd: records) {
-//                System.out.println(rd);
-//            }
-//            model.addAttribute("doctor", daoUser.currentUser().getPerson().getDoctor());
-//         //   model.addAttribute("records", records);
-//            model.addAttribute("date", date);
-////            model.addAttribute("isDoctor", auth.getAuthorities().toString().contains("ROLE_DOCTOR"));
-
-            System.out.println("Сегодня у вас нет приема " );
-
-        }
-        return "record/record-l";
+            model.addAttribute("back", "today");
+            return "record/doctor-list-date";
+            }
+        return "index";
     }
 
 
@@ -433,8 +427,43 @@ public class RecordController {
 
         ra.addFlashAttribute("goodMsg", "Пациент " +
                 record.getPatient().getPerson().getFullName() + " записан!");
-        return "redirect:/doctor/list";//doctorList /schedule/listDoctor"
+        return "redirect:/doctor/list"; //doctorList /schedule/listDoctor"
 
+    }
+    @GetMapping("/patient-delete/{id}")
+    public String deleteRecordPatientSelf(@PathVariable ("id") Integer recordId, RedirectAttributes ra, Authentication auth){
+        System.out.println("deleteRecordPatientSelf " +  recordId);
+        if (auth.getAuthorities().toString().contains("ROLE_PATIENT")){
+            RecordToDoctor record = daoRecord.getById(recordId).get();
+            System.out.println("record delete " + record);
+            LocalDate ldate = LocalDate.now();
+            Date date = Date.from(ldate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+            if (record.getSchedule().getDate().after(date)) {
+
+                RecordToDoctor recordUpd = daoRecord.update(record);
+                System.out.println("record deleted " + recordUpd);
+
+                ra.addFlashAttribute("goodMsg", "Запись пациента удалена!");
+            } else {
+                ra.addFlashAttribute("goodMsg", "Запись пациента не удалена!");
+            }
+
+            return "redirect:/record/patient-records";
+        }
+        System.out.println("patient-delete fail");
+        return "/";
+    }
+
+    @GetMapping("/detail/{id}")
+    public String getDetail(@PathVariable ("id") Integer recordId,  Model model,Authentication auth){
+        Optional<RecordToDoctor>  record = daoRecord.getById(recordId);
+        System.out.println("getDetail" + record.get());
+        if (record.isPresent()) {
+            model.addAttribute("record", record.get());
+            model.addAttribute("isAdmin",auth.getAuthorities().toString().contains("ROLE_ADMIN"));
+        }
+//        model.addAttribute("back", back);@RequestParam String back,
+        return "record/record-detail";
     }
 
 

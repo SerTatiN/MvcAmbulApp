@@ -21,6 +21,11 @@
     color: black;
 
 }
+.photo{
+
+    width: 330px;
+    height: 450px;
+}
 
 /* Зависит от размера изображения
 @media screen and (max-width: 640px){

@@ -5,7 +5,7 @@
     <title>PatientCard</title>
     <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
     <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
-    <img th:src="@{/images/fon_medCard.jpg}" class="fon_page">
+    <img th:src="@{/images/fon_n.jpg}" class="fon_page">
 </head>
 <body>
   <header th:insert="layout/page-layout.html :: header"></header>
@@ -22,7 +22,7 @@
       <th></th>
     </tr>
     </thead>
-    <tbody class="fon_table" >
+    <tbody class="fon_table">
       <th:block th:each="list: ${patientCards}">
         <tr>
           <td>[[${list.id}]]</td>
@@ -30,7 +30,7 @@
           <td>[[${list.record.schedule.doctor.speciality}]]: [[${list.record.schedule.doctor.getPerson().getFullName}]]</td>
 <!--          <td>[[${list.result}]]</td>-->
           <td>
-            <a th:href="@{'/patient-card/detail/' + ${list.id}+'?back=patient-card/patient'}" class="btn btn-primary ">Посмотреть результат приема</a>
+            <a th:href="@{'/patient-card/detail/' + ${list.id}+'?back=patient'}" class="btn btn-primary ">Посмотреть результат приема</a>
           </td>
         </tr>
       </th:block>

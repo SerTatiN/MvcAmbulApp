@@ -35,7 +35,8 @@
     <button class="btn btn-success">Подтвердить</button>
 
     <!-- Кнопка Cancel -->
-   <a th:href="@{'/schedule/listDoctor/' +${record.schedule.doctor.id}}" class="btn btn-danger">Отмена</a>
+<!--   <a th:href="@{'/schedule/listDoctor/' +${record.schedule.doctor.id}}" class="btn btn-secondary">Отмена</a>-->
+    <a th:href="@{/schedule/listDoctor}" class="btn btn-secondary">Отмена</a>
   </form>
 
 </body>

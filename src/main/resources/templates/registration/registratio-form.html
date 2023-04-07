@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <title>Регистрация-2</title>
+  <title>Registration Patient</title>
   <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
 </head>
 <body>
@@ -11,7 +11,7 @@
     <div th:if="${goodMsg != null}" class="alert alert-success">
         [[${goodMsg}]]
     </div>
-  <form method="post" id="addPatient"  th:action="@{/registration/patient/}" th:object="${patient}">
+  <form method="post" id="addPatient"  th:action="@{/registration/patient}" th:object="${patient}">
       <div>
         <label for ="patient-surname"> Фамилия: </label>
         <input id="patient-surname" th:type="text" th:field="*{person.surname}" required minlength="1" maxlength="250" >
@@ -43,8 +43,6 @@
 
     <!-- Кнопка Cancel th:if="${back == 'patient'}"-->
     <a   th:href="@{/}" class="btn btn-secondary">Отмена</a>
-
-    <a th:href="@{/}" class="btn btn-close-white">На главную</a>
   </form>
 </div>
 

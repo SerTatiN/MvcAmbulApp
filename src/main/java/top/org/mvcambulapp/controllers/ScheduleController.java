@@ -65,14 +65,13 @@ public class ScheduleController {
         return "schedule/schedule-list-by-doctors";
     }
 
+//расписание для выбранного доктора
     @GetMapping("/listDoctor/{id}")
     public String listSchedulesDoctor(@PathVariable("id") Integer doctorId, Model model,@RequestParam String back, Authentication auth){
         System.out.println("listSchedulesDoctor " + auth.getAuthorities().toString());
         List<Schedule> schedules = daoSchedule.getScheduleByDoctorId(doctorId);
-
         System.out.println("schedules " + schedules.size());
 //        System.out.println("schedules " + schedules.size());
-
 //        model.addAttribute("schedules", schedules);
         model.addAttribute("doctor", daoDoctor.getById(doctorId).get());
         model.addAttribute("schedules", schedules);
@@ -96,7 +95,7 @@ public class ScheduleController {
             model.addAttribute("isDoctor", auth.getAuthorities().toString().contains("ROLE_DOCTOR")); //
             return "schedule/scedule-doctor-list";
         }
-        return "schedule/schedule-list";
+        return "index";
     }
 
     @GetMapping("/add/")
@@ -210,9 +209,10 @@ public class ScheduleController {
         return "schedule/schedule-detail";
     }
     @GetMapping("/delete/{id}")
-    public String deleteSchedule(@PathVariable ("id") Integer scheduleId){
+    public String deleteSchedule(@PathVariable ("id") Integer scheduleId,RedirectAttributes ra){
 
-        daoSchedule.delete(scheduleId);
+        //daoSchedule.delete(scheduleId);
+        ra.addFlashAttribute("goodMsg", "Расписание не удалено. После утверждения регламента, сервис будет доступен");
         return "redirect:/schedule/list";
     }
 

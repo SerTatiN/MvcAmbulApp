@@ -2,15 +2,15 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8" >
-    <title> Специалисты-врачи </title>
+    <title> Doctors </title>
     <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
     <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
     <img th:src="@{/images/fon_doctors.jpg}" class="fon_page">
 </head>
 <body>
 <header th:insert="layout/page-layout.html :: header"></header>
-<!--<div class = "ttt">-->
-<h1> Наши специалисты</h1>
+
+<h1> Врачи-специалисты</h1>
     <!-- вывод goodMsg  -->
     <div th:if="${goodMsg != null}" class="alert alert-success">
         [[${goodMsg}]]

@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <title>Record List</title>
   <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
+  <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+  <img th:src="@{/images/fonX.jpg}" class="fon_page">
 </head>
 <tbody>
 <header th:insert="layout/page-layout.html :: header"></header>
@@ -27,7 +29,7 @@
     <th></th>
   </tr>
   </thead>
-  <tbody>
+  <tbody class="fon_table">
   <th:block th:each="record: ${records}">
     <tr>
       <td>[[${record.id}]]</td>
@@ -37,10 +39,10 @@
       <td th:text="${#temporals.format(record.timeAccept, 'HH:mm')}"></td>
       <td >
         <a th:if="${isAdmin}" th:href="@{'/record/update/' + ${record.id}}" class="btn btn-primary "> Редактировать </a>
-        <a th:if="${isAdmin}" th:href="@{'/record/detail/' + ${record.id}}" class="btn btn-warning "> Информация </a>
-        <a th:if="${isAdmin && !record.isRecord()}" th:href="@{'/record/patient/' + ${record.id}}" class="btn btn-light "> Записать пациента </a>
+        <a th:if="${isAdmin}" th:href="@{'/record/detail/' + ${record.id}}" class="btn btn-info "> Информация </a>
+        <a th:if="${isAdmin && !record.isRecord()}" th:href="@{'/record/patient/' + ${record.id}}" class="btn btn-success"> Записать пациента </a>
         <a th:if="${isAdmin && record.isRecord && !record.isAccept} " th:href="@{'/record/delete/' + ${record.id}}" class="btn btn-danger "> Удалить запись пациента</a>
-<!--        <a th:if="${isAdmin}" th:href="@{'/record/deletePatient/' + ${record.id}}" class="btn btn-danger "> Удалить запись пациента</a>-->
+
       </td>
     </tr>
   </th:block>
@@ -48,6 +50,6 @@
 
 </table>
 
-
+<a th:href="@{/}" class="btn btn-secondary">Отмена</a>
 <footer th:insert="layout/page-layout.html :: footer"></footer>
 </html>

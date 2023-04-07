@@ -12,10 +12,6 @@ public class Patient {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-
-//    @Column(nullable = false, length = 11)
-//    private String phone;
-
     @OneToOne
     @JoinColumn(name="person_id",nullable = false)
     private Person person;
@@ -25,12 +21,9 @@ public class Patient {
 
     //Мед.карта пациента, где хранятся результаты приема врачей записанные в ListPatientCard.
     // Доступна к просмотру пациенту и всем врачам (админ?)
-//    @OneToMany(mappedBy = "patient", cascade = CascadeType.PERSIST)
-//    private Set<ListPatientCard> patientCard = new HashSet<>();
 
-//    @OneToOne
-//    @JoinColumn(name="user_id", nullable = false)
-//    private User user;
+
+
 
 
     public Patient() {

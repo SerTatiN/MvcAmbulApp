@@ -31,25 +31,27 @@ public class RegistrationController {
     @Autowired
     private IDaoPatient daoPatient;
     @Autowired
-    private IDaoDoctor daoDoctor;
-    @Autowired
     private DbDaoRole daoRole;
 
 
 
-    @GetMapping("/patient/")
+    @GetMapping("/patient")
     public String registration(Model model) {
         model.addAttribute("patient", new Patient());
         System.out.println("форма регистрации отправлена");
         return "registration/registratio-form";
     }
 
-    @PostMapping("/patient/")
+    @PostMapping("/patient")
     @Transactional
    public String addPatient(Patient patient, Model model,  Authentication auth) {
 
-        User userAdd = daoUser.save(patient.getPerson().getUser());
-        if (userAdd != null) {
+        User userEx = daoUser.getUserByLogin(patient.getPerson().getUser().getLogin());
+        if (userEx != null) {
+            System.out.println("Пациент с такой электронной почтой существует");
+            model.addAttribute("goodMsg", "Указанная электронная почта занята");
+        } else {
+            User userAdd = daoUser.save(patient.getPerson().getUser());
             userAdd.getRoles().add(daoRole.getRoleByAuthority("ROLE_PATIENT"));
 
             Person person = patient.getPerson();
@@ -57,17 +59,32 @@ public class RegistrationController {
             person = daoPerson.save(person);
 
             patient.setPerson(person);
-            daoPatient.save(patient);
+            Patient patientAdd = daoPatient.save(patient);
+            model.addAttribute("goodMsg", "Вы успешно зарегистрировались");
 
-            System.out.println(patient.getPerson());
-            System.out.println(patient.getPerson().getUser());
-            System.out.println(patient);
+//        User userAdd = daoUser.save(patient.getPerson().getUser());
+//        if (userAdd != null) {
+//            userAdd.getRoles().add(daoRole.getRoleByAuthority("ROLE_PATIENT"));
+//
+//            Person person = patient.getPerson();
+//            person.setUser(userAdd);
+//            person = daoPerson.save(person);
+//
+//            patient.setPerson(person);
+//            daoPatient.save(patient);
+//
+//            System.out.println(patient.getPerson());
+//            System.out.println(patient.getPerson().getUser());
+//            System.out.println(patient);
+
 
 //            return "redirect:/";
         }
 
-        return "redirect:/";
+        return "registration/ok";
     }
+
+
 //    @GetMapping("/doctor/")
 //    public String registrationDoctor(Model model) {
 //        model.addAttribute("doctor", new Doctor());

@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <title>Doctor Update</title>
     <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+    <img th:src="@{/images/fonX.jpg}" class="fon_page">
 </head>
 <body>
 
@@ -47,7 +49,7 @@
             <tr>
                 <td>Информация: </td>
                 <td>
-                    <textarea form="updDoc" cols= "200" raw="150" th:field="*{info}" required minlength="1" maxlength="250" ></textarea>
+                    <textarea form="updDoc" cols= "100" raw="150" th:field="*{info}" required minlength="1" maxlength="250" ></textarea>
                 </td>
             </tr>
 
@@ -56,7 +58,7 @@
         <button class="btn btn-success">Обновить</button>
 
         <!-- Кнопка Cancel -->
-        <a th:href="@{/doctor/list}" class="btn btn-danger">Отмена</a>
+        <a th:href="@{/doctor/list}" class="btn btn-secondary">Отмена</a>
     </form>
 </div>
 

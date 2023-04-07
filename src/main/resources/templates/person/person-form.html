@@ -7,7 +7,7 @@
 </head>
 <body>
     <div class="container-fluid text-center">
-        <h1>Добавление жителя</h1>
+        <h1>Добавление пользователя</h1>
         <form method="post" id="addDoc"  th:action="@{/person/add/}" th:object="${person}">
             <div>
                 <label for ="doctor-surname"> Фамилия: </label>
@@ -29,16 +29,16 @@
                 <label for ="person-birthdate"> Дата рождения: </label>
                 <input id="person-birthdate" type="date" th:field="*{birthdate}" required  ><!--asp-format="{yyyy-MM-dd}"value="2020-10-29"-->
             </div>
-            <div class="row mb-3">
+            <div >
                 <label class="col-2 col-form-label" for ="patient-pass"> Пароль: </label>
-                <div class="col-sm-10">
+                <div >
                     <input id="patient-pass" type="password" th:field="*{user.password}" required minlength="1" maxlength="250" >
                 </div>
             </div>
             <button class="btn btn-success">Добавить</button>
 
             <!-- Кнопка Cancel -->
-            <a th:href="@{/person/}" class="btn btn-danger">Отмена</a>
+            <a th:href="@{/person/}" class="btn btn-secondary">Отмена</a>
         </form>
     </div>
 

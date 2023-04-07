@@ -7,9 +7,10 @@
 </head>
 <body>
 <div class="container-fluid text-center">
-    <h1>Редактирование расписания [[${schedule.doctor.person.getFullName()}]]</h1>
+    <h1>Редактирование расписания врача специалиста</h1>
+    <h1>[[${schedule.doctor.person.getFullName()}]]</h1>
     <form th:if="${isAdmin}" method="post" th:action="@{/schedule/update/}" th:object="${schedule}">
-        <!-- надо перед id -->
+        <!--  id -->
         <input th:field="*{id}" hidden>
         <input th:field="*{doctor.id}" hidden>
 
@@ -30,7 +31,7 @@
         <button class="btn btn-success">Обновить</button>
 
         <!-- Кнопка Cancel -->
-        <a th:href="@{/schedule/}" class="btn btn-danger">Отмена</a>
+        <a th:href="@{/schedule/list}" class="btn btn-secondary">Отмена</a>
     </form>
 </div>
 </body>

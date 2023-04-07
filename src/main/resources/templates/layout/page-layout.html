@@ -4,20 +4,73 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
 </head>
 <body>
+
     <div th:fragment = "header">
         <ul class="nav nav-tabs justify-content-center">
             <li class="nav-item">
-                <a class="nav-link" aria-current = "page" th:href = "@{/}"> Главная </a>
+                <a class="nav-link" aria-current = "page" th:href = "@{/}">Главная </a>
             </li>
-         <li class="nav-item">
-                <a class="nav-link" aria-current = "page" th:href = "@{/doctor/list}"> Наши специалисты </a>
+            <li class="nav-item">
+                <a class="nav-link" aria-current = "page" th:href = "@{/doctor/list}">Врачи-специалисты </a>
+            </li>
+            <li  sec:authorize="hasRole('ROLE_DOCTOR')" class="nav-item ">
+                <a class="nav-link" aria-current = "page" th:href = "@{/schedule/list}">Расписание специалистов</a>
+            </li>
+            <li  sec:authorize="hasRole('ROLE_DOCTOR')" class="nav-item ">
+                <a class="nav-link" aria-current = "page" th:href = "@{/schedule/doctor}">Мое расписание</a>
+            </li>
+            <li sec:authorize="hasRole('ROLE_DOCTOR')" class="nav-item">
+                <a class="nav-link" aria-current = "page" th:href = "@{/record/list-form-date}">Записанные пациенты</a>
+            </li>
+            <li sec:authorize="hasRole('ROLE_DOCTOR')" class="nav-item">
+                <a class="nav-link" aria-current = "page" th:href = "@{/record/list-today}">Принять пациентов</a>
+            </li>
+<!--            <li  sec:authorize="hasRole('ROLE_DOCTOR')" class="nav-item ">-->
+<!--                <a class="nav-link" aria-current = "page" th:href = "@{/patient-card/}">Медицинские карты пациентов</a>-->
+<!--            </li>-->
+
+            <li  sec:authorize="hasRole('ROLE_ADMIN')" class="nav-item ">
+                <a class="nav-link" aria-current = "page" th:href = "@{/schedule/list}">Расписание специалистов</a>
+            </li>
+            <li  sec:authorize="hasRole('ROLE_ADMIN')" class="nav-item ">
+                <a class="nav-link" aria-current = "page" th:href = "@{/patient/list}">Пациенты</a>
+            </li>
+            <li  sec:authorize="hasRole('ROLE_ADMIN')" class="nav-item ">
+                <a class="nav-link" aria-current = "page" th:href = "@{/person/}">Пользователи</a>
+            </li>
+            <li  sec:authorize="hasRole('ROLE_ADMIN')" class="nav-item ">
+                <a class="nav-link" aria-current = "page" th:href = "@{/record/}">Записать к специалисту</a>
+            </li>
+            <li  sec:authorize="hasRole('ROLE_ADMIN')" class="nav-item ">
+                <a class="nav-link" aria-current = "page" th:href = "@{/patient-card/}">Медицинские карты пациентов</a>
+            </li>
+            <li  sec:authorize="hasRole('ROLE_PATIENT')" class="nav-item ">
+                <a class="nav-link" aria-current = "page" th:href = "@{/doctor/list}">Записаться к специалистам</a>
+            </li>
+            <li  sec:authorize="hasRole('ROLE_PATIENT')" class="nav-item ">
+                <a class="nav-link" aria-current = "page" th:href = "@{/patient-card/patient}">Моя медицинская карта</a>
+            </li>
+            <li  sec:authorize="hasRole('ROLE_PATIENT')" class="nav-item ">
+                <a class="nav-link" aria-current = "page" th:href = "@{/record/patient-records}">Мои записи</a>
             </li>
 
-            <li class="nav-item">          <!-- Показать только зарегистрированным-->
-                <form  th:if="isAuthenticated" class="nav-link" aria-current = "page" th:action = "@{/logout}" th:method="post">
-                    <button >Выйти</button>
+
+            <li class="nav-item">
+                <form  sec:authorize="isAuthenticated()" class="nav-item" aria-current = "page"  th:action = "@{/logout}" th:method="post">
+                    <button class="btn btn-link">Выйти</button>
+                </form>
+            </li>
+            <li class="nav-item">
+                <form  sec:authorize="!isAuthenticated()" class="nav-item" aria-current = "page"  th:action = "@{/logout}" th:method="post">
+                    <button class="btn btn-link">Войти</button>
+                </form>
+            </li>
+            <li class="nav-item">
+                <form  sec:authorize="!isAuthenticated()" class="nav-item" aria-current = "page"  th:action = "@{/registration/patient}" th:method="post">
+                    <button class="btn btn-link">Регистрация</button>
                 </form>
             </li>
         </ul>

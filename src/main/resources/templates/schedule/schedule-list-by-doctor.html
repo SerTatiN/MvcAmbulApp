@@ -4,11 +4,13 @@
   <meta charset="UTF-8">
   <title>Schedule List</title>
   <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
+  <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+  <img th:src="@{/images/fon_n.jpg}" class="fon_page">
 </head>
 <body>
   <header th:insert="layout/page-layout.html :: header"></header>
 
-  <h1> Расписание специалиста </h1>
+  <h1> Расписание врача-специалиста </h1>
   <!--вывод goodMsg если пациент записан-->
   <div th:if="${goodMsg != null}" class="alert alert-success">
     [[${goodMsg}]]
@@ -20,8 +22,9 @@
     <thead class="table-light">
       <tr>
         <th>День приема</th>
+        <th>Часы приема</th>
         <th>Выберите удобное для Вас время записи</th>
-        <th></th>
+<!--        <th></th>-->
       </tr>
     </thead>
     <tbody>
@@ -29,19 +32,22 @@
       <th:block th:each="schedule: ${schedules}">
           <tr>
             <td th:text="${#dates.format(schedule.date, 'dd.MM.yyyy')} + ', ' + ${#dates.dayOfWeekNameShort(schedule.date)}"></td>
-              <td>
+            <td th:text="${#temporals.format(schedule.startTime, 'HH:mm')}+' - '+${#temporals.format(schedule.endTime, 'HH:mm')}"></td>
+            <td>
                 <table>
                   <tr>
                     <td>
                       <th:block th:each="record: ${schedule.recordToAccept}">
-                      <a th:if="${isPatient && !record.isRecord()}"
-                         th:text="${#temporals.format(record.timeAccept, 'HH:mm')}"
+                      <a th:if="${isPatient && !record.isRecord()}" th:text="${#temporals.format(record.timeAccept, 'HH:mm')}"
                          th:href="@{'/record/record-to-doctor/' + ${record.id} +'?back=schedule'}" class="btn btn-primary " >  </a>
+                        <span th:if="${record.isRecord()}" th:text="${#temporals.format(record.timeAccept, 'HH:mm')}"
+                            class="btn btn-light" >  </span>
                     </th:block>
                     </td>
                   </tr>
                 </table>
               </td>
+<!--            <td></td>-->
           </tr>
       </th:block>
   </tbody>

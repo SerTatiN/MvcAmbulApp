@@ -4,10 +4,12 @@
     <meta charset="UTF-8">
     <title>PatientCardAdd</title>
     <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+    <img th:src="@{/images/fon_n.jpg}" class="fon_page">
 </head>
 <body>
 <header th:insert="layout/page-layout.html :: header"></header>
-    <div class="container-fluid text-center">
+    <div class="container-fluid">
     <h1> Запись приема в медкарту пациента</h1>
         <form th:if="${isDoctor}" method="post" id="accept"  th:action="@{/patient-card/doctor-accept/}" th:object="${listCard}">
             <input th:field="*{id}" hidden>
@@ -20,13 +22,15 @@
             <div>
                 <label for ="result"> Результат приема: </label>
                 <textarea id="result" cols= "100" raw="20"  th:field="*{result}" required minlength="1" maxlength="250" >
-                        </textarea>
+                </textarea>
             </div>
-
             <button class="btn btn-success">Сохранить</button>
-
             <!-- Кнопка Cancel -->
-            <a th:href="@{/patient-card/}" class="btn btn-danger">Отмена</a>
+<!--            <a th:href="@{/patient-card/}" class="btn btn-secondary">Отмена</a>-->
+<!--            <a  th:if="{ba}" th:href="@{/record/list-today}" class="btn btn-secondary">Отмена</a>-->
+<!--            <a th:href="@{/record/doctor-list-date/}" class="btn btn-secondary">Отмена</a>-->
+            <a th:href="@{/schedule/doctor}" class="btn btn-secondary">Отмена</a>
+
         </form>
     </div>
 </body>

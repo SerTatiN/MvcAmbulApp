@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+  <meta charset="UTF-8">
+  <title>RecordToDoctorPatientSelf</title>
+  <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
+</head>
+<body>
+<header th:insert="layout/page-layout.html :: header"></header>
+
+<h1> Выбор времени записи пациентом</h1>
+
+</body>
+</html>
+<h2 >[[${patient.getFullName()}]]</h2>
+<table class="table table-bordered">
+  <thead class="table-light">
+  <tr>
+    <th></th>
+    <!--            <th >[[${schedule.doctor.speciality}]] -[[${schedule.doctor.person.getFullName()}]]</th>-->
+    <th></th>
+    <th>Время приема</th>
+    <th></th>
+  </tr>
+  </thead>
+  <tbody>
+
+
+  <form th:if="${isPatient}" method="post" id="recordToDoctor"
+        th:action="@{/record/record-to-doctor/}" th:object="${record}">
+    <input th:field="*{id}" hidden>
+    <!--        <input th:field="*{schedule.id}" hidden>-->
+    <!--      <input th:field="*{schedule.doctor.id}" hidden>-->
+    <!--      <input th:field="*{schedule.doctor.person.id}" hidden>-->
+    <!--        <input th:field="*{timeAccept}" hidden>-->
+    <!--            <input th:field="*{patient}" hidden>-->
+
+    <tr >
+      <th:block th:each="rec:${records}">
+        <td>[[${rec.id}]]</td>
+        <td>[[${rec.schedule.doctor.speciality}]]</td>
+        <td >[[${rec.schedule.doctor.person.getFullName()}]]</td>
+        <td th:text="${#dates.format(rec.schedule.date, 'dd.MM.yyyy')}"></td>
+        <td></td>
+      </th:block>
+
+    </tr>
+
+    <button class="btn btn-success">Записаться</button>
+
+    <!-- Кнопка Cancel -->
+    <a th:if = "${back == 'schedule'}" th:href="@{/schedule/list2}" class="btn btn-danger">Отмена</a>
+  </form>
+
+  </tbody>
+
+</table>
+<!--<div>-->
+<!--  <a th:if="${isAdmin}" th:href="@{/schedule/add/}" class="btn btn-success">Добавить расписание</a>-->
+<!--</div>-->
+</body>
+<footer th:insert="layout/page-layout.html :: footer"></footer>
+</html>
+
+<td>
+  <th:block th:each="record: ${schedule.recordToAccept}">
+    <table >
+      <tr>
+        <td th:if="${!record.isRecord()}" th:text="${#temporals.format(record.timeAccept, 'HH:mm')}"></td>
+        <td>
+          <a th:if="${isPatient && !record.isRecord()}" th:href="@{'/record/record-to-doctor/' + ${record.id} +'?back=schedule'}" class="btn btn-primary "> Записаться </a>
+        </td>
+      </tr>
+    </table>
+  </th:block>
+</td>
+
+<!--        <h2>[[${doctor.getPerson().getFullName()}]]</h2>-->
+<!--        <table >-->
+<!--                    <tr>-->
+<!--                        <td>ФИО: </td>-->
+<!--                        <td>[[${doctor.person.getFullName()}]]</td>-->
+<!--                    </tr>-->
+<!--            <tr>-->
+<!--                <td> Дата рождения: </td>-->
+<!--                <td th:text="${#dates.format(doctor.person.birthdate, 'dd.MM.yyyy')}"></td>-->
+<!--             </tr>-->
+<!--            <tr>-->
+<!--                <td> Специальность: </td>-->
+<!--                <td>[[${doctor.speciality}]]</td>-->
+<!--            </tr>-->
+<!--            <tr>-->
+<!--                <td>Информация: </td>-->
+<!--                <td>[[${doctor.info}]]</td>-->
+<!--            </tr>-->
+<!--            <tr>-->
+<!--                <td>login: </td>-->
+<!--                <td> [[${doctor.person.user.login}]]</td>-->
+<!--            </tr>-->
+<!--            <tr>-->
+<!--                <td>Дни приема: </td>-->
+<!--                <td>-->
+<!--                    [[${doctor.schedule}]]-->
+<!--                </td>-->
+<!--            </tr>-->
+
+
+<!--                </table>-->
