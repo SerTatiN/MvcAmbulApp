@@ -349,40 +349,6 @@ public class RecordController {
         return "record/record-l";
     }
 
-    // Просмотр времени записи врача пациентом (другой лист)
-//    @GetMapping("/")
-//    public String listS(Model model,  Authentication auth){
-//        List<RecordToDoctor> records = daoRecord.listAll();
-//
-//        System.out.println("list " + records.size());
-//        model.addAttribute("records", records);
-//        model.addAttribute("isAdmin", auth.getAuthorities().toString().contains("ROLE_ADMIN"));
-//        // model.addAttribute("back", back);
-//        return "record/record-l";
-//    }
-
-
-//    // Запись пациента самому
-//    @GetMapping("/record-to-doctor/{id}")
-//    public String getFormRecordPatientSelf(@PathVariable ("id") Integer scheduleId, Model model, @RequestParam String back,Authentication auth){
-//        System.out.println("recordPatientToDoctor " + daoUser.currentUser().getPerson().getFullName());
-//        if (auth.getAuthorities().toString().contains("ROLE_PATIENT")) {
-//            List <RecordToDoctor> records = daoRecord.getRecordsByScheduleIdSortedByTime(scheduleId);
-//            System.out.println("форма Для recordPatient отправлена " + records.size());
-//            System.out.println(records);
-//
-////            List <Patient> patients = daoPatient.listAll();
-//            model.addAttribute("record", new RecordToDoctor());
-//            model.addAttribute("records", records);
-//            model.addAttribute("patient", daoUser.currentUser().getPerson());
-//            model.addAttribute("isPatient", auth.getAuthorities().toString().contains("ROLE_PATIENT"));
-//            model.addAttribute("back", back);
-//            return "record/form-case-time";
-//        }
-//        System.out.println("patient record fail");
-//        return "record/record-l";
-//    }
-
 
     //    Подтверждение запись пациента самому
     @GetMapping("/record-to-doctor/{id}")
@@ -411,23 +377,17 @@ public class RecordController {
 
     @PostMapping("/record-to-doctor/")
     public String recordPatientSelf(RecordToDoctor record, RedirectAttributes ra) {
-        System.out.println(" recordPatient() " + record);
-        System.out.println(" record.getPatient() " + record.getPatient());
 
         record.setPatient(daoUser.currentUser().getPerson().getPatient());
 
-        System.out.println(" record.getPatient() " + record.getPatient());
-
         record.setRecord(true);
-
-        System.out.println(" record.getSchedule " + record.getSchedule());
 
         RecordToDoctor recordUpd = daoRecord.update(record);
         System.out.println(" recordUpd " + recordUpd);
 
         ra.addFlashAttribute("goodMsg", "Пациент " +
                 record.getPatient().getPerson().getFullName() + " записан!");
-        return "redirect:/doctor/list"; //doctorList /schedule/listDoctor"
+        return "redirect:/doctor/list";
 
     }
     @GetMapping("/patient-delete/{id}")

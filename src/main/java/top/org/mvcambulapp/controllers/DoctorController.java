@@ -38,11 +38,7 @@ public class DoctorController {
 
     @GetMapping("/list")
     public String listAll(Model model,Authentication auth ){
-//        System.out.println("listAll" + auth.getAuthorities());
-//        System.out.println("doctor1: auth= " + auth.getAuthorities().toString() + " " +
-//                auth.getAuthorities().toString().contains("ROLE_ADMIN"));
-//        System.out.println("patient/: user= " + daoUser.currentUser().getPerson().getFullName());
-//        System.out.println("doctor2: role= " + daoUser.currentUser().getRoles());
+
         System.out.println("/ listAll");
 
         List<Doctor> doctors = daoDoctor.listAll();

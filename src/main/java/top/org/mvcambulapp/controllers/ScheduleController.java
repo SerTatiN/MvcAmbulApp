@@ -18,10 +18,7 @@ import top.org.mvcambulapp.model.entity.Schedule;
 
 import javax.print.Doc;
 import java.text.SimpleDateFormat;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
+import java.time.*;
 import java.util.*;
 
 @Controller
@@ -41,6 +38,10 @@ public class ScheduleController {
     public String listAll(Model model, Authentication auth){
         System.out.println("schedule/listAll " + auth.getAuthorities().toString());
         List<Schedule> list = daoSchedule.listAll();
+        LocalDate ldate = LocalDate.now();
+        Date date = Date.from(ldate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+
+        //List<Schedule> list = daoSchedule.getSchedulesByDateAfter(date);
         System.out.println("list " + list.size());
         model.addAttribute("schedules", list);
         model.addAttribute("isAdmin", auth.getAuthorities().toString().contains("ROLE_ADMIN"));
@@ -111,10 +112,6 @@ public class ScheduleController {
                 model.addAttribute("doctors", doctors); // для вставки в <optional>
                 model.addAttribute("isAdmin", auth.getAuthorities().toString().contains("ROLE_ADMIN"));
 
-//                model.addAttribute("standardDate", new Date());  //<p th:text="${#dates.formatISO(standardDate)}"></p> 2023-03-19T09:32:25.682+04:00
-//                model.addAttribute("localDateTime", LocalDateTime.now());//  <p th:text="${#temporals.formatISO(localDateTime)}"></p> 2023-03-19T09:32:25.682+0400
-//                model.addAttribute("localDate", LocalDate.now());//<p th:text="${#temporals.formatISO(localDate)}"></p> 2023-03-19T00:00:00.000+0400
-//                model.addAttribute("timestamp", Instant.now());//    <p th:text="${#temporals.formatISO(timestamp)}"></p> 2023-03-19T09:32:25.683+0400
 
                 System.out.println("form  заполнена");
                 return "schedule/schedule-form";
@@ -133,15 +130,15 @@ public class ScheduleController {
 
             ra.addFlashAttribute("goodMsg", "Расписание специалисту " +
                     scheduleAdd.getDoctor().getPerson().getFullName() + " added");
-        }
+        } else {
 //        Schedule scheduleAdd = daoSchedule.save(schedule);
 //        System.out.println("scheduleAdd: " + scheduleAdd);
 //
 //        createScheduleToRecord(scheduleAdd.getStartTime(),scheduleAdd.getEndTime(),15, scheduleAdd);
 
-        ra.addFlashAttribute("goodMsg", "Расписание специалисту " +
-                schedule.getDoctor().getPerson().getFullName() + " не добавлено, так как на этот день уже есть прием!");
-
+            ra.addFlashAttribute("goodMsg", "Расписание специалисту " +
+                    schedule.getDoctor().getPerson().getFullName() + " не добавлено, так как на этот день уже есть прием!");
+        }
 
         return "redirect:/schedule/list";
     }

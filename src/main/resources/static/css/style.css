@@ -25,6 +25,14 @@
 
     width: 330px;
     height: 450px;
+    border: 1px solid cadetblue;
+    padding: 20px;
+    border-radius: 10px;
+
+}
+h1,h2{
+    color: #A6E3E9;
+
 }
 
 /* Зависит от размера изображения

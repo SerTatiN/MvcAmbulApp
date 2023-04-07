@@ -18,4 +18,5 @@ public interface ScheduleRepository extends CrudRepository<Schedule, Integer> {
 
     List<Schedule> findByDoctor_Id(Integer id);
     List<Schedule> findByDoctor_IdOrderByDate(Integer id);
+
 }
