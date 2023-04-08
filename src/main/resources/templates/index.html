@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <head>
     <meta charset="UTF-8">
     <title>Index</title>
@@ -37,7 +38,7 @@
     <h3><a th:if="${isPatient}" th:href="@{/patient-card/patient}"> Моя медицинская карта</a></h3>
     <h3><a th:if="${isPatient}" th:href="@{/record/patient-records}"> Мои записи</a></h3>
 
-    <h3><a th:if="!${isAuth}" th:href="@{/registration/patient/}">Регистрирация</a></h3>
+    <h3><a sec:authorize="!isAuthenticated()" th:href="@{/registration/patient}">Регистрирация</a></h3>
 
     <h3><a th:if="!${isAuth}" th:href="@{'/login'}"> Войти в систему</a></h3>
 

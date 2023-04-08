@@ -399,7 +399,8 @@ public class RecordController {
             LocalDate ldate = LocalDate.now();
             Date date = Date.from(ldate.atStartOfDay(ZoneId.systemDefault()).toInstant());
             if (record.getSchedule().getDate().after(date)) {
-
+                record.setPatient(null);
+                record.setRecord(false);
                 RecordToDoctor recordUpd = daoRecord.update(record);
                 System.out.println("record deleted " + recordUpd);
 
@@ -411,7 +412,7 @@ public class RecordController {
             return "redirect:/record/patient-records";
         }
         System.out.println("patient-delete fail");
-        return "/";
+        return "index";
     }
 
     @GetMapping("/detail/{id}")

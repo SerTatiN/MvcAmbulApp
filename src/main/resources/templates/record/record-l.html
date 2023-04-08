@@ -10,7 +10,7 @@
 <tbody>
 <header th:insert="layout/page-layout.html :: header"></header>
 
-<h1> Подробное расписание специалистов</h1>
+<h1> Записи к специалистам</h1>
 <!--вывод goodMsg если расписание добавлено -->
 <div th:if="${goodMsg != null}" class="alert alert-success">
   [[${goodMsg}]]
@@ -51,5 +51,5 @@
 </table>
 
 <a th:href="@{/}" class="btn btn-secondary">Отмена</a>
-<footer th:insert="layout/page-layout.html :: footer"></footer>
+<!--<footer th:insert="layout/page-layout.html :: footer"></footer>-->
 </html>

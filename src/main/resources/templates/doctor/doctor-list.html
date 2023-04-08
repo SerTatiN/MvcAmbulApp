@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <head>
     <meta charset="UTF-8" >
     <title> Doctors </title>
@@ -36,7 +37,10 @@
                 <td>
                     <a th:if="${isAdmin}" th:href="@{'/doctor/update/' + ${doctor.id}}" class="btn btn-primary "> Редактировать </a>
                     <a th:if="${isAdmin}" th:href="@{'/doctor/delete/' + ${doctor.id}}" class="btn btn-danger "> Удалить </a>
-                    <a th:if="${isPatient}" th:href="@{'/schedule/listDoctor/' + ${doctor.id}+'?back=doctor'}" class="btn btn-primary ">Посмотреть расписание</a>
+                    <a th:if="${isPatient}" th:href="@{'/schedule/listDoctor/' + ${doctor.id}+'?back=doctor'}" class="btn btn-primary ">Записаться</a>
+
+                    <a sec:authorize="!isAuthenticated()" th:href="@{/login}" class="btn btn-primary ">Записаться</a>
+
                     <a th:href="@{'/doctor/detail/' + ${doctor.id} +'?back=doctor'}" class ="btn btn-warning">О специалисте</a>
                 </td>
 

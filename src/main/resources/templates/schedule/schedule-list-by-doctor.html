@@ -10,7 +10,7 @@
 <body>
   <header th:insert="layout/page-layout.html :: header"></header>
 
-  <h1> Расписание врача-специалиста </h1>
+  <h1> Расписание врача-специалиста для записи</h1>
   <!--вывод goodMsg если пациент записан-->
   <div th:if="${goodMsg != null}" class="alert alert-success">
     [[${goodMsg}]]
@@ -56,5 +56,5 @@
 
   <a th:if = "${back == 'doctor'}" th:href="@{/doctor/list}" class="btn btn-secondary">Отмена</a>
 </body>
-<footer th:insert="layout/page-layout.html :: footer"></footer>
+<!--<footer th:insert="layout/page-layout.html :: footer"></footer>-->
 </html>

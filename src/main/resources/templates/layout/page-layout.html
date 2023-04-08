@@ -69,9 +69,12 @@
                 </form>
             </li>
             <li class="nav-item">
-                <form  sec:authorize="!isAuthenticated()" class="nav-item" aria-current = "page"  th:action = "@{/registration/patient}" th:method="post">
-                    <button class="btn btn-link">Регистрация</button>
-                </form>
+
+                <a sec:authorize="!isAuthenticated()" class="nav-link" aria-current = "page"  th:href="@{/registration/patient}">Регистрирация</a>
+
+<!--                <form  sec:authorize="!isAuthenticated()" class="nav-item" aria-current = "page"  th:action = "@{/registration/patient}" th:method="post">-->
+<!--                    <button class="btn btn-link">Регистрация</button>-->
+<!--                </form>-->
             </li>
         </ul>
     </div>

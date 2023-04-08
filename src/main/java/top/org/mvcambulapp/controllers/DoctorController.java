@@ -119,6 +119,7 @@ public class DoctorController {
 //        Person updPerson = daoPerson.update(doctor.getPerson());
 //        doctor.setPerson(updPerson);
 
+
         Doctor updDoctor = daoDoctor.update(doctor);
         ra.addFlashAttribute("goodMsg", "Данные о специалисте " + updDoctor+ " обновлены");
     return "redirect:/doctor/list";
